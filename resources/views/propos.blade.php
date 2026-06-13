@@ -34,12 +34,13 @@
         
         /* Hero Section */
         .hero-section {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+           /* background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);*/
             position: relative;
             min-height: 600px;
             display: flex;
             align-items: center;
             overflow: hidden;
+            border-bottom-right-radius: 50%;
         }
         
         .hero-section::before {
@@ -49,23 +50,27 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: url('https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=1920') center/cover;
-            opacity: 0.3;
+            background: url('image 1.png') center/cover;
+            opacity: 100;
         }
         
         .hero-content {
             position: relative;
             z-index: 2;
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(255, 255, 255, 0.678);
             padding: 3rem;
             border-radius: 15px;
             max-width: 600px;
         }
-        
+        .hero-content p {
+            color: black;
+            font-size: 1.4rem;
+            font-weight: 350;
+        }
         .hero-title {
             color: var(--secondary-color);
             font-weight: 700;
-            line-height: 1.2;
+            line-height: 1.1;
         }
         
         .btn-primary-custom {
@@ -213,7 +218,7 @@
                     </button>
                     <div class="dropdown">
                         <button class="btn btn-link text-decoration-none dropdown-toggle" data-bs-toggle="dropdown">
-                            <img src="https://ui-avatars.com/api/?name=User&background=0D8ABC&color=fff" class="rounded-circle" width="35" alt="User">
+                            <img src="image 1.png" class="rounded-circle" width="35" alt="User">
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li><a class="dropdown-item" href="#">Profil</a></li>
@@ -247,7 +252,7 @@
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-6 mb-4 mb-lg-0">
-                    <img src="https://images.unsplash.com/photo-1551076805-e1869033e561?w=800" alt="Hôpital" class="img-fluid rounded-4 shadow">
+                    <img src="image 2.png" alt="Hôpital" class="img-fluid rounded-4 shadow">
                 </div>
                 <div class="col-lg-6 ps-lg-5">
                     <h2 class="text-primary mb-4">Notre Histoire</h2>
@@ -426,7 +431,7 @@
             <div class="row g-4">
                 <div class="col-md-6 col-lg-3">
                     <div class="team-card bg-white">
-                        <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400" alt="Médecin">
+                        <img src="Médecins Partenaires.png" alt="Médecin">
                         <div class="p-3 text-center">
                             <h6 class="mb-1">Corps Médical</h6>
                             <p class="text-primary small mb-0">Médecins & Spécialistes</p>
@@ -435,7 +440,7 @@
                 </div>
                 <div class="col-md-6 col-lg-3">
                     <div class="team-card bg-white">
-                        <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400" alt="Assistance">
+                        <img src="div.h-64.png" alt="Assistance">
                         <div class="p-3 text-center">
                             <h6 class="mb-1">Assistance</h6>
                             <p class="text-primary small mb-0">Conseillers Patients</p>
@@ -444,7 +449,7 @@
                 </div>
                 <div class="col-md-6 col-lg-3">
                     <div class="team-card bg-white">
-                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400" alt="Développeurs">
+                        <img src="image 5.png" alt="Développeurs">
                         <div class="p-3 text-center">
                             <h6 class="mb-1">Développeurs</h6>
                             <p class="text-primary small mb-0">Ingénieurs Logiciel</p>
@@ -453,7 +458,7 @@
                 </div>
                 <div class="col-md-6 col-lg-3">
                     <div class="team-card bg-white">
-                        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400" alt="Support">
+                        <img src="image 6.png" alt="Support">
                         <div class="p-3 text-center">
                             <h6 class="mb-1">Support client</h6>
                             <p class="text-primary small mb-0">Expérience Utilisateur</p>
