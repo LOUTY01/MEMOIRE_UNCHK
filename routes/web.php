@@ -27,3 +27,10 @@ Route::get('/rendez-vous', function () {
 Route::get('/contact', function () {
     return view('contact');
 })->name('contact');
+Route::get('/connexion', function () {
+    return view('connexion');
+})->name('login');
+
+Route::get('/inscription', function () {
+    return view('inscription');
+})->name('register');
