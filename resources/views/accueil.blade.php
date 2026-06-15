@@ -435,6 +435,35 @@ color:white;
 text-decoration:none;
 font-size:18px;
 }
+.search-box{
+    text-transform: uppercase;
+}
+.resultat-container{
+    width:100%;
+    display:flex;
+    justify-content:center;
+    margin-top:40px;
+}
+
+.resultat-box{
+    width:700px;
+}
+
+.resultat-card{
+    border:none;
+    border-radius:15px;
+    box-shadow:0 5px 20px rgba(0,0,0,.08);
+    margin-bottom:15px;
+}
+
+.resultat-card img{
+    width:120px;
+    height:120px;
+    object-fit:cover;
+    border-radius:50%;
+    margin:auto;
+    margin-top:20px;
+}
 </style>
 
 </head>
@@ -495,12 +524,48 @@ Contact
 
 </ul>
 
-<input
-type="text"
-class="search-box me-3"
-placeholder="Rechercher un médecin..."
->
+<form method="GET" action="{{ route('medecins.search') }}" class="d-flex">
+    <input
+        type="text"
+        name="q"
+        class="search-box me-3"
+        placeholder="Rechercher un médecin..."
+        value="{{ $terme ?? '' }}"
+        required
+    >
 
+    <button type="submit" class="btn btn-primary">
+        Rechercher
+    </button>
+</form>
+@if(request()->has('q') && request('q') != '')
+
+    @if(isset($resultats) && count($resultats) > 0)
+
+        <div id="message-recherche" class="alert alert-success mt-3">
+            {{ count($resultats) }} médecin(s) trouvé(s).
+        </div>
+
+        @foreach($resultats as $medecin)
+    <div class="card mt-2 p-3">
+        <h5>{{ $medecin->prenom }} {{ $medecin->nom }}</h5>
+
+        <p>
+            {{ $medecin->specialite }}
+            - {{ $medecin->age }} ans
+        </p>
+    </div>
+@endforeach
+
+    @else
+
+        <div id="message-recherche" class="alert alert-warning mt-3">
+            Aucun médecin trouvé pour votre recherche.
+        </div>
+
+    @endif
+
+@endif
 <div class="d-flex align-items-center gap-2">
 
 <a href="{{ route('login') }}" class="btn-login">
@@ -520,7 +585,68 @@ S'inscrire
 </div>
 
 </nav>
+@if(request()->has('q') && request('q') != '')
 
+<div class="resultat-container">
+
+    <div class="resultat-box">
+
+        @if(isset($resultats) && count($resultats) > 0)
+
+            <div class="alert alert-success text-center">
+                <strong>{{ count($resultats) }}</strong>
+                médecin(s) trouvé(s)
+            </div>
+
+            @foreach($resultats as $medecin)
+
+                <div class="card resultat-card">
+
+                    @if($medecin->image)
+                        <img src="{{ asset('storage/'.$medecin->image) }}">
+                    @endif
+
+                    <div class="card-body text-center">
+
+                        <h4 class="text-primary">
+                            {{ $medecin->prenom }}
+                            {{ $medecin->nom }}
+                        </h4>
+
+                        <p>
+                            <strong>Spécialité :</strong>
+                            {{ $medecin->specialite }}
+                        </p>
+
+                        <p>
+                            <strong>Âge :</strong>
+                            {{ $medecin->age }} ans
+                        </p>
+
+                    </div>
+
+                </div>
+
+            @endforeach
+
+        @else
+
+            <div class="alert alert-warning text-center p-4">
+                <h4>🔍 Aucun médecin trouvé</h4>
+
+                <p class="mb-0">
+                    Aucun médecin ne correspond à votre recherche :
+                    <strong>{{ $terme }}</strong>
+                </p>
+            </div>
+
+        @endif
+
+    </div>
+
+</div>
+
+@endif
 <!-- HERO -->
 
 <!-- HERO -->
@@ -1212,6 +1338,26 @@ Contact
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    const message = document.getElementById('message-recherche');
+
+    if (message) {
+
+        setTimeout(function () {
+            message.style.transition = "0.5s";
+            message.style.opacity = "0";
+
+            setTimeout(function () {
+                message.remove();
+            }, 500);
+
+        }, 5000); // 5 secondes
+    }
+
+});
+</script>
 
 </body>
 
