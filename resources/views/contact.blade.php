@@ -15,6 +15,7 @@
         overflow: hidden;
         position: relative;
     }
+    
 
     .hero-contact::before {
         content: '';
