@@ -477,7 +477,7 @@ font-size:18px;
 <div class="container">
 
 <a class="logo" href="#">
-    <img src="{{ asset('images/icone-sama-sante.png') }}" alt="Sama Santé" class="logo-img">
+    <img src="{{ asset('images/logo.png') }}" alt="Sama Santé" class="logo-img">
     Sama Santé
 </a>
 
@@ -1244,8 +1244,12 @@ Explorer la plateforme
 
 <div class="col-lg-3">
 
-<h5 class="footer-title">
-🏥 Sama Santé
+<h5 class="footer-title d-flex align-items-center gap-2">
+    <img src="{{ asset('images/icone-sama-sante.png') }}"
+         alt="Sama Santé"
+         width="30"
+         height="30">
+    Sama Santé
 </h5>
 
 <p>
