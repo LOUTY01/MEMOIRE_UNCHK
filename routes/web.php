@@ -13,9 +13,9 @@ Route::get('/', function () {
     return view('accueil');
 })->name('accueil');
 
-Route::get('/services', function () {
-    return view('services');
-})->name('services');
+Route::get('/service', function () {
+    return view('service');
+})->name('service');
 
 Route::get('/propos', function () {
     return view('propos');
