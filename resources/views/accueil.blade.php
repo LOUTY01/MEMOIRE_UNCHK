@@ -499,7 +499,7 @@ Accueil
 </li>
 
 <li class="nav-item">
-<a class="nav-link" href="{{ route('services') }}">
+<a class="nav-link" href="{{ route('service') }}">
 Services
 </a>
 </li>
@@ -1223,7 +1223,7 @@ leur accès aux soins de santé au Sénégal.
 </a>
 
 <!-- Explorer -->
-<a href="{{ route('services') }}" class="btn btn-outline-light px-4 py-3">
+<a href="{{ route('service') }}" class="btn btn-outline-light px-4 py-3">
 Explorer la plateforme
 </a>
 
