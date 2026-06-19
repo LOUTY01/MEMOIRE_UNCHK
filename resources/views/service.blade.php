@@ -17,16 +17,18 @@
 <header>
 
     <div class="logo">
-        <i class="fa-solid fa-heart-circle-check"></i>
+        <i class="fas fa-heartbeat"></i>
         <h2>Sama Santé</h2>
     </div>
 
     <nav>
-        <a href="#">Accueil</a>
-        <a class="active" href="#">Services</a>
-        <a href="#">À propos</a>
-        <a href="#">Rendez-vous</a>
-        <a href="#">Contact</a>
+    <a  href="{{ route('accueil') }}">
+            Accueil
+        </a>
+        <a class="active" href="{{ route('service') }}">Services</a>
+        <a href="{{ route('propos') }}">À propos</a>
+        <a href="{{ route('rendezvous') }}">Rendez-vous</a>
+        <a href="{{ route('contact') }}">Contact</a>
     </nav>
 
     <div class="menu-droite">
@@ -77,8 +79,93 @@
 
 </section>
 
-<style>
 
+<section class="services">
+    <div class="container">
+
+        <h2>Un écosystème complet de soins</h2>
+        <strong><p class="subtitle">
+            Tout ce dont vous avez besoin pour gérer votre santé et
+            celle de vos proches en un seul endroit.
+        </p></strong>
+
+        <div class="grid">
+
+            <div class="card">
+                <div class="icon"><i class="fa-solid fa-kit-medical"></i></div>
+                <h3>Consultation générale</h3>
+                <p>Accédez à des médecins qualifiés pour vos soins de routine.</p>
+                <a href="#">En savoir plus →</a>
+            </div>
+
+            <div class="card">
+                <div class="icon"><i class="fa-solid fa-calendar-check"></i></div>
+                <h3>Prise de rendez-vous</h3>
+                <p>Réservez vos créneaux en ligne en quelques clics seulement.</p>
+                <a href="#">En savoir plus →</a>
+            </div>
+
+            <div class="card">
+                <div class="icon"><i class="fa-solid fa-chart-line"></i></div>
+                <h3>Suivi des maladies chroniques</h3>
+                <p>Un accompagnement personnalisé pour votre équilibre quotidien.</p>
+                <a href="#">En savoir plus →</a>
+            </div>
+
+            <div class="card">
+                <div class="icon"><i class="fa-solid fa-qrcode"></i></div>
+                <h3>Ticket QR Code</h3>
+                <p>Identification rapide à l'accueil pour gagner du temps.</p>
+                <a href="#">En savoir plus →</a>
+            </div>
+
+            <div class="card">
+                <div class="icon"><i class="fa-solid fa-hourglass-half"></i></div>
+                <h3>Suivi de file d'attente</h3>
+                <p>Suivez votre rang en temps réel depuis votre smartphone.</p>
+                <a href="#">En savoir plus →</a>
+            </div>
+
+            <div class="card">
+                <div class="icon"><i class="fa-solid fa-flask"></i></div>
+                <h3>Examens et analyses</h3>
+                <p>Recevez vos résultats de laboratoire directement sur l'application.</p>
+                <a href="#">En savoir plus →</a>
+            </div>
+
+            <div class="card">
+                <div class="icon"><i class="fa-solid fa-shield-heart"></i></div>
+                <h3>Assurance santé</h3>
+                <p>Gérez vos couvertures et tiers-payant en toute simplicité.</p>
+                <a href="#">En savoir plus →</a>
+            </div>
+
+            <div class="card">
+                <div class="icon"><i class="fa-solid fa-star-of-life"></i></div>
+                <h3>Services d'urgence</h3>
+                <p>Assistance rapide et localisation des centres ouverts.</p>
+                <a href="#">En savoir plus →</a>
+            </div>
+
+            <div class="card">
+                <div class="icon"><i class="fa-solid fa-money-check-dollar"></i></div>
+                <h3>Paiement en ligne</h3>
+                <p>Réglez vos consultations via Mobile Money ou carte bancaire.</p>
+                <a href="#">En savoir plus →</a>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+
+
+
+
+
+<style>
+    
 *{
     margin:0;
     padding:0;
@@ -88,20 +175,24 @@
 
 body{
     padding:10px;
-    background-image:url('{{ asset("images/hopital.png") }}');
+    background: linear-gradient(to right,    #84DBF0);
     background-size:cover;
     background-position:center;
     background-repeat:no-repeat;
+    min-height:100vh;
 }
 
+/* HEADER */
+
 header{
-    height:70px;
     background:white;
     display:flex;
     justify-content:space-between;
     align-items:center;
-    padding:0 25px;
+    padding:15px 25px;
     border-radius:15px;
+    flex-wrap:wrap;
+    gap:15px;
 }
 
 .logo{
@@ -119,6 +210,7 @@ header{
 nav{
     display:flex;
     gap:30px;
+    flex-wrap:wrap;
 }
 
 nav a{
@@ -137,6 +229,7 @@ nav a{
     display:flex;
     align-items:center;
     gap:15px;
+    flex-wrap:wrap;
 }
 
 .zone-recherche{
@@ -151,6 +244,7 @@ nav a{
     border:none;
     outline:none;
     background:transparent;
+    min-width:180px;
 }
 
 .zone-recherche i{
@@ -164,32 +258,53 @@ nav a{
     object-fit:cover;
 }
 
+/* SECTION */
+
 .notre-texte{
     margin-top:10px;
-    height:600px;
+    min-height:600px;
 
-    background-image:url('{{ asset("images/accueil.jpeg") }}');
+    background-image:url('{{ asset("images/bienvenue.png") }}');
     background-size:cover;
     background-position:center;
 
     border-radius:0 0 120px 0;
     position:relative;
+    overflow:hidden;
 }
 
 .contenue{
     position:absolute;
     top:30px;
     left:0;
-    width:550px;
+
+    width:90%;
+    max-width:550px;
 
     background:rgba(255,255,255,0.75);
-
     padding:25px;
 
     border-radius:0 40px 40px 0;
 
     backdrop-filter:blur(4px);
+
+     opacity:0;
+    animation:apparitionGauche 1.2s ease-out forwards;
 }
+
+
+@keyframes apparitionGauche{
+    from{
+        opacity:0;
+        transform:translateX(-120px);
+    }
+
+    to{
+        opacity:1;
+        transform:translateX(0);
+    }
+}
+
 
 .badge{
     display:inline-flex;
@@ -200,7 +315,6 @@ nav a{
     color:white;
 
     padding:7px 15px;
-
     border-radius:20px;
     font-size:12px;
 }
@@ -214,7 +328,7 @@ h1{
     font-size:30px;
     font-style:italic;
     text-align:center;
-    line-height:1.2;
+    line-height:1.3;
 }
 
 h1 span{
@@ -236,6 +350,7 @@ button{
     padding:18px 30px;
     border-radius:8px;
     cursor:pointer;
+    transition:0.3s;
 }
 
 button:hover{
@@ -245,6 +360,259 @@ button:hover{
 .centre{
     text-align:center;
 }
+
+/* TABLETTE */
+
+@media (max-width: 992px){
+
+    header{
+        justify-content:center;
+    }
+
+    nav{
+        justify-content:center;
+        width:100%;
+    }
+
+    .menu-droite{
+        justify-content:center;
+        width:100%;
+    }
+
+    h1{
+        font-size:25px;
+    }
+
+    p{
+        font-size:16px;
+    }
+}
+
+/* MOBILE */
+
+@media (max-width: 768px){
+
+    body{
+        padding:5px;
+    }
+
+    header{
+        flex-direction:column;
+        text-align:center;
+    }
+
+    nav{
+        flex-direction:column;
+        gap:15px;
+    }
+
+    .menu-droite{
+        flex-direction:column;
+        width:100%;
+    }
+
+    .zone-recherche{
+        width:100%;
+        max-width:350px;
+    }
+
+    .zone-recherche input{
+        width:100%;
+    }
+
+    .notre-texte{
+        min-height:auto;
+        padding:20px 0 30px;
+        border-radius:20px;
+    }
+
+    .contenue{
+        position:relative;
+        width:95%;
+        margin:auto;
+        top:0;
+        border-radius:20px;
+    }
+
+    h1{
+        font-size:22px;
+    }
+
+    p{
+        font-size:15px;
+    }
+
+    button{
+        width:100%;
+    }
+}
+
+/* PETITS SMARTPHONES */
+
+@media (max-width: 480px){
+
+    .logo h2{
+        font-size:18px;
+    }
+
+    .logo i{
+        font-size:18px;
+    }
+
+    h1{
+        font-size:18px;
+    }
+
+    p{
+        font-size:14px;
+    }
+
+    nav a{
+        font-size:13px;
+    }
+
+    .contenue{
+        padding:15px;
+    }
+
+    button{
+        padding:14px;
+        font-size:14px;
+    }
+}
+
+
+.services{
+    padding:60px 20px;
+}
+
+
+.container{
+    max-width:1200px;
+    margin:auto;
+}
+
+h2{
+    text-align:center;
+    font-size:40px;
+    color:#222;
+    margin-bottom:10px;
+}
+
+.subtitle{
+    text-align:center;
+    color:#666;
+    max-width:650px;
+    margin:0 auto 50px;
+    font-size:18px;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+    gap:20px;
+}
+
+.card{
+    background:#fff;
+    padding:30px;
+    border-radius:12px;
+    box-shadow:0 2px 10px rgba(0,0,0,0.05);
+    transition:0.3s;
+}
+
+.card:hover{
+    transform:translateY(-3px);
+}
+
+.icon{
+    width:45px;
+    height:45px;
+    background:#e8f8f4;
+    color:#1e90ff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:10px;
+    margin-bottom:20px;
+    font-size:18px;
+}
+
+.card h3{
+    font-size:24px;
+    color:#222;
+    margin-bottom:12px;
+}
+
+.card p{
+    color:#666;
+    line-height:1.6;
+    margin-bottom:18px;
+}
+
+.card a{
+    color:#1e90ff;
+    text-decoration:none;
+    font-weight:600;
+}
+
+.card a:hover{
+    text-decoration:underline;
+}
+
+
+.why-us{
+    background:#f4f7fb;
+    padding:80px 20px;
+}
+
+.container{
+    max-width:1200px;
+    margin:auto;
+}
+
+.content{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:60px;
+}
+
+.left{
+    flex:1;
+}
+
+.left h2{
+    font-size:38px;
+    margin-bottom:40px;
+    color:#111;
+}
+
+.features{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:35px;
+}
+
+.feature i{
+    color:#1e88e5;
+    font-size:22px;
+    margin-bottom:12px;
+}
+
+.feature h3{
+    font-size:22px;
+    margin-bottom:10px;
+    color:#111;
+}
+
+.feature p{
+    color:#555;
+    line-height:1.7;
+}
+
+
+
 
 </style>
 
