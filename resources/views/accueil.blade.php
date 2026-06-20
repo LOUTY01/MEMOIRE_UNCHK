@@ -477,7 +477,7 @@ font-size:18px;
 <div class="container">
 
 <a class="logo" href="#">
-    <img src="{{ asset('images/icone-sama-sante.png') }}" alt="Sama Santé" class="logo-img">
+    <img src="{{ asset('images/logo.png') }}" alt="Sama Santé" class="logo-img">
     Sama Santé
 </a>
 
@@ -529,7 +529,7 @@ Contact
         type="text"
         name="q"
         class="search-box me-3"
-        placeholder="Rechercher un médecin..."
+        placeholder="Rechercher un médecin ex:FATOU"
         value="{{ $terme ?? '' }}"
         required
     >
@@ -538,29 +538,33 @@ Contact
         Rechercher
     </button>
 </form>
-@if(request()->has('q') && request('q') != '')
 
-    @if(isset($resultats) && count($resultats) > 0)
+
+    @if(isset($resultats))
+
+    @if(count($resultats) > 0)
 
         <div id="message-recherche" class="alert alert-success mt-3">
             {{ count($resultats) }} médecin(s) trouvé(s).
         </div>
 
         @foreach($resultats as $medecin)
-    <div class="card mt-2 p-3">
-        <h5>{{ $medecin->prenom }} {{ $medecin->nom }}</h5>
+            <div class="card mt-2 p-3">
+                <h5>
+                    {{ $medecin->prenom }} {{ $medecin->nom }}
+                </h5>
 
-        <p>
-            {{ $medecin->specialite }}
-            - {{ $medecin->age }} ans
-        </p>
-    </div>
-@endforeach
+                <p>
+                    {{ $medecin->specialite }}
+                    - {{ $medecin->age }} ans
+                </p>
+            </div>
+        @endforeach
 
     @else
 
-        <div id="message-recherche" class="alert alert-warning mt-3">
-            Aucun médecin trouvé pour votre recherche.
+        <div class="alert alert-warning mt-3">
+            Aucun médecin trouvé.
         </div>
 
     @endif
@@ -1244,8 +1248,12 @@ Explorer la plateforme
 
 <div class="col-lg-3">
 
-<h5 class="footer-title">
-🏥 Sama Santé
+<h5 class="footer-title d-flex align-items-center gap-2">
+    <img src="{{ asset('images/icone-sama-sante.png') }}"
+         alt="Sama Santé"
+         width="30"
+         height="30">
+    Sama Santé
 </h5>
 
 <p>
