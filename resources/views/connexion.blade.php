@@ -288,19 +288,21 @@
 
 <div class="main-container">
 
-    <!-- Partie Gauche -->
+    <!-- GAUCHE -->
     <div class="left-side">
 
         <div class="logo">
             <i class="fa-regular fa-heart"></i>
             Sama Santé
         </div>
-         <div class="mt-3">
-    <a href="{{ route('accueil') }}" class="btn btn-light">
-        <i class="fa-solid fa-arrow-left"></i>
-        Retour à l'accueil
-    </a>
-</div>
+
+        <div class="mt-3">
+            <a href="{{ route('accueil') }}" class="btn btn-light">
+                <i class="fa-solid fa-arrow-left"></i>
+                Retour à l'accueil
+            </a>
+        </div>
+
         <div class="welcome">
             <h1>Bienvenue sur<br>Sama Santé</h1>
 
@@ -335,7 +337,7 @@
 
     </div>
 
-    <!-- Partie Droite -->
+    <!-- DROITE -->
     <div class="right-side">
 
         <div class="login-card">
@@ -346,7 +348,23 @@
                 Connectez-vous à votre espace sécurisé.
             </p>
 
-            <form action="{{ route('login') }}" method="POST">
+            {{-- ERREURS --}}
+            @if($errors->any())
+                <div class="alert alert-danger">
+                    @foreach($errors->all() as $error)
+                        <div>{{ $error }}</div>
+                    @endforeach
+                </div>
+            @endif
+
+            {{-- SUCCÈS --}}
+            @if(session('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            <form action="{{ route('login.post') }}" method="POST">
                 @csrf
 
                 <label class="form-label">Adresse e-mail</label>
@@ -357,38 +375,46 @@
                     </span>
 
                     <input type="email"
-                        name="email"
-                        class="form-control"
-                        placeholder="nom@exemple.com">
+                           name="email"
+                           class="form-control"
+                           value="{{ old('email') }}"
+                           placeholder="nom@exemple.com"
+                           required>
                 </div>
 
                 <label class="form-label">Mot de passe</label>
 
-                <div class="input-group">
-                    <span class="input-group-text">
-                        <i class="fa-solid fa-lock"></i>
-                    </span>
+<div class="input-group">
+    <span class="input-group-text">
+        <i class="fa-solid fa-lock"></i>
+    </span>
 
-                    <input type="password"
-                        name="password"
-                        class="form-control"
-                        placeholder="••••••••">
-                </div>
+    <input type="password"
+           name="password"
+           id="password"
+           class="form-control"
+           placeholder="••••••••"
+           required>
+
+    <span class="input-group-text" style="cursor:pointer;">
+        <i class="fa-solid fa-eye" id="togglePassword"></i>
+    </span>
+</div>
 
                 <div class="options">
 
                     <div>
-                        <input type="checkbox">
+                        <input type="checkbox" name="remember">
                         Se souvenir de moi
                     </div>
 
-                    <a href="#">
-                        Mot de passe oublié ?
-                    </a>
+                    <a href="{{ route('password.request') }}">
+    Mot de passe oublié ?
+</a>
 
                 </div>
 
-                <button class="btn-login">
+                <button type="submit" class="btn-login">
                     Se connecter
                     <i class="fa-solid fa-arrow-right-to-bracket ms-2"></i>
                 </button>
@@ -400,24 +426,18 @@
             </div>
 
             <div class="social-buttons">
-
                 <button class="social-btn">
-                    <i class="fa-brands fa-google"></i>
-                    Google
-                </button>
-
-                <button class="social-btn">
-                    <i class="fa-brands fa-apple"></i>
-                    Apple
+                    <a href="{{ route('google.login') }}" class="social-btn text-decoration-none text-dark d-flex align-items-center justify-content-center gap-2">
+    <i class="fa-brands fa-google"></i>
+    Google
+</a>
                 </button>
 
             </div>
 
             <div class="signup">
                 Pas encore de compte ?
-                <a href="{{ route('register') }}">
-    S'inscrire
-</a>
+                <a href="{{ route('register') }}">S'inscrire</a>
             </div>
 
         </div>
@@ -425,6 +445,22 @@
     </div>
 
 </div>
+<script>
+const togglePassword = document.getElementById('togglePassword');
+const password = document.getElementById('password');
 
+togglePassword.addEventListener('click', function () {
+
+    const type = password.getAttribute('type') === 'password'
+        ? 'text'
+        : 'password';
+
+    password.setAttribute('type', type);
+
+    // changer l’icône
+    this.classList.toggle('fa-eye');
+    this.classList.toggle('fa-eye-slash');
+});
+</script>
 </body>
 </html>

@@ -396,100 +396,134 @@
                         <span>Patient</span>
 
                     </div>
+    @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul style="margin:0;">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+<form method="POST" action="{{ route('register.store') }}">
+    @csrf
 
-                    <form>
+    <div class="row">
 
-                        <div class="row">
+        <!-- NOM -->
+        <div class="col-md-6 mb-4">
+            <label>Nom Complet</label>
+            <input type="text" name="nom" class="form-control @error('nom') is-invalid @enderror" required>
+            @error('nom')
+                <small class="text-danger">{{ $message }}</small>
+            @enderror
+        </div>
 
-                            <div class="col-md-6 mb-4">
-                                <label class="form-label">Nom Complet</label>
-                                <input type="text"
-                                    class="form-control"
-                                    placeholder="Nom complet">
-                            </div>
+        <!-- EMAIL -->
+        <div class="col-md-6 mb-4">
+            <label>Email</label>
+            <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" required>
+            @error('email')
+                <small class="text-danger">{{ $message }}</small>
+            @enderror
+        </div>
 
-                            <div class="col-md-6 mb-4">
-                                <label class="form-label">Email</label>
-                                <input type="email"
-                                    class="form-control"
-                                    placeholder="exemple@gmail.com">
-                            </div>
+        <!-- TELEPHONE -->
+        <div class="col-md-6 mb-4">
+            <label>Téléphone</label>
+            <input type="text" name="telephone" class="form-control @error('telephone') is-invalid @enderror" required>
+            @error('telephone')
+                <small class="text-danger">{{ $message }}</small>
+            @enderror
+        </div>
 
-                            <div class="col-md-6 mb-4">
-                                <label class="form-label">Téléphone</label>
-                                <input type="text"
-                                    class="form-control"
-                                    placeholder="+221 77 000 00 00">
-                            </div>
+        <!-- DATE -->
+        <div class="col-md-6 mb-4">
+            <label>Date de Naissance</label>
+            <input type="date" name="date_naissance" class="form-control @error('date_naissance') is-invalid @enderror" required>
+            @error('date_naissance')
+                <small class="text-danger">{{ $message }}</small>
+            @enderror
+        </div>
 
-                            <div class="col-md-6 mb-4">
-                                <label class="form-label">Date de Naissance</label>
-                                <input type="date"
-                                    class="form-control">
-                            </div>
+        <!-- SEXE -->
+        <div class="col-12 mb-4">
+            <label>Sexe</label><br>
 
-                            <div class="col-12 mb-4">
+            <label>
+                <input type="radio" name="sexe" value="Homme" required>
+                Homme
+            </label>
 
-                                <label class="form-label">Sexe</label>
+            <label>
+                <input type="radio" name="sexe" value="Femme" required>
+                Femme
+            </label>
 
-                                <div class="gender">
-                                    <label>
-                                        <input type="radio" name="sexe">
-                                        Homme
-                                    </label>
+            @error('sexe')
+                <br><small class="text-danger">{{ $message }}</small>
+            @enderror
+        </div>
 
-                                    <label>
-                                        <input type="radio" name="sexe">
-                                        Femme
-                                    </label>
-                                </div>
+        <!-- PASSWORD -->
+        <div class="col-md-6 mb-4">
+            <label>Mot de passe</label>
 
-                            </div>
+            <div class="input-group">
+                <input type="password" id="password" name="password"
+                       class="form-control @error('password') is-invalid @enderror"
+                       required>
 
-                            <div class="col-md-6 mb-4">
+                <span class="input-group-text" onclick="togglePassword('password', this)">
+                    👁
+                </span>
+            </div>
 
-                                <label class="form-label">
-                                    Mot de passe
-                                </label>
+            @error('password')
+                <small class="text-danger">{{ $message }}</small>
+            @enderror
+        </div>
 
-                                <div class="password-box">
-                                    <input type="password" class="form-control">
-                                    <i class="fa-regular fa-eye"></i>
-                                </div>
+        <!-- CONFIRM PASSWORD -->
+        <div class="col-md-6 mb-4">
+            <label>Confirmer mot de passe</label>
 
-                            </div>
+            <div class="input-group">
+                <input type="password" id="password_confirmation" name="password_confirmation"
+                       class="form-control" required>
 
-                            <div class="col-md-6 mb-4">
+                <span class="input-group-text"
+                      onclick="togglePassword('password_confirmation', this)">
+                    👁
+                </span>
+            </div>
+        </div>
 
-                                <label class="form-label">
-                                    Confirmer
-                                </label>
+    </div>
 
-                                <div class="password-box">
-                                    <input type="password" class="form-control">
-                                    <i class="fa-regular fa-eye"></i>
-                                </div>
+    <!-- TERMS -->
+    <div class="mb-3">
+        <input type="checkbox" name="terms" required>
+        J'accepte les conditions
+    </div>
 
-                            </div>
+    <button type="submit" class="btn btn-primary">
+        Créer mon compte
+    </button>
+</form>
+<script>
+function togglePassword(id, icon) {
+    const input = document.getElementById(id);
 
-                        </div>
-
-                        <div class="terms">
-
-                            <input type="checkbox">
-
-                            J'accepte les
-                            <a href="#">Conditions d'Utilisation</a>
-                            et la
-                            <a href="#">Politique de Confidentialité</a>
-
-                        </div>
-
-                        <button type="submit" class="btn-register">
-                            Créer mon compte
-                            <i class="fa-solid fa-arrow-right ms-2"></i>
-                        </button>
-
+    if (input.type === "password") {
+        input.type = "text";
+        icon.innerHTML = "🙈";
+    } else {
+        input.type = "password";
+        icon.innerHTML = "👁";
+    }
+}
+</script>
                         <div class="separator">
                             Ou continuer avec
                         </div>
@@ -497,17 +531,13 @@
                         <div class="social-buttons">
 
                             <button class="social-btn" type="button">
-                                <i class="fa-brands fa-google"></i>
+                               <a href="{{ route('google.login') }}" class="social-btn text-decoration-none text-dark d-flex align-items-center justify-content-center gap-2">
+    <i class="fa-brands fa-google"></i>
+    Google
+</a>
                             </button>
 
-                            <button class="social-btn" type="button">
-                                <i class="fa-brands fa-facebook"></i>
-                            </button>
-
-                            <button class="social-btn" type="button">
-                                <i class="fa-brands fa-apple"></i>
-                            </button>
-
+                            
                         </div>
 
                         <div class="login-link">
