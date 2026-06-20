@@ -40,9 +40,9 @@ Route::get('/inscription', fn () => view('inscription'))->name('register');
 */
 
 Route::post('/register', [RegisterController::class, 'store'])->name('register.store');
-
 Route::post('/login', [LoginController::class, 'login'])->name('login.post');
 
+/* LOGOUT (corrigé) */
 Route::post('/logout', function (Request $request) {
 
     Auth::logout();
