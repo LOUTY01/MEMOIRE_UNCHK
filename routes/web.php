@@ -19,6 +19,7 @@ use App\Http\Controllers\AccueilUtilisateurController;
 
 Route::get('/', fn () => view('accueil'))->name('accueil');
 Route::get('/services', fn () => view('services'))->name('services');
+Route::get('/service', fn () => view('service'))->name('service');
 Route::get('/propos', fn () => view('propos'))->name('propos');
 Route::get('/rendez-vous', fn () => view('rendezvous'))->name('rendezvous');
 Route::get('/contact', fn () => view('contact'))->name('contact');
@@ -38,19 +39,13 @@ Route::get('/inscription', fn () => view('inscription'))->name('register');
 |--------------------------------------------------------------------------
 */
 
-// Inscription
-Route::post('/register', [RegisterController::class, 'store'])
-    ->name('register.store');
+Route::post('/register', [RegisterController::class, 'store'])->name('register.store');
 
-// Connexion
-Route::post('/login', [LoginController::class, 'login'])
-    ->name('login.post');
+Route::post('/login', [LoginController::class, 'login'])->name('login.post');
 
-// Déconnexion
 Route::post('/logout', function (Request $request) {
 
     Auth::logout();
-
     $request->session()->invalidate();
     $request->session()->regenerateToken();
 
@@ -144,7 +139,7 @@ Route::post('/email/verification-notification', function (Request $request) {
 
 /*
 |--------------------------------------------------------------------------
-| MÉDECINS (SEARCH PROPRE)
+| MÉDECINS SEARCH
 |--------------------------------------------------------------------------
 */
 
