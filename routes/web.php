@@ -1,6 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+<<<<<<< HEAD
+=======
+use App\Http\Controllers\MedecinController;
+>>>>>>> 411feb6 (modification page)
 
 /*
 |--------------------------------------------------------------------------
@@ -26,4 +30,30 @@ Route::get('/rendez-vous', function () {
 
 Route::get('/contact', function () {
     return view('contact');
+<<<<<<< HEAD
 })->name('contact');
+=======
+})->name('contact');
+
+Route::get('/connexion', function () {
+    return view('connexion');
+})->name('login');
+
+Route::get('/inscription', function () {
+    return view('inscription');
+})->name('register');
+
+/*
+|--------------------------------------------------------------------------
+| Recherche de médecins
+|--------------------------------------------------------------------------
+*/
+
+// Page de recherche
+Route::get('/recherche-medecin', [MedecinController::class, 'index'])
+    ->name('medecins.index');
+
+// API/AJAX de recherche
+Route::get('/api/medecins', [MedecinController::class, 'search'])
+    ->name('medecins.search');
+>>>>>>> 411feb6 (modification page)
