@@ -294,7 +294,7 @@
     </section>
 
     <section class="container py-5">
-        <div class="cta-section p-5 text-center shadow-lg">
+        <div class="cta-section p-5 text-center shadow-lg mx-auto" style="max-width: 700px;">
             <h2 class="fw-bold mb-3">Simplifiez vos rendez-vous médicaux dès aujourd'hui</h2>
             <p class="mb-4">Rejoignez des milliers de patients qui ont déjà choisi Sama Santé pour leur santé et celle de leurs proches.</p>
             <div class="d-flex justify-content-center gap-3">
