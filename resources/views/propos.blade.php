@@ -106,7 +106,7 @@
                 <div class="d-flex align-items-center">
                     <div class="input-group me-3">
                         <input type="text" class="form-control rounded-pill bg-light border-0" placeholder="Rechercher un médecin...">
-                        <button class="btn btn-light rounded-pill border-0 position-absolute end-0 z-3"><i class="bi bi-search"></i></button>
+                        <button class="btn btn-light rounded-pill border-0 position-absolute inset-e-0 z-3"><i class="bi bi-search"></i></button>
                     </div>
                     <span class="me-2 fw-bold">FR</span>
                     <img src="{{ asset('images/docteur.png') }}" class="rounded-circle" alt="User" width="40" height="40">
