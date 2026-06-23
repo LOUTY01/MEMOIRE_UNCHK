@@ -12,7 +12,7 @@
 
 <style>
 
-/* BASE */
+/* RESET */
 *{
 margin:0;
 padding:0;
@@ -28,7 +28,6 @@ overflow-x:hidden;
 /* NAVBAR */
 .navbar{
 background:#fff;
-height:75px;
 box-shadow:0 2px 15px rgba(0,0,0,.05);
 z-index:1000;
 }
@@ -41,8 +40,6 @@ text-decoration:none;
 color:#1c8adb;
 font-size:22px;
 font-weight:700;
-white-space:nowrap;
-line-height:1;
 }
 
 .logo-img{
@@ -54,7 +51,6 @@ border-radius:10px;
 object-fit:contain;
 }
 
-/* NAV LINKS */
 .navbar-nav .nav-link{
 font-size:14px;
 color:#222;
@@ -74,7 +70,6 @@ padding:8px 15px;
 background:#f5f7fb;
 border:none;
 font-size:13px;
-text-transform:uppercase;
 }
 
 /* BUTTONS */
@@ -132,29 +127,16 @@ border-radius:25px;
 font-size:52px;
 font-weight:800;
 line-height:1.1;
-color:#0b1220;
 }
 
 .hero-title span{
-color:#1989d7;
+color:#1c8adb;
 display:block;
 }
 
 .hero-text{
-margin-top:25px;
-font-size:20px;
-color:#111827;
-}
-
-.btn-hero{
-display:inline-block;
-margin-top:25px;
-background:rgba(25,137,215,0.85);
-color:white;
-padding:14px 35px;
-border-radius:10px;
-text-decoration:none;
-font-weight:600;
+margin-top:20px;
+font-size:18px;
 }
 
 /* RESULTATS */
@@ -174,28 +156,25 @@ border:none;
 border-radius:15px;
 box-shadow:0 5px 20px rgba(0,0,0,.08);
 margin-bottom:15px;
-text-align:center;
 padding:20px;
+text-align:center;
 }
 
 .resultat-card img{
 width:120px;
 height:120px;
-object-fit:cover;
 border-radius:50%;
-margin:auto;
+object-fit:cover;
 margin-top:20px;
 }
 
 </style>
-
 </head>
 
 <body>
 
 <!-- NAVBAR -->
 <nav class="navbar navbar-expand-lg">
-
 <div class="container">
 
 <a class="logo" href="#">
@@ -210,63 +189,34 @@ Sama Santé
 <div class="collapse navbar-collapse" id="menu">
 
 <ul class="navbar-nav mx-auto">
-
-<li class="nav-item">
-<a class="nav-link" href="{{ route('accueil') }}">Accueil</a>
-</li>
-
-<li class="nav-item">
-<a class="nav-link" href="{{ route('services') }}">Services</a>
-</li>
-
-<li class="nav-item">
-<a class="nav-link" href="{{ route('propos') }}">À propos</a>
-</li>
-
-<li class="nav-item">
-<a class="nav-link" href="{{ route('rendezvous') }}">Rendez-vous</a>
-</li>
-
-<li class="nav-item">
-<a class="nav-link" href="{{ route('contact') }}">Contact</a>
-</li>
-
+<li class="nav-item"><a class="nav-link" href="{{ route('accueil') }}">Accueil</a></li>
+<li class="nav-item"><a class="nav-link" href="{{ route('services') }}">Services</a></li>
+<li class="nav-item"><a class="nav-link" href="{{ route('propos') }}">À propos</a></li>
+<li class="nav-item"><a class="nav-link" href="{{ route('rendezvous') }}">Rendez-vous</a></li>
+<li class="nav-item"><a class="nav-link" href="{{ route('contact') }}">Contact</a></li>
 </ul>
 
 <!-- SEARCH -->
 <form method="GET" action="{{ route('medecins.search') }}" class="d-flex">
-
-<input type="text"
-name="q"
-class="search-box me-3"
+<input type="text" name="q" class="search-box me-3"
 placeholder="Rechercher un médecin"
-value="{{ $terme ?? '' }}"
-required>
+value="{{ $terme ?? '' }}" required>
 
-<button type="submit" class="btn btn-primary">
-Rechercher
-</button>
-
+<button class="btn btn-primary">Rechercher</button>
 </form>
 
 <div class="d-flex align-items-center gap-2 ms-3">
-
 <a href="{{ route('login') }}" class="btn-login">Connexion</a>
 <a href="{{ route('register') }}" class="btn-register">S'inscrire</a>
-
 </div>
 
 </div>
-
 </div>
-
 </nav>
 
 <!-- RESULTATS -->
 @if(isset($resultats))
-
 <div class="resultat-container">
-
 <div class="resultat-box">
 
 @if(count($resultats) > 0)
@@ -279,8 +229,8 @@ Rechercher
 
 <div class="card resultat-card">
 
-@if($medecin->photo)
-<img src="{{ asset('storage/'.$medecin->photo) }}">
+@if($medecin->image)
+<img src="{{ asset('storage/'.$medecin->image) }}">
 @endif
 
 <h4 class="mt-3">
@@ -302,14 +252,11 @@ Aucun médecin trouvé
 @endif
 
 </div>
-
 </div>
-
 @endif
 
 <!-- HERO -->
 <section class="hero">
-
 <div class="container">
 <div class="hero-content">
 
@@ -324,7 +271,7 @@ RÉSERVEZ VOS CONSULTATIONS
 Réservez vos consultations médicales en ligne rapidement.
 </p>
 
-<a href="{{ route('rendezvous') }}" class="btn-hero">
+<a href="{{ route('rendezvous') }}" class="btn btn-primary mt-3">
 En savoir plus
 </a>
 
@@ -332,7 +279,6 @@ En savoir plus
 
 </div>
 </div>
-
 </section>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

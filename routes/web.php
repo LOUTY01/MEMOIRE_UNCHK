@@ -42,7 +42,7 @@ Route::get('/inscription', fn () => view('inscription'))->name('register');
 Route::post('/register', [RegisterController::class, 'store'])->name('register.store');
 Route::post('/login', [LoginController::class, 'login'])->name('login.post');
 
-/* LOGOUT (corrigé) */
+/* LOGOUT */
 Route::post('/logout', function (Request $request) {
 
     Auth::logout();
@@ -139,13 +139,18 @@ Route::post('/email/verification-notification', function (Request $request) {
 
 /*
 |--------------------------------------------------------------------------
-| MÉDECINS SEARCH
+| MÉDECINS
 |--------------------------------------------------------------------------
 */
 
+// Recherche médecins (API)
 Route::get('/search-medecins', [MedecinController::class, 'search'])
     ->middleware('auth')
     ->name('medecins.search');
+
+// Page liste médecins (si utilisée)
+Route::get('/recherche-medecin', [MedecinController::class, 'index'])
+    ->name('medecins.index');
 
 /*
 |--------------------------------------------------------------------------
