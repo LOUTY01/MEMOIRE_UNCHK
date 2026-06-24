@@ -109,7 +109,7 @@
                         <button class="btn btn-light rounded-pill border-0 position-absolute inset-e-0 z-3"><i class="bi bi-search"></i></button>
                     </div>
                     <span class="me-2 fw-bold">FR</span>
-                    <img src="{{ asset('images/homme.png') }}" class="rounded-circle" alt="User" width="40" height="40">
+                    <img src="{{ asset('images/homme.png') }}" class="rounded-circle" alt="User" width="40" height="30">
                 </div>
             </div>
         </div>
@@ -120,7 +120,7 @@
             <div class="hero-content">
                 <h1 class="fw-bold mb-3">UNE PLATEFORME DE SANTÉ PENSÉE POUR <span class="text-primary">SIMPLIFIER VOS CONSULTATIONS</span> MÉDICALES</h1>
                 <p class="mb-4 text-muted">Nous révolutionnons l'accès aux soins au Sénégal en connectant patients et professionnels de santé à travers une expérience numérique fluide, sécurisée et humaine.</p>
-                <a href="#" class="btn btn-primary btn-lg rounded-pill px-4">En Savoir plus</a>
+                <a href="{{ route('services') }}" class="btn btn-primary btn-lg rounded-pill px-4">En Savoir plus</a>
             </div>
         </div>
     </section>
