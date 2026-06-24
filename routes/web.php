@@ -148,7 +148,7 @@ Route::get('/search-medecins', [MedecinController::class, 'search'])
     ->middleware('auth')
     ->name('medecins.search');
 
-// Page liste médecins (si utilisée)
+// Page liste médecins
 Route::get('/recherche-medecin', [MedecinController::class, 'index'])
     ->name('medecins.index');
 
