@@ -18,10 +18,14 @@ use App\Http\Controllers\AccueilUtilisateurController;
 */
 
 Route::get('/', fn () => view('accueil'))->name('accueil');
-Route::get('/services', fn () => view('services'))->name('services');
-Route::get('/service', fn () => view('service'))->name('service');
+
+Route::get('/services', fn () => view('service'))->name('services'); 
+// IMPORTANT : ton fichier = service.blade.php
+
 Route::get('/propos', fn () => view('propos'))->name('propos');
+
 Route::get('/rendez-vous', fn () => view('rendezvous'))->name('rendezvous');
+
 Route::get('/contact', fn () => view('contact'))->name('contact');
 
 /*
@@ -31,6 +35,7 @@ Route::get('/contact', fn () => view('contact'))->name('contact');
 */
 
 Route::get('/connexion', fn () => view('connexion'))->name('login');
+
 Route::get('/inscription', fn () => view('inscription'))->name('register');
 
 /*
@@ -39,10 +44,13 @@ Route::get('/inscription', fn () => view('inscription'))->name('register');
 |--------------------------------------------------------------------------
 */
 
-Route::post('/register', [RegisterController::class, 'store'])->name('register.store');
-Route::post('/login', [LoginController::class, 'login'])->name('login.post');
+Route::post('/register', [RegisterController::class, 'store'])
+    ->name('register.store');
 
-/* LOGOUT (corrigé) */
+Route::post('/login', [LoginController::class, 'login'])
+    ->name('login.post');
+
+/* LOGOUT */
 Route::post('/logout', function (Request $request) {
 
     Auth::logout();
