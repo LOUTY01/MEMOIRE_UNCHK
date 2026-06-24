@@ -3,7 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\Schema; // <-- 1. AJOUTER CETTE LIGNE ICI
+use Illuminate\Support\Facades\Schema;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -20,6 +20,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Schema::defaultStringLength(191); // <-- 2. AJOUTER CETTE LIGNE ICI
+        // Fix erreur "Specified key was too long" avec MySQL utf8mb4
+        Schema::defaultStringLength(191);
     }
 }
