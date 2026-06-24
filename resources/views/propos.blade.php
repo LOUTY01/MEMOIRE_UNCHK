@@ -109,7 +109,7 @@
                         <button class="btn btn-light rounded-pill border-0 position-absolute inset-e-0 z-3"><i class="bi bi-search"></i></button>
                     </div>
                     <span class="me-2 fw-bold">FR</span>
-                    <img src="{{ asset('images/docteur.png') }}" class="rounded-circle" alt="User" width="40" height="40">
+                    <img src="{{ asset('images/homme.png') }}" class="rounded-circle" alt="User" width="40" height="40">
                 </div>
             </div>
         </div>
