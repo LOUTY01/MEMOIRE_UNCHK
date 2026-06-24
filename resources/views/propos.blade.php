@@ -98,7 +98,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav mx-auto">
                     <li class="nav-item"><a class="nav-link" href="{{ route('accueil') }}">Accueil</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ route('services') }}">Services</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('service') }}">Services</a></li>
                     <li class="nav-item"><a class="nav-link active text-primary fw-bold" href="{{ route('propos') }}">À propos</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('rendezvous') }}">Rendez-vous</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('contact') }}">Contact</a></li>
@@ -120,7 +120,7 @@
             <div class="hero-content">
                 <h1 class="fw-bold mb-3">UNE PLATEFORME DE SANTÉ PENSÉE POUR <span class="text-primary">SIMPLIFIER VOS CONSULTATIONS</span> MÉDICALES</h1>
                 <p class="mb-4 text-muted">Nous révolutionnons l'accès aux soins au Sénégal en connectant patients et professionnels de santé à travers une expérience numérique fluide, sécurisée et humaine.</p>
-                <a href="{{ route('services') }}" class="btn btn-primary btn-lg rounded-pill px-4">En Savoir plus</a>
+                <a href="{{ route('service') }}" class="btn btn-primary btn-lg rounded-pill px-4">En Savoir plus</a>
             </div>
         </div>
     </section>
