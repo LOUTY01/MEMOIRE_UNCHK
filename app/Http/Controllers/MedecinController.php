@@ -9,21 +9,21 @@ class MedecinController extends Controller
 {
     public function search(Request $request)
     {
-        // 1. récupérer le terme
+        // Récupération du terme de recherche
         $terme = trim($request->q);
 
-        // sécurité : si vide
+        // Vérification si le champ est vide
         if (!$terme) {
             return back()->with('error', 'Veuillez saisir un terme de recherche');
         }
 
-        // 2. normaliser les espaces
+        // Normalisation des espaces
         $terme = preg_replace('/\s+/', ' ', $terme);
 
-        // 3. minuscule
+        // Conversion en minuscules
         $terme = strtolower($terme);
 
-        // 4. requête améliorée (PLUS FLEXIBLE)
+        // Recherche flexible
         $resultats = Medecin::whereRaw("
             LOWER(prenom) LIKE ?
             OR LOWER(nom) LIKE ?
@@ -36,17 +36,15 @@ class MedecinController extends Controller
             "%{$terme}%"
         ])->get();
 
-        // 5. détecter la page d’origine
+        // Détection de la page d'origine
         $page = $request->input('page', 'accueil');
 
-        // 6. retourner la bonne vue
+        // Retour vers la bonne vue
         if ($page === 'accueilutilisateur') {
-
             return view('accueilutilisateur', [
                 'resultats' => $resultats,
                 'terme' => $terme
             ]);
-
         }
 
         return view('accueil', [

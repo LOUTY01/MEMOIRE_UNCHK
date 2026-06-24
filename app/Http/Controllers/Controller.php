@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
-abstract class Controller
+class AproposController extends Controller
 {
-    //
+    public function index()
+    {
+        return view('apropos');
+    }
 }
