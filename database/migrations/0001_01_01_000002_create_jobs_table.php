@@ -38,7 +38,7 @@ return new class extends Migration
             $table->id();
             $table->string('uuid')->unique();
 
-            // 🔥 IMPORTANT: réduction longueur index (fix erreur 1071)
+            // Réduction de la longueur pour éviter l'erreur MySQL 1071
             $table->string('connection', 100);
             $table->string('queue', 100);
 
@@ -46,7 +46,6 @@ return new class extends Migration
             $table->longText('exception');
             $table->timestamp('failed_at')->useCurrent();
 
-            // ❌ on enlève l’index problématique
             $table->index(['connection', 'queue']);
         });
     }
