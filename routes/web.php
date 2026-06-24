@@ -18,7 +18,7 @@ use App\Http\Controllers\AccueilUtilisateurController;
 */
 
 Route::get('/', fn () => view('accueil'))->name('accueil');
-Route::get('/services', fn () => view('services'))->name('services');
+//Route::get('/services', fn () => view('services'))->name('services');
 Route::get('/service', fn () => view('service'))->name('service');
 Route::get('/propos', fn () => view('propos'))->name('propos');
 Route::get('/rendez-vous', fn () => view('rendezvous'))->name('rendezvous');
