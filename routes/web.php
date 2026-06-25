@@ -19,7 +19,7 @@ use App\Http\Controllers\AccueilUtilisateurController;
 
 Route::get('/', fn () => view('accueil'))->name('accueil');
 
-Route::get('/services', fn () => view('service'))->name('services');
+Route::get('/service', fn () => view('service'))->name('service');
 
 Route::get('/propos', fn () => view('propos'))->name('propos');
 
@@ -138,7 +138,6 @@ Route::get('/email/verify/{id}/{hash}', function (
     $id,
     $hash
 ) {
-
     $user = \App\Models\User::findOrFail($id);
 
     if (!hash_equals(
@@ -159,9 +158,7 @@ Route::get('/email/verify/{id}/{hash}', function (
 
 })->name('verification.verify');
 
-Route::post('/email/verification-notification', function (
-    Request $request
-) {
+Route::post('/email/verification-notification', function (Request $request) {
 
     $request->user()->sendEmailVerificationNotification();
 
@@ -191,10 +188,8 @@ Route::get('/recherche-medecin', [MedecinController::class, 'index'])
 
 Route::middleware(['auth', 'verified'])->group(function () {
 
-    Route::get(
-        '/accueil-utilisateur',
-        [AccueilUtilisateurController::class, 'index']
-    )->name('accueil.utilisateur');
+    Route::get('/accueil-utilisateur', [AccueilUtilisateurController::class, 'index'])
+        ->name('accueil.utilisateur');
 
 });
 
@@ -211,13 +206,9 @@ Route::get('/auth/google/callback', [GoogleController::class, 'callback']);
 
 /*
 |--------------------------------------------------------------------------
-| ROUTES AJOUTÉES DEPUIS APROPOS
+| ROUTES SUPPLÉMENTAIRES
 |--------------------------------------------------------------------------
 */
-
-Route::get('/propos-nouveau', function () {
-    return view('propos');
-})->name('propos-nouveau');
 
 Route::get('/test-nouveau', function () {
     return "<h1>SI TU VOIS CECI, C'EST QUE LE SERVEUR EST BIEN CONNECTÉ</h1>";
