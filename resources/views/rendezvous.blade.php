@@ -1,323 +1,157 @@
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Prise de rendez-vous - Sama Santé</title>
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-
-    <style>
-
-        body {
-            background: #f5f7fb;
-            font-family: 'Segoe UI', sans-serif;
-        }
-
-        /* NAVBAR */
-        .navbar {
-            background: white;
-            box-shadow: 0 2px 15px rgba(0,0,0,.08);
-        }
-
-        .logo {
-            color: #1294e7;
-            font-weight: 700;
-        }
-
-        .nav-link {
-            color: #222;
-            font-size: 14px;
-        }
-
-        .nav-link.active {
-            color: #1294e7 !important;
-            font-weight: 600;
-        }
-
-        /* HERO */
-        .hero {
-            height: 600px;
-            background: linear-gradient(rgba(255,255,255,.2), rgba(255,255,255,.2)),
-                        url('{{ asset("images/rendezvous.jpg") }}');
-            background-size: cover;
-            background-position: center;
-            border-bottom-left-radius: 100px;
-            display: flex;
-            align-items: center;
-        }
-
-        .hero-card {
-            background: rgba(255,255,255,.85);
-            backdrop-filter: blur(10px);
-            padding: 35px;
-            border-radius: 20px;
-            max-width: 500px;
-        }
-
-        .hero-card h1 {
-            font-size: 40px;
-            font-weight: 800;
-        }
-
-        .hero-card span {
-            color: #1294e7;
-        }
-
-        .btn-main {
-            background: #1294e7;
-            color: white;
-            border: none;
-            padding: 10px 25px;
-            border-radius: 10px;
-        }
-
-        /* FORM */
-        .booking-card {
-            background: white;
-            border-radius: 20px;
-            padding: 30px;
-            margin-top: 30px;
-            box-shadow: 0 3px 20px rgba(0,0,0,.05);
-        }
-
-        .doctor-card {
-            display: flex;
-            gap: 15px;
-            background: #eef7ff;
-            padding: 12px;
-            border-radius: 12px;
-            margin-top: 10px;
-            cursor: pointer;
-        }
-
-        .doctor-card img {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-
-        .time-btn {
-            width: 100%;
-            padding: 10px;
-            border: none;
-            border-radius: 10px;
-            background: #eef2f7;
-        }
-
-        .time-btn:hover {
-            background: #1294e7;
-            color: white;
-        }
-
-        .pay-btn {
-            background: #1294e7;
-            color: white;
-            border: none;
-            width: 100%;
-            padding: 12px;
-            border-radius: 10px;
-        }
-
-        .payment-card {
-            background: white;
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 3px 15px rgba(0,0,0,.05);
-        }
-
-        footer {
-            background: linear-gradient(135deg,#0077d7,#12a0ff);
-            color: white;
-            padding: 60px 0 20px;
-            margin-top: 50px;
-        }
-
-        footer i {
-            background: white;
-            color: #1294e7;
-            padding: 10px;
-            border-radius: 50%;
-            margin-right: 8px;
-        }
-
-    </style>
-
+  <script src="https://cdn.tailwindcss.com"></script>
+  <title>Sama Santé - RDV</title>
 </head>
+<body class="bg-gray-50">
 
-<body>
-
-<!-- NAVBAR -->
-<nav class="navbar navbar-expand-lg">
-    <div class="container">
-
-        <a class="navbar-brand logo" href="#">
-            <i class="fa-solid fa-shield-heart"></i>
-            Sama Santé
-        </a>
-
-        <ul class="navbar-nav mx-auto">
-            <li class="nav-item"><a class="nav-link" href="/">Accueil</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">Services</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">À propos</a></li>
-            <li class="nav-item"><a class="nav-link active" href="#">Rendez-vous</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
-        </ul>
-
+  <!-- 1. NAVBAR -->
+  <nav class="bg-white shadow-sm sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+      <div class="text-blue-600 font-bold text-xl">Sama Santé</div>
+      <div class="hidden md:flex gap-6 text-sm">
+        <a href="#">Accueil</a>
+        <a href="#">Services</a>
+        <a href="#" class="text-blue-600 font-semibold">Prendre RDV</a>
+        <a href="#">Contact</a>
+      </div>
+      <div class="w-8 h-8 bg-gray-300 rounded-full"></div>
     </div>
-</nav>
+  </nav>
 
-<!-- HERO -->
-<section class="hero">
-    <div class="container">
-        <div class="hero-card">
-
-            <h1>
-                Réservez votre consultation
-                <span>en quelques minutes</span>
-            </h1>
-
-            <p>
-                Choisissez votre service, sélectionnez un médecin et confirmez votre rendez-vous facilement.
-            </p>
-
-            <button class="btn-main">
-                En savoir plus
-            </button>
-
-        </div>
+  <!-- 2. HERO + FORMULAIRE -->
+  <section class="max-w-7xl mx-auto px-4 py-12 grid md:grid-cols-2 gap-8">
+    <div>
+      <h1 class="text-4xl font-bold">Réservez votre consultation <span class="text-blue-500">en quelques minutes</span></h1>
+      <p class="text-gray-600 mt-4">Choisissez votre service, payez en ligne via Orange Money et suivez votre position dans la file d'attente en temps réel.</p>
+      <button class="mt-6 bg-blue-500 text-white px-6 py-3 rounded-lg">En savoir plus</button>
     </div>
-</section>
+    <img src="homme-telephone.jpg" alt="RDV" class="rounded-2xl object-cover">
+  </section>
 
-<!-- FORMULAIRE -->
-<div class="container">
-
-    <div class="booking-card">
-
-        <h3 class="text-center fw-bold mb-4">Finaliser votre rendez-vous</h3>
-
-        <form method="POST" action="/rendez-vous">
-            @csrf
-
-            <label>Service</label>
-            <select class="form-select mb-3" name="service">
-                <option>Consultation générale</option>
-                <option>Pédiatrie</option>
-                <option>Cardiologie</option>
-                <option>Dermatologie</option>
-            </select>
-
-            <label>Médecins disponibles</label>
-
-            <div class="doctor-card">
-                <img src="https://i.pravatar.cc/60?u=1">
-                <div>
-                    <strong>Dr. Moustapha Diop</strong><br>
-                    Cardiologue
-                </div>
-            </div>
-
-            <div class="doctor-card">
-                <img src="https://i.pravatar.cc/60?u=2">
-                <div>
-                    <strong>Dr. Awa Seck</strong><br>
-                    Pédiatre
-                </div>
-            </div>
-
-            <div class="row mt-4">
-
-                <div class="col-md-6 mb-3">
-                    <input class="form-control" name="nom" placeholder="Nom complet" required>
-                </div>
-
-                <div class="col-md-6 mb-3">
-                    <input class="form-control" name="telephone" placeholder="Téléphone" required>
-                </div>
-
-                <div class="col-md-6 mb-3">
-                    <input type="date" class="form-control" name="date" required>
-                </div>
-
-                <div class="col-md-6 mb-3">
-                    <input type="time" class="form-control" name="heure" required>
-                </div>
-
-            </div>
-
-            <div class="payment-card mt-4">
-
-                <h5>Méthode de paiement</h5>
-
-                <label><input type="radio" name="paiement" value="wave" checked> Wave</label>
-                <label class="ms-3"><input type="radio" name="paiement" value="orange"> Orange Money</label>
-
-            </div>
-
-            <div class="payment-card mt-3">
-
-                <div class="d-flex justify-content-between">
-                    <span>Consultation</span>
-                    <span>10.000 FCFA</span>
-                </div>
-
-                <div class="d-flex justify-content-between">
-                    <span>Frais</span>
-                    <span>500 FCFA</span>
-                </div>
-
-                <hr>
-
-                <div class="d-flex justify-content-between fw-bold">
-                    <span>Total</span>
-                    <span style="color:#1294e7;">10.500 FCFA</span>
-                </div>
-
-                <button class="pay-btn mt-3" type="submit">
-                    Payer maintenant
-                </button>
-
-            </div>
-
-        </form>
-
-    </div>
-
-</div>
-
-<!-- FOOTER -->
-<footer>
-    <div class="container">
-
-        <div class="row">
-
-            <div class="col-lg-4">
-                <h4>Sama Santé</h4>
-                <p>Plateforme de réservation médicale intelligente au Sénégal.</p>
-            </div>
-
-            <div class="col-lg-4">
-                <h5>Navigation</h5>
-                <p>Accueil</p>
-                <p>Services</p>
-                <p>Rendez-vous</p>
-            </div>
-
-            <div class="col-lg-4">
-                <h5>Contact</h5>
-                <i class="fab fa-facebook"></i>
-                <i class="fab fa-instagram"></i>
-                <i class="fab fa-linkedin"></i>
-            </div>
-
+  <!-- 3. FINALISEZ VOTRE RESERVATION - FORM -->
+  <section class="max-w-7xl mx-auto px-4 py-8">
+    <h2 class="text-2xl font-bold text-center mb-8">Finalisez votre réservation</h2>
+    
+    <div class="grid md:grid-cols-2 gap-8">
+      <!-- Colonne gauche : Service + Médecin + Patient -->
+      <div class="bg-white p-6 rounded-xl shadow">
+        <h3 class="font-semibold mb-4">1. Quel service recherchez-vous?</h3>
+        <select class="w-full border rounded-lg p-3 mb-4">
+          <option>Consultation générale</option>
+        </select>
+        
+        <h3 class="font-semibold mb-4">Choisissez un médecin</h3>
+        <div class="flex items-center gap-3 p-3 border rounded-lg mb-2">
+          <img src="doctor1.jpg" class="w-12 h-12 rounded-full">
+          <div>
+            <p class="font-semibold">Dr. Mouhamadou Ndiaye</p>
+            <p class="text-sm text-gray-500">Médecine générale</p>
+          </div>
         </div>
 
+        <h3 class="font-semibold mt-6 mb-4">Informations du patient</h3>
+        <input placeholder="Nom complet" class="w-full border rounded-lg p-3 mb-3">
+        <input placeholder="Motif de consultation" class="w-full border rounded-lg p-3">
+      </div>
+
+      <!-- Colonne droite : Calendrier + Paiement -->
+      <div class="bg-white p-6 rounded-xl shadow">
+        <h3 class="font-semibold mb-4">Choisissez une date</h3>
+        <!-- Calendrier simplifié -->
+        <div class="grid grid-cols-7 gap-2 text-center text-sm">
+          <button class="p-2 rounded hover:bg-blue-100">1</button>
+          <button class="p-2 rounded bg-blue-500 text-white">2</button>
+          <button class="p-2 rounded hover:bg-blue-100">3</button>
+        </div>
+
+        <h3 class="font-semibold mt-6 mb-4">Méthode de paiement</h3>
+        <div class="flex gap-4">
+          <label class="flex items-center gap-2 border p-3 rounded-lg cursor-pointer">
+            <input type="radio" name="pay" checked> Wave
+          </label>
+          <label class="flex items-center gap-2 border p-3 rounded-lg cursor-pointer">
+            <input type="radio" name="pay"> Orange Money
+          </label>
+        </div>
+
+        <div class="mt-6 p-4 bg-gray-50 rounded-lg">
+          <div class="flex justify-between text-sm">
+            <span>Consultation</span><span>10,000 FCFA</span>
+          </div>
+          <div class="flex justify-between font-bold mt-2">
+            <span>Total</span><span>10,000 FCFA</span>
+          </div>
+          <button class="w-full bg-blue-500 text-white py-3 rounded-lg mt-4">Payer maintenant</button>
+        </div>
+      </div>
     </div>
-</footer>
+  </section>
+
+  <!-- 4. SUIVEZ VOTRE POSITION - LA PARTIE DE TA PHOTO 2 -->
+  <section class="bg-blue-50 py-12">
+    <div class="max-w-7xl mx-auto px-4">
+      <h2 class="text-2xl font-bold text-center mb-8">Suivez votre position en direct</h2>
+      
+      <div class="flex flex-col md:flex-row gap-6 items-start">
+        <!-- Ticket -->
+        <div class="bg-white rounded-2xl overflow-hidden shadow-lg w-full md:w-80">
+          <div class="bg-blue-500 text-white p-3">
+            <p class="text-xs">SAMA SANTE TICKET</p>
+            <p class="font-bold">Ticket de Consultation</p>
+          </div>
+          <div class="p-6 text-center">
+            <div class="w-32 h-32 bg-gray-200 rounded-lg mx-auto flex items-center justify-center">QR</div>
+            <p class="mt-4 font-semibold">Moussa Ndiaye</p>
+            <p class="text-blue-500 font-bold text-lg">#SAM-2049</p>
+            <div class="flex justify-between w-full mt-4 text-xs text-gray-500">
+              <div><p>DATE</p><p class="font-semibold text-black">12 Oct 2024</p></div>
+              <div class="text-right"><p>HEURE</p><p class="font-semibold text-black">14:30</p></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Infos file -->
+        <div class="flex-1">
+          <div class="grid grid-cols-2 gap-4 mb-4">
+            <div class="bg-white rounded-xl p-4 text-center">
+              <p class="text-3xl">👥</p>
+              <p class="text-xs text-gray-500">Position actuelle</p>
+              <p class="text-3xl font-bold text-blue-500">#12</p>
+            </div>
+            <div class="bg-white rounded-xl p-4 text-center">
+              <p class="text-3xl">⏱️</p>
+              <p class="text-xs text-gray-500">Temps estimé</p>
+              <p class="text-3xl font-bold text-blue-500">18 min</p>
+            </div>
+          </div>
+          
+          <div class="bg-white rounded-xl p-4">
+            <div class="flex justify-between items-center mb-2">
+              <p class="font-semibold">Progression de la file</p>
+              <button class="text-xs bg-blue-500 text-white px-3 py-1 rounded-full">Actualiser</button>
+            </div>
+            <div class="w-full bg-gray-200 rounded-full h-2">
+              <div class="bg-blue-500 h-2 rounded-full w-3/5"></div>
+            </div>
+          </div>
+          
+          <div class="flex gap-3 mt-4">
+            <button class="flex-1 bg-gray-200 py-3 rounded-lg text-sm">🔔 M'alerter par SMS</button>
+            <button class="flex-1 bg-gray-200 py-3 rounded-lg text-sm">↗️ Partager mon ticket</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. POURQUOI CHOISIR + 6. TÉMOIGNAGES + FOOTER -->
+  <!-- Tu copies la même logique avec grid md:grid-cols-4 -->
+  
+  <footer class="bg-blue-600 text-white py-8 mt-12">
+    <div class="max-w-7xl mx-auto px-4 text-center">© 2024 Sama Santé</div>
+  </footer>
 
 </body>
 </html>
