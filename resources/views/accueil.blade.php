@@ -469,6 +469,9 @@ font-size:18px;
 </head>
 
 <body>
+    <h1 style="color:red">
+JE SUIS service.blade.php
+</h1>
 
 <!-- NAVBAR -->
 
