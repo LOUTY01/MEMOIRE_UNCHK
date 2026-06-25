@@ -77,6 +77,89 @@ border:none;
 font-size:13px;
 }
 
+
+<section class="cta-section">
+        <div class="cta-box">
+            <h2>Prêt à transformer votre parcours de santé ?</h2>
+            <p>
+                Prenez rendez-vous rapidement et sans attente avec les meilleurs spécialistes
+                de la région.
+            </p>
+
+            <div class="cta-buttons">
+                <a href="#" class="btn btn-light">Prendre rendez-vous</a>
+                <a href="#" class="btn btn-outline">Nous contacter</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="pied-page">
+        <div class="contenue-pied">
+
+            <div class="colonne-pied">
+                <div class="logo">
+                    <i class="fa-solid fa-heart-pulse"></i>
+                    <span>Sama Santé</span>
+                </div>
+
+                <p>
+                    Sama Santé est une plateforme de gestion de files d'attente
+                    et de rendez-vous médicaux en ligne au Sénégal.
+                </p>
+            </div>
+
+            <div class="colonne-pied">
+                <h4>Navigation</h4>
+                <ul>
+                    <li><a href="#">Accueil</a></li>
+                    <li><a href="#">Services</a></li>
+                    <li><a href="#">Rendez-vous</a></li>
+                    <li><a href="#">À propos</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+
+            <div class="colonne-pied">
+                <h4>Services</h4>
+                <ul>
+                    <li><a href="#">Consultation générale</a></li>
+                    <li><a href="#">Prise de rendez-vous</a></li>
+                    <li><a href="#">Achat de ticket</a></li>
+                    <li><a href="#">Suivi de file</a></li>
+                    <li><a href="#">Services d'urgence</a></li>
+                </ul>
+            </div>
+
+            <div class="colonne-pied">
+                <h4>Contact</h4>
+
+                <p><i class="fa-solid fa-phone"></i> +221 77 123 45 67</p>
+                <p><i class="fa-regular fa-envelope"></i> contact@samasante.sn</p>
+                <p><i class="fa-solid fa-location-dot"></i> Dakar, Sénégal</p>
+
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="footer-bottom">
+            © 2025 Sama Santé. Tous droits réservés.
+        </div>
+    </footer>
+</body>
+</html>
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
 .btn-login{
 border:1px solid #1c8adb;
 color:#1c8adb;
@@ -96,7 +179,6 @@ text-decoration:none;
 font-size:14px;
 font-weight:600;
 }
-
 /* =======================
    HERO
 ======================= */
