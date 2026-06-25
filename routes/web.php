@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Password;
 use App\Http\Controllers\MedecinController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\Auth\GoogleController;
+use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\AccueilUtilisateurController;
 
 /*
@@ -29,25 +29,15 @@ Route::get('/contact', fn () => view('contact'))->name('contact');
 
 /*
 |--------------------------------------------------------------------------
-| AUTH - VUES
+| AUTH
 |--------------------------------------------------------------------------
 */
 
 Route::get('/connexion', fn () => view('connexion'))->name('login');
-
 Route::get('/inscription', fn () => view('inscription'))->name('register');
 
-/*
-|--------------------------------------------------------------------------
-| AUTH - ACTIONS
-|--------------------------------------------------------------------------
-*/
-
-Route::post('/register', [RegisterController::class, 'store'])
-    ->name('register.store');
-
-Route::post('/login', [LoginController::class, 'login'])
-    ->name('login.post');
+Route::post('/register', [RegisterController::class, 'store'])->name('register.store');
+Route::post('/login', [LoginController::class, 'login'])->name('login.post');
 
 /*
 |--------------------------------------------------------------------------
@@ -56,14 +46,10 @@ Route::post('/login', [LoginController::class, 'login'])
 */
 
 Route::post('/logout', function (Request $request) {
-
     Auth::logout();
-
     $request->session()->invalidate();
     $request->session()->regenerateToken();
-
     return redirect()->route('login');
-
 })->name('logout');
 
 /*
@@ -77,18 +63,13 @@ Route::get('/mot-de-passe-oublie', fn () => view('auth.forgot-password'))
 
 Route::post('/mot-de-passe-oublie', function (Request $request) {
 
-    $request->validate([
-        'email' => 'required|email'
-    ]);
+    $request->validate(['email' => 'required|email']);
 
-    $status = Password::sendResetLink(
-        $request->only('email')
-    );
+    $status = Password::sendResetLink($request->only('email'));
 
     return $status === Password::RESET_LINK_SENT
         ? back()->with('success', 'Lien envoyé')
         : back()->withErrors(['email' => 'Email introuvable']);
-
 })->name('password.email');
 
 Route::get('/reset-password/{token}', fn ($token) =>
@@ -104,12 +85,7 @@ Route::post('/reset-password', function (Request $request) {
     ]);
 
     $status = Password::reset(
-        $request->only(
-            'email',
-            'password',
-            'password_confirmation',
-            'token'
-        ),
+        $request->only('email','password','password_confirmation','token'),
         function ($user, $password) {
             $user->password = bcrypt($password);
             $user->save();
@@ -117,10 +93,8 @@ Route::post('/reset-password', function (Request $request) {
     );
 
     return $status === Password::PASSWORD_RESET
-        ? redirect()->route('login')
-            ->with('success', 'Mot de passe modifié')
+        ? redirect()->route('login')->with('success', 'Mot de passe modifié')
         : back()->withErrors(['email' => 'Erreur']);
-
 })->name('password.update');
 
 /*
@@ -132,40 +106,6 @@ Route::post('/reset-password', function (Request $request) {
 Route::get('/email/verify', fn () => view('auth.verify-email'))
     ->middleware('auth')
     ->name('verification.notice');
-
-Route::get('/email/verify/{id}/{hash}', function (
-    Request $request,
-    $id,
-    $hash
-) {
-    $user = \App\Models\User::findOrFail($id);
-
-    if (!hash_equals(
-        (string) $hash,
-        sha1($user->getEmailForVerification())
-    )) {
-        abort(403);
-    }
-
-    if (!$user->email_verified_at) {
-        $user->email_verified_at = now();
-        $user->save();
-    }
-
-    Auth::login($user);
-
-    return redirect()->route('accueil.utilisateur');
-
-})->name('verification.verify');
-
-Route::post('/email/verification-notification', function (Request $request) {
-
-    $request->user()->sendEmailVerificationNotification();
-
-    return back()->with('success', 'Email envoyé');
-
-})->middleware(['auth', 'throttle:6,1'])
-  ->name('verification.send');
 
 /*
 |--------------------------------------------------------------------------
@@ -182,15 +122,13 @@ Route::get('/recherche-medecin', [MedecinController::class, 'index'])
 
 /*
 |--------------------------------------------------------------------------
-| PAGE UTILISATEUR
+| USER DASHBOARD
 |--------------------------------------------------------------------------
 */
 
 Route::middleware(['auth', 'verified'])->group(function () {
-
     Route::get('/accueil-utilisateur', [AccueilUtilisateurController::class, 'index'])
         ->name('accueil.utilisateur');
-
 });
 
 /*
@@ -203,13 +141,3 @@ Route::get('/auth/google', [GoogleController::class, 'redirect'])
     ->name('google.login');
 
 Route::get('/auth/google/callback', [GoogleController::class, 'callback']);
-
-/*
-|--------------------------------------------------------------------------
-| ROUTES SUPPLÉMENTAIRES
-|--------------------------------------------------------------------------
-*/
-
-Route::get('/test-nouveau', function () {
-    return "<h1>SI TU VOIS CECI, C'EST QUE LE SERVEUR EST BIEN CONNECTÉ</h1>";
-});

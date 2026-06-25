@@ -88,32 +88,50 @@
 <body>
 
     <nav class="navbar navbar-expand-lg sticky-top shadow-sm">
-        <div class="container">
-            <a class="navbar-brand fw-bold text-primary" href="#">
-                <i class="bi bi-heart-pulse-fill"></i> Sama Santé
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav mx-auto">
-                    <li class="nav-item"><a class="nav-link" href="#">Accueil</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Services</a></li>
-                    <li class="nav-item"><a class="nav-link active text-primary fw-bold" href="#">À propos</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Rendez-vous</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
-                </ul>
-                <div class="d-flex align-items-center">
-                    <div class="input-group me-3">
-                        <input type="text" class="form-control rounded-pill bg-light border-0" placeholder="Rechercher un médecin...">
-                        <button class="btn btn-light rounded-pill border-0 position-absolute inset-e-0 z-3"><i class="bi bi-search"></i></button>
-                    </div>
-                    <span class="me-2 fw-bold">FR</span>
-                    <img src="{{ asset('images/docteur.png') }}" class="rounded-circle" alt="User" width="40" height="40">
-                </div>
-            </div>
+    <div class="container">
+
+        <!-- LOGO -->
+        <a class="navbar-brand fw-bold text-primary" href="{{ route('accueil') }}">
+            <i class="bi bi-heart-pulse-fill"></i> Sama Santé
+        </a>
+
+        <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#nav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="nav">
+
+            <!-- MENU -->
+            <ul class="navbar-nav mx-auto">
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('accueil') }}">Accueil</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('service') }}">Services</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link active" href="{{ route('propos') }}">À propos</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('rendezvous') }}">Rendez-vous</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('contact') }}">Contact</a>
+                </li>
+
+            </ul>
+
+            
+
         </div>
-    </nav>
+    </div>
+</nav>
+
 
     <section class="hero-section">
         <div class="container">

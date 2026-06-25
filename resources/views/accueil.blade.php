@@ -464,6 +464,13 @@ font-size:18px;
     margin:auto;
     margin-top:20px;
 }
+.navbar-nav {
+    flex-wrap: nowrap;
+}
+
+.navbar-nav .nav-link {
+    white-space: nowrap;
+}
 </style>
 
 </head>
@@ -475,117 +482,61 @@ font-size:18px;
 
 <nav class="navbar navbar-expand-lg">
 
-<div class="container">
+<div class="container d-flex align-items-center flex-nowrap">
 
-<a class="logo" href="#">
-    <img src="{{ asset('images/logo.png') }}" alt="Sama Santé" class="logo-img">
-    Sama Santé
-</a>
-
-<button
-class="navbar-toggler"
-data-bs-toggle="collapse"
-data-bs-target="#menu">
-<span class="navbar-toggler-icon"></span>
-</button>
-
-<div class="collapse navbar-collapse" id="menu">
-
-<ul class="navbar-nav mx-auto">
-
-<li class="nav-item">
-<a class="nav-link" href="{{ route('accueil') }}">
-Accueil
-</a>
-</li>
-
-<li class="nav-item">
-    <a class="nav-link" href="{{ route('services') }}">
-        Services
+    <!-- LOGO -->
+    <a class="logo d-flex align-items-center me-4" href="#">
+        <img src="{{ asset('images/logo.png') }}" alt="Sama Santé" class="logo-img">
+        <span>Sama Santé</span>
     </a>
-</li>
 
-<li class="nav-item">
-<a class="nav-link" href="{{ route('propos') }}">
-À propos
-</a>
-</li>
-
-<li class="nav-item">
-<a class="nav-link" href="{{ route('rendezvous') }}">
-Rendez-vous
-</a>
-</li>
-
-<li class="nav-item">
-<a class="nav-link" href="{{ route('contact') }}">
-Contact
-</a>
-</li>
-
-</ul>
-
-<form method="GET" action="{{ route('medecins.search') }}" class="d-flex">
-    <input
-        type="text"
-        name="q"
-        class="search-box me-3"
-        placeholder="Rechercher un médecin ex:FATOU"
-        value="{{ $terme ?? '' }}"
-        required
-    >
-
-    <button type="submit" class="btn btn-primary">
-        Rechercher
+    <!-- TOGGLER -->
+    <button class="navbar-toggler" type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#menu">
+        <span class="navbar-toggler-icon"></span>
     </button>
-</form>
 
+    <!-- MENU -->
+    <div class="collapse navbar-collapse" id="menu">
 
-    @if(isset($resultats))
+        <!-- IMPORTANT: enlève mx-auto -->
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
-    @if(count($resultats) > 0)
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('accueil') }}">Accueil</a>
+            </li>
 
-        <div id="message-recherche" class="alert alert-success mt-3">
-            {{ count($resultats) }} médecin(s) trouvé(s).
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('service') }}">Services</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('propos') }}">À propos</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('rendezvous') }}">Rendez-vous</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('contact') }}">Contact</a>
+            </li>
+
+        </ul>
+
+        <!-- DROITE -->
+        <form method="GET" action="{{ route('medecins.search') }}" class="d-flex me-3">
+            <input type="text" name="q" class="search-box" placeholder="Rechercher un médecin">
+            <button class="btn btn-primary ms-2">OK</button>
+        </form>
+
+        <div class="d-flex align-items-center gap-2">
+            <a href="{{ route('login') }}" class="btn-login">Connexion</a>
+            <a href="{{ route('register') }}" class="btn-register">S'inscrire</a>
         </div>
 
-        @foreach($resultats as $medecin)
-            <div class="card mt-2 p-3">
-                <h5>
-                    {{ $medecin->prenom }} {{ $medecin->nom }}
-                </h5>
-
-                <p>
-                    {{ $medecin->specialite }}
-                    - {{ $medecin->age }} ans
-                </p>
-            </div>
-        @endforeach
-
-    @else
-
-        <div class="alert alert-warning mt-3">
-            Aucun médecin trouvé.
-        </div>
-
-    @endif
-
-@endif
-<div class="d-flex align-items-center gap-2">
-
-<a href="{{ route('login') }}" class="btn-login">
-Connexion
-</a>
-
-<a href="{{ route('register') }}" class="btn-register">
-S'inscrire
-</a>
-
-
-
-</div>
-
-</div>
+    </div>
 
 </div>
 
@@ -1228,7 +1179,7 @@ leur accès aux soins de santé au Sénégal.
 </a>
 
 <!-- Explorer -->
-<a href="{{ route('services') }}" class="btn btn-outline-light px-4 py-3">
+<a href="{{ route('service') }}" class="btn btn-outline-light px-4 py-3">
 Explorer la plateforme
 </a>
 
