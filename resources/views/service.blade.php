@@ -1,3 +1,14 @@
+h2>
+
+        <div class="steps">
+
+            <div class="step">
+                <div class="number">1</div>
+                <h3>Inscription</h3>
+                <p>Créez votre compte en 2 minutes avec votre numéro.</p>
+            </div>
+
+            <div class="line"></div>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -62,18 +73,7 @@
 <section class="how-it-works">
     <div class="container">
 
-        <h2>Comment ça marche ?</h2>
-
-        <div class="steps">
-
-            <div class="step">
-                <div class="number">1</div>
-                <h3>Inscription</h3>
-                <p>Créez votre compte en 2 minutes avec votre numéro.</p>
-            </div>
-
-            <div class="line"></div>
-
+        <h2>Comment ça marche ?</
             <div class="step">
                 <div class="number">2</div>
                 <h3>Recherche</h3>
