@@ -83,54 +83,157 @@
         .footer { background-color: #0b5ed7; color: white; }
         .footer a { color: rgba(255,255,255,0.8); text-decoration: none; }
         .footer a:hover { color: white; text-decoration: underline; }
+        header{
+height:70px;
+background:white;
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+padding:0 25px;
+
+border-radius:15px;
+}
+
+.logo{
+display:flex;
+align-items:center;
+gap:10px;
+}
+
+.logo i{
+color:#1688e8;
+font-size:22px;
+}
+
+.logo h2{
+color:#1688e8;
+font-size:22px;
+}
+
+nav{
+display:flex;
+gap:30px;
+}
+
+nav a{
+
+text-decoration:none;
+
+color:black;
+
+font-size:14px;
+}
+
+.active{
+color:#1688e8;
+
+border-bottom:2px solid #1688e8;
+
+padding-bottom:6px;
+}
+
+.menu-droite{
+
+display:flex;
+
+align-items:center;
+
+gap:15px;
+}
+
+
+
+.zone-recherche{
+
+display:flex;
+
+align-items:center;
+
+background:#f0f0f0;
+
+padding:8px 15px;
+
+gap:12px;
+
+border-radius:25px;
+}
+
+.zone-recherche input{
+
+border:none;
+
+outline:none;
+
+
+background:transparent;
+}
+
+.zone-recherche i{
+
+color:rgb(134, 98, 98);
+}
+
+.menu-droite img{
+
+width:35px;
+
+height:35px;
+
+border-radius:50%;
+}
     </style>
 </head>
 <body>
 
-    <nav class="navbar navbar-expand-lg sticky-top shadow-sm">
-    <div class="container">
+    <header>
 
-        <!-- LOGO -->
-        <a class="navbar-brand fw-bold text-primary" href="{{ route('accueil') }}">
-            <i class="bi bi-heart-pulse-fill"></i> Sama Santé
-        </a>
+    <div class="logo">
 
-        <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#nav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+        <i class="fas fa-heartbeat"></i>
 
-        <div class="collapse navbar-collapse" id="nav">
+        <h2>Sama Santé</h2>
 
-            <!-- MENU -->
-            <ul class="navbar-nav mx-auto">
+    </div>
 
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('accueil') }}">Accueil</a>
-                </li>
+    <nav>
 
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('service') }}">Services</a>
-                </li>
+        <a href="{{ route('accueil') }}">Accueil</a>
 
-                <li class="nav-item">
-                    <a class="nav-link active" href="{{ route('propos') }}">À propos</a>
-                </li>
+        <a class="active" href="{{ route('service') }}">Services</a>
 
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('rendezvous') }}">Rendez-vous</a>
-                </li>
+        <a href="{{ route('propos') }}">À propos</a>
 
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('contact') }}">Contact</a>
-                </li>
+        <a href="{{ route('rendezvous') }}">Rendez-vous</a>
 
-            </ul>
+        <a href="{{ route('contact') }}">Contact</a>
 
-            
+    </nav>
+
+    <div class="menu-droite">
+
+        <div class="zone-recherche">
+
+            <input type="text" placeholder="Rechercher un rendez-vous..........">
+
+            <i class="fa-solid fa-magnifying-glass"></i>
 
         </div>
+
+        <i class="fa-solid fa-bell"></i>
+
+        <a href="https://idap10.infinityfreeapp.com/">
+        <!-- <img src="https://i.pravatar.cc/50" alt="profil" > -->
+         <img src="{{ asset('images/homme.png') }}" >
+
+    </a>
+
     </div>
-</nav>
+
+</header>
 
 
     <section class="hero-section">
