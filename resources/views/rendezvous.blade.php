@@ -3,8 +3,13 @@
 <head>
   <script src="https://cdn.tailwindcss.com"></script>
   <title>Sama Santé - RDV</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 <body class="bg-gray-50">
+
 
   <!-- 1. NAVBAR -->
   <nav class="bg-white shadow-sm sticky top-0 z-50">
@@ -149,9 +154,569 @@
   <!-- 5. POURQUOI CHOISIR + 6. TÉMOIGNAGES + FOOTER -->
   <!-- Tu copies la même logique avec grid md:grid-cols-4 -->
   
-  <footer class="bg-blue-600 text-white py-8 mt-12">
-    <div class="max-w-7xl mx-auto px-4 text-center">© 2024 Sama Santé</div>
-  </footer>
+  <footer class="footer">
 
+<div class="container">
+
+<div class="row gy-4">
+
+<div class="col-lg-3">
+
+<h5 class="footer-title d-flex align-items-center gap-2">
+    <img src="{{ asset('images/icone-sama-sante.png') }}"
+         alt="Sama Santé"
+         width="30"
+         height="30">
+    Sama Santé
+</h5>
+
+<p>
+La plateforme qui révolutionne la gestion
+des rendez-vous médicaux au Sénégal.
+</p>
+
+</div>
+
+<div class="col-lg-3">
+
+<h5 class="footer-title">
+Navigation
+</h5>
+
+<ul class="footer-links">
+
+<li><a href="#">Accueil</a></li>
+
+<li><a href="#">Services</a></li>
+
+<li><a href="#">Rendez-vous</a></li>
+
+<li><a href="#">À propos</a></li>
+
+<li><a href="#">Contact</a></li>
+
+</ul>
+
+</div>
+
+<div class="col-lg-3">
+
+<h5 class="footer-title">
+Services
+</h5>
+
+<ul class="footer-links">
+
+<li>Consultation médicale</li>
+
+<li>Paiement sécurisé</li>
+
+<li>Réservation rapide</li>
+
+<li>Ticket QR Code</li>
+
+<li>Suivi d'attente</li>
+
+</ul>
+
+</div>
+
+<div class="col-lg-3">
+
+<h5 class="footer-title">
+Contact
+</h5>
+
+<p>📞 +221 77 123 45 67</p>
+
+<p>✉ contact@samasante.sn</p>
+
+<p>📍 Dakar, Sénégal</p>
+
+<div class="social-icons">
+
+<a href="#"><i class="bi bi-facebook"></i></a>
+
+<a href="#"><i class="bi bi-instagram"></i></a>
+
+<a href="#"><i class="bi bi-linkedin"></i></a>
+
+<a href="#"><i class="bi bi-twitter"></i></a>
+
+</div>
+
+</div>
+
+</div>
+
+<hr>
+
+<div class="text-center py-3">
+© 2026 Sama Santé - Tous droits réservés
+</div>
+
+</div>
+
+</footer>
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+font-family:'Segoe UI',sans-serif;
+background:#f7fbff;
+overflow-x:hidden;
+}
+
+/* NAVBAR */
+
+.navbar{
+background:#fff;
+height:75px;
+box-shadow:0 2px 15px rgba(0,0,0,.05);
+z-index:1000;
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    text-decoration:none;
+    color:#1c8adb;
+    font-size:22px; /* plus petit */
+    font-weight:700;
+    white-space:nowrap;
+    line-height:1;
+}
+
+.logo:hover{
+    color:#1c8adb;
+    text-decoration:none;
+}
+
+.logo-img{
+    width:40px;   /* réduit */
+    height:40px;
+    padding:6px;
+    background:#1c8adb;
+    border-radius:10px;
+    object-fit:contain;
+}
+.navbar-nav .nav-link{
+font-size:14px;
+color:#222;
+margin:0 10px;
+font-weight:500;
+}
+
+.navbar-nav .nav-link:hover{
+color:#1c8adb;
+}
+
+.search-box{
+width:250px;
+border-radius:30px;
+padding:8px 15px;
+background:#f5f7fb;
+border:none;
+font-size:13px;
+}
+
+.btn-login{
+border:1px solid #1c8adb;
+color:#1c8adb;
+padding:8px 20px;
+border-radius:10px;
+text-decoration:none;
+font-size:14px;
+font-weight:600;
+}
+
+.btn-register{
+background:#1c8adb;
+color:white;
+padding:8px 20px;
+border-radius:10px;
+text-decoration:none;
+font-size:14px;
+font-weight:600;
+}
+
+.avatar{
+width:35px;
+height:35px;
+border-radius:50%;
+object-fit:cover;
+}
+
+/* HERO */
+
+.hero{
+    position:relative;
+    min-height:90vh;
+    display:flex;
+    align-items:center;
+
+    background:url("{{ asset('images/doctors.png') }}") no-repeat center;
+    background-size:cover;
+}
+
+/* overlay presque invisible */
+.hero::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:rgba(255,255,255,0.08); /* presque rien */
+}
+
+/* contenu */
+.hero-content{
+    position:relative;
+    z-index:2;
+    max-width:600px;
+}
+
+/* carte ULTRA transparente */
+.hero-card{
+    background:rgba(255,255,255,0.10); /* très léger */
+    backdrop-filter:blur(3px);         /* flou très faible */
+    -webkit-backdrop-filter:blur(3px);
+
+    padding:55px;
+    border-radius:25px;
+}
+
+/* texte un peu plus contrasté pour rester lisible */
+.hero-title{
+    font-size:52px;
+    font-weight:800;
+    line-height:1.1;
+    color:#0b1220;
+}
+
+.hero-title span{
+    color:#1989d7;
+    display:block;
+}
+
+.hero-text{
+    margin-top:25px;
+    font-size:20px;
+    color:#111827;
+}
+
+.btn-hero{
+    display:inline-block;
+    margin-top:25px;
+    background:rgba(25,137,215,0.85);
+    color:white;
+    padding:14px 35px;
+    border-radius:10px;
+    text-decoration:none;
+    font-weight:600;
+}
+
+/* VAGUE */
+
+.wave{
+position:absolute;
+bottom:0;
+left:0;
+width:100%;
+height:170px;
+background:
+linear-gradient(
+90deg,
+#1c6b59,
+#8dc5ad,
+#e6ce6a
+);
+
+clip-path:polygon(
+0 70%,
+10% 60%,
+20% 75%,
+35% 50%,
+50% 80%,
+65% 45%,
+80% 65%,
+100% 50%,
+100% 100%,
+0 100%
+);
+
+opacity:.9;
+}
+
+.section{
+padding:100px 0;
+}
+
+.section-title{
+text-align:center;
+margin-bottom:60px;
+}
+
+.section-title h5{
+color:#1c8adb;
+font-weight:700;
+}
+
+.section-title h2{
+font-weight:800;
+font-size:42px;
+}
+.service-card{
+background:white;
+padding:35px;
+border-radius:20px;
+height:100%;
+box-shadow:0 5px 20px rgba(0,0,0,.05);
+transition:.3s;
+}
+
+.service-card:hover{
+transform:translateY(-5px);
+}
+
+.service-icon{
+width:55px;
+height:55px;
+background:#edf7ff;
+color:#1c8adb;
+border-radius:12px;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:22px;
+margin-bottom:20px;
+}
+
+.timeline-wrapper{
+position:relative;
+}
+
+.timeline-line{
+position:absolute;
+top:28px;
+left:10%;
+width:80%;
+height:3px;
+background:#1c8adb;
+z-index:0;
+}
+
+.step-circle{
+width:60px;
+height:60px;
+border-radius:50%;
+background:#dff0ff;
+color:#1c8adb;
+display:flex;
+align-items:center;
+justify-content:center;
+margin:auto;
+font-size:22px;
+position:relative;
+z-index:2;
+}
+
+.step-circle.active{
+background:#1c8adb;
+color:white;
+}
+
+.step p{
+font-size:13px;
+}
+
+.stat-box{
+background:white;
+padding:30px;
+border-radius:15px;
+text-align:center;
+box-shadow:0 5px 15px rgba(0,0,0,.05);
+}
+
+.stat-box h3{
+font-size:42px;
+font-weight:800;
+color:#1c8adb;
+}
+
+.stat-box span{
+font-size:12px;
+font-weight:700;
+letter-spacing:1px;
+}
+
+.advantage-box{
+background:#eaf6ff;
+padding:40px;
+border-radius:18px;
+height:100%;
+}
+
+.primary-box{
+background:#1989d7;
+color:white;
+}
+
+.adv-icon{
+font-size:28px;
+margin-bottom:20px;
+}
+.phone-img{
+width:280px;
+border-radius:35px;
+box-shadow:0 20px 40px rgba(0,0,0,.15);
+}
+
+.experience-title{
+font-size:50px;
+font-weight:800;
+margin-bottom:40px;
+}
+
+.feature-item{
+display:flex;
+gap:15px;
+margin-bottom:30px;
+}
+
+.feature-item i{
+font-size:22px;
+color:#1989d7;
+}
+
+.testimonial-section{
+background:#eef5fc;
+padding:100px 0;
+}
+
+.testimonial-card{
+background:white;
+padding:35px;
+border-radius:20px;
+height:100%;
+box-shadow:0 5px 15px rgba(0,0,0,.05);
+}
+
+.stars{
+color:#ffc107;
+font-size:18px;
+margin-bottom:20px;
+}
+
+.user-box{
+display:flex;
+align-items:center;
+gap:12px;
+margin-top:20px;
+}
+
+.user-box img{
+width:50px;
+height:50px;
+border-radius:50%;
+object-fit:cover;
+}
+
+.cta-box{
+background:linear-gradient(
+135deg,
+#0068b5,
+#2da8ff
+);
+padding:80px;
+border-radius:30px;
+color:white;
+box-shadow:0 15px 40px rgba(0,104,181,.25);
+}
+
+.footer{
+background:#0068b5;
+color:white;
+padding-top:70px;
+}
+
+.footer-title{
+font-weight:700;
+margin-bottom:20px;
+}
+
+.footer-links{
+list-style:none;
+padding:0;
+}
+
+.footer-links li{
+margin-bottom:10px;
+}
+
+.footer-links a{
+color:white;
+text-decoration:none;
+}
+
+.social-icons{
+display:flex;
+gap:15px;
+margin-top:15px;
+}
+
+.social-icons a{
+width:40px;
+height:40px;
+background:rgba(255,255,255,.15);
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+color:white;
+text-decoration:none;
+font-size:18px;
+}
+.search-box{
+    text-transform: uppercase;
+}
+.resultat-container{
+    width:100%;
+    display:flex;
+    justify-content:center;
+    margin-top:40px;
+}
+
+.resultat-box{
+    width:700px;
+}
+
+.resultat-card{
+    border:none;
+    border-radius:15px;
+    box-shadow:0 5px 20px rgba(0,0,0,.08);
+    margin-bottom:15px;
+}
+
+.resultat-card img{
+    width:120px;
+    height:120px;
+    object-fit:cover;
+    border-radius:50%;
+    margin:auto;
+    margin-top:20px;
+}
+.navbar-nav {
+    flex-wrap: nowrap;
+}
+
+.navbar-nav .nav-link {
+    white-space: nowrap;
+}
+</style>
 </body>
 </html>
