@@ -17,16 +17,6 @@ use App\Http\Controllers\AccueilUtilisateurController;
 |--------------------------------------------------------------------------
 */
 
-
-use App\Http\Controllers\ContactController;
-
-
-Route::get('/contact', [ContactController::class, 'index'])->name('contact.index');
-Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
-
-
-
-
 Route::get('/', fn () => view('accueil'))->name('accueil');
 
 Route::get('/service', fn () => view('service'))->name('service');
