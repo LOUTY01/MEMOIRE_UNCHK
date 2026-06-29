@@ -14,41 +14,38 @@ class LoginController extends Controller
         $credentials = $request->validate([
             'email' => 'required|email',
             'password' => 'required',
-        ], [
-            'email.required' => 'L’adresse e-mail est obligatoire.',
-            'email.email' => 'Veuillez saisir une adresse e-mail valide.',
-            'password.required' => 'Le mot de passe est obligatoire.',
         ]);
 
-        // 🔥 2. récupérer "se souvenir de moi"
-        $remember = $request->has('remember');
+        $remember = $request->boolean('remember');
 
-        // 3. Tentative connexion
+        // 2. Tentative connexion
         if (Auth::attempt($credentials, $remember)) {
 
-            // régénère session (sécurité)
             $request->session()->regenerate();
 
             $user = Auth::user();
 
-            // ❌ EMAIL NON VÉRIFIÉ
+            // ❌ NON VÉRIFIÉ
             if (!$user->hasVerifiedEmail()) {
 
                 Auth::logout();
 
-                // renvoi email vérification
+                // 🔥 IMPORTANT : recréer session propre
+                $request->session()->invalidate();
+                $request->session()->regenerateToken();
+
+                // renvoyer email de vérification
                 $user->sendEmailVerificationNotification();
 
                 return back()->withErrors([
-                    'email' => "Votre compte n'est pas vérifié. Un lien a été renvoyé par email."
+                    'email' => "Votre compte n'est pas vérifié. Un lien de vérification a été envoyé."
                 ]);
             }
 
-            // ✔️ Connexion réussie
+            // ✔️ OK
             return redirect()->route('accueil.utilisateur');
         }
 
-        // ❌ ERREUR LOGIN
         return back()->withErrors([
             'email' => 'Email ou mot de passe incorrect.'
         ])->withInput();

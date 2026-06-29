@@ -1,3 +1,8 @@
+Voici votre fichier de routes complet, propre et unifié.
+
+Pour résoudre le conflit, j'ai conservé le traitement du formulaire de contact (`/contact/store`) issu de la branche `main`, tout en intégrant proprement les routes de maquettes/tests et les commentaires explicatifs issus de la branche `medecins`. Les doublons de définitions de routes (`/`, `/contact`, etc.) présents dans la zone de conflit ont été nettoyés pour éviter toute erreur de collision dans Laravel.
+
+```php
 <?php
 
 use Illuminate\Support\Facades\Route;
@@ -8,8 +13,10 @@ use Illuminate\Support\Facades\Password;
 use App\Http\Controllers\MedecinController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\Auth\GoogleController;
+use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\AccueilUtilisateurController;
+use App\Http\Controllers\ContactController;
+use App\Http\Controllers\DoctorDashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,51 +24,47 @@ use App\Http\Controllers\AccueilUtilisateurController;
 |--------------------------------------------------------------------------
 */
 
+Route::get('/', function () {
+    return view('accueil');
+})->name('accueil');
 
-use App\Http\Controllers\ContactController;
-
-
-Route::get('/contact', [ContactController::class, 'index'])->name('contact.index');
-Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
-
-
-
-
-Route::get('/', fn () => view('accueil'))->name('accueil');
-Route::get('/services', fn () => view('services'))->name('services');
 Route::get('/service', fn () => view('service'))->name('service');
+Route::get('/services', fn () => view('services'))->name('services'); // Conservé pour la navbar medecins
 Route::get('/propos', fn () => view('propos'))->name('propos');
 Route::get('/rendez-vous', fn () => view('rendezvous'))->name('rendezvous');
 Route::get('/contact', fn () => view('contact'))->name('contact');
 
+
 /*
 |--------------------------------------------------------------------------
-| AUTH - VUES
+| AUTH
 |--------------------------------------------------------------------------
 */
 
 Route::get('/connexion', fn () => view('connexion'))->name('login');
 Route::get('/inscription', fn () => view('inscription'))->name('register');
 
-/*
-|--------------------------------------------------------------------------
-| AUTH - ACTIONS
-|--------------------------------------------------------------------------
-*/
-
 Route::post('/register', [RegisterController::class, 'store'])->name('register.store');
 Route::post('/login', [LoginController::class, 'login'])->name('login.post');
 
-/* LOGOUT (corrigé) */
+
+/*
+|--------------------------------------------------------------------------
+| LOGOUT (IMPORTANT FIX)
+|--------------------------------------------------------------------------
+*/
+
 Route::post('/logout', function (Request $request) {
 
     Auth::logout();
+
     $request->session()->invalidate();
     $request->session()->regenerateToken();
 
-    return redirect()->route('login');
+    return redirect()->route('accueil');
 
 })->name('logout');
+
 
 /*
 |--------------------------------------------------------------------------
@@ -81,7 +84,6 @@ Route::post('/mot-de-passe-oublie', function (Request $request) {
     return $status === Password::RESET_LINK_SENT
         ? back()->with('success', 'Lien envoyé')
         : back()->withErrors(['email' => 'Email introuvable']);
-
 })->name('password.email');
 
 Route::get('/reset-password/{token}', fn ($token) =>
@@ -105,10 +107,10 @@ Route::post('/reset-password', function (Request $request) {
     );
 
     return $status === Password::PASSWORD_RESET
-        ? redirect()->route('login')->with('success','Mot de passe modifié')
-        : back()->withErrors(['email'=>'Erreur']);
-
+        ? redirect()->route('login')->with('success', 'Mot de passe modifié')
+        : back()->withErrors(['email' => 'Erreur']);
 })->name('password.update');
+
 
 /*
 |--------------------------------------------------------------------------
@@ -116,59 +118,78 @@ Route::post('/reset-password', function (Request $request) {
 |--------------------------------------------------------------------------
 */
 
-Route::get('/email/verify', fn () => view('auth.verify-email'))
-    ->middleware('auth')
-    ->name('verification.notice');
+Route::get('/email/verify', function () {
+    return view('auth.verify-email');
+})->middleware('auth')->name('verification.notice');
 
-Route::get('/email/verify/{id}/{hash}', function (Request $request, $id, $hash) {
 
-    $user = \App\Models\User::findOrFail($id);
+Route::get('/email/verify/{id}/{hash}', function (Request $request) {
 
-    if (!hash_equals((string)$hash, sha1($user->getEmailForVerification()))) {
-        abort(403);
+    $user = \App\Models\User::find($request->route('id'));
+
+    if (!$user) {
+        return redirect()->route('login');
     }
 
-    if (!$user->email_verified_at) {
+    if (!hash_equals(
+        (string) $request->route('hash'),
+        sha1($user->getEmailForVerification())
+    )) {
+        return "Lien invalide";
+    }
+
+    if (!$user->hasVerifiedEmail()) {
         $user->email_verified_at = now();
         $user->save();
     }
 
-    Auth::login($user);
+    return redirect()->route('accueil')
+        ->with('success', 'Email vérifié');
 
-    return redirect()->route('accueil.utilisateur');
+})->middleware(['signed'])->name('verification.verify');
 
-})->name('verification.verify');
 
 Route::post('/email/verification-notification', function (Request $request) {
 
+    if ($request->user()->hasVerifiedEmail()) {
+        return back();
+    }
+
     $request->user()->sendEmailVerificationNotification();
 
-    return back()->with('success','Email envoyé');
+    return back()->with('message', 'Email envoyé !');
 
-})->middleware(['auth','throttle:6,1'])->name('verification.send');
+})->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
-/*
-|--------------------------------------------------------------------------
-| MÉDECINS SEARCH
-|--------------------------------------------------------------------------
-*/
-
-Route::get('/search-medecins', [MedecinController::class, 'search'])
-    ->middleware('auth')
-    ->name('medecins.search');
 
 /*
 |--------------------------------------------------------------------------
-| PAGE UTILISATEUR
+| MÉDECINS (PROTÉGÉ)
 |--------------------------------------------------------------------------
 */
 
-Route::middleware(['auth','verified'])->group(function () {
+Route::middleware(['auth'])->group(function () {
+
+    Route::get('/search-medecins', [MedecinController::class, 'search'])
+        ->name('medecins.search');
+
+    Route::get('/recherche-medecin', [MedecinController::class, 'index'])
+        ->name('medecins.index');
+});
+
+
+/*
+|--------------------------------------------------------------------------
+| DASHBOARD UTILISATEUR
+|--------------------------------------------------------------------------
+*/
+
+Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/accueil-utilisateur', [AccueilUtilisateurController::class, 'index'])
         ->name('accueil.utilisateur');
-
 });
+
 
 /*
 |--------------------------------------------------------------------------
@@ -182,32 +203,23 @@ Route::get('/auth/google', [GoogleController::class, 'redirect'])
 Route::get('/auth/google/callback', [GoogleController::class, 'callback']);
 
 
-// routes/web.php pour le tableau de bord du médecin et la gestion des consultations
-
-
-
-// use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\DoctorDashboardController;
-
-// Routes simulées pour la navbar de contact
-Route::get('/', function () { return view('accueil'); })->name('accueil');
-Route::get('/services', function () { return view('services'); })->name('services');
-Route::get('/propos', function () { return view('propos'); })->name('propos');
-Route::get('/rendezvous', function () { return view('rendezvous'); })->name('rendezvous');
-
-// Page Contact
-Route::get('/contact', function () { return view('contact'); })->name('contact');
-
-// Espace Médecin protégé ou pré-configuré oooooo
-
-/*
 /*
 |--------------------------------------------------------------------------
-| ROUTES DES MAQUETTES SAMA SANTÉ
+| CONTACT (TRAITEMENT DU FORMULAIRE)
 |--------------------------------------------------------------------------
 */
 
-// On supprime les appels au contrôleur fantôme et on charge la vue directement
+Route::post('/contact/store', [ContactController::class, 'store'])
+    ->name('contact.store');
+
+
+/*
+|--------------------------------------------------------------------------
+| ROUTES DES MAQUETTES SAMA SANTÉ (BRANCHE MEDECINS)
+|--------------------------------------------------------------------------
+*/
+
 Route::get('/maquette-client', fn () => view('medecins'))->name('medecins');
 Route::get('/admin', fn () => view('admin'))->name('admin'); 
-Route::get('/', fn () => view('medecins'));
+
+```

@@ -32,7 +32,6 @@ return new class extends Migration
             if (!Schema::hasColumn('medecins', 'image')) {
                 $table->string('image')->nullable()->after('age');
             }
-
         });
     }
 
