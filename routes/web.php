@@ -180,3 +180,34 @@ Route::get('/auth/google', [GoogleController::class, 'redirect'])
     ->name('google.login');
 
 Route::get('/auth/google/callback', [GoogleController::class, 'callback']);
+
+
+// routes/web.php pour le tableau de bord du médecin et la gestion des consultations
+
+
+
+// use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DoctorDashboardController;
+
+// Routes simulées pour la navbar de contact
+Route::get('/', function () { return view('accueil'); })->name('accueil');
+Route::get('/services', function () { return view('services'); })->name('services');
+Route::get('/propos', function () { return view('propos'); })->name('propos');
+Route::get('/rendezvous', function () { return view('rendezvous'); })->name('rendezvous');
+
+// Page Contact
+Route::get('/contact', function () { return view('contact'); })->name('contact');
+
+// Espace Médecin protégé ou pré-configuré oooooo
+
+/*
+/*
+|--------------------------------------------------------------------------
+| ROUTES DES MAQUETTES SAMA SANTÉ
+|--------------------------------------------------------------------------
+*/
+
+// On supprime les appels au contrôleur fantôme et on charge la vue directement
+Route::get('/maquette-client', fn () => view('landing'))->name('landing');
+Route::get('/admin', fn () => view('admin'))->name('admin'); 
+Route::get('/', fn () => view('landing'));

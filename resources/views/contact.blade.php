@@ -19,7 +19,7 @@
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             color: #333;
-            background: linear-gradient(to bottom, rgba(146,214,255,255), rgba(255,255,255,255));
+            background: linear-gradient(to bottom, rgba(146,214,255,0.2), rgba(255,255,255,0.2));
             
         }
 
@@ -34,38 +34,13 @@
         .hero-contact {
             background-image: url('images/image1.jpg');
             background-repeat: no-repeat;
-            /* background-size: cover; */
-            /* border-bottom-right-radius: 120px; */
             position: relative;
-            /* overflow: hidden; */
-            /* margin-bottom: 80px; */
             height: 200vh;
             width: 100%;
 
         }
         
-        /* .hero-contact::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            right: 0;
-            width: 50%;
-            height: 100%;
-            /* background-color: var(--light-blue); 
-            z-index: 0;
-            border-top-left-radius: 200px;
-        } */
-
-        /* .hero-img-container {
-            position: relative;
-            z-index: 1;
-        }
-
-        .hero-img-container img {
-            border-bottom-left-radius: 120px;
-            object-fit: cover;
-        } */
-            .hero-section {
+        .hero-section {
             background-image: url('images/image1.jpg');
             background-size: cover;
             background-position: center;
@@ -96,7 +71,7 @@
         }
         .card-custom:hover { transform: translateY(-5px); }
 
-        Form Controls
+        /* Form Controls */
         .form-control, .form-select {
             background-color: #f8f9fa;
             border: 1px solid #e9ecef;
@@ -151,8 +126,6 @@
             width: 100%;
             height: 100%;
             box-shadow: 0 5px 20px rgba(0,0,0,0.05);
-           
-            
         }
         .F h3{
             margin-left: 40px;
@@ -164,11 +137,9 @@
             height: 100%;
             text-align: center;
             margin-left: 60px;
-          
         }
 
         /* Footer */
-       /* Footer */
         .footer { background-color: #0b5ed7; color: white; }
         .footer a { color: rgba(255,255,255,0.8); text-decoration: none; }
         .footer a:hover { color: white; text-decoration: underline; }
@@ -209,15 +180,12 @@
         <div class="container">
             <div class="hero-content">
                 <h1 class="fw-bold mb-3"> Nous sommes à votre <span class="text-primary">écoute</span> à tout moment</h1>
-                <p class="mb-4 text-muted">Besoin d'aide pour une consultation, un paiement ou
-                une question médicale ? Notre équipe sénégalaise
-                est là pour vous accompagner 24h/24.</p>
+                <p class="mb-4 text-muted">Besoin d'aide pour une consultation, un paiement ou une question médicale ? Notre équipe sénégalaise est là pour vous accompagner 24h/24.</p>
                 <a href="#" class="btn btn-primary btn-lg rounded-pill px-4">En Savoir plus</a>
             </div>
         </div>
     </section>
 
-    <!-- Info Cards (Overlapping) -->
     <section class="container" style="margin-top: -100px; position: relative; z-index: 10;">
         <div class="row g-4 justify-content-center">
             <div class="col-md-2 col-6">
@@ -255,10 +223,8 @@
         </div>
     </section>
 
-    <!-- Main Contact Area (Form + Map) -->
     <section id="form-contact" class="container py-5 mt-4">
         <div class="row g-5">
-            <!-- Form -->
             <div class="col-lg-7">
                 <div class="card card-custom p-4 p-md-5">
                     <h3 class="text-primary fw-bold mb-4">Envoyez-nous un message</h3>
@@ -297,13 +263,10 @@
                 </div>
             </div>
 
-            <!-- Map & Emergency -->
             <div class="col-lg-5">
                 <div class="card card-custom overflow-hidden mb-4 p-0">
                     <div class="position-relative">
-                        <!-- Remplacer par l'image de la carte ou un iframe Google Maps -->
                         <img src="{{ asset('images/carte.jpg') }}" alt="Carte Dakar" class="img-fluid w-100" style="height: 250px; object-fit: cover;">
-                        
                     </div>
                 </div>
 
@@ -319,7 +282,6 @@
         </div>
     </section>
 
-    <!-- Support Rapide & Services -->
     <section class="container py-5 text-center">
         <h3 class="text-primary fw-bold mb-2">Support Rapide & Services</h3>
         <p class="text-muted mb-5">Trouvez rapidement une solution pour vos besoins et paiements.</p>
@@ -356,14 +318,12 @@
         </div>
     </section>
 
-    <!-- FAQ Section -->
     <section class="container py-5">
         <div class="row justify-content-center">
             <div class="col-lg-8 text-center">
                 <h3 class="text-primary fw-bold mb-5">Questions Fréquentes</h3>
                 
                 <div class="accordion text-start" id="faqAccordion">
-                    <!-- Question 1 -->
                     <div class="accordion-item">
                         <h2 class="accordion-header">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq1" aria-expanded="false" aria-controls="faq1">
@@ -377,7 +337,6 @@
                         </div>
                     </div>
                     
-                    <!-- Question 2 -->
                     <div class="accordion-item">
                         <h2 class="accordion-header">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2" aria-expanded="false" aria-controls="faq2">
@@ -391,7 +350,6 @@
                         </div>
                     </div>
                     
-                    <!-- Question 3 -->
                     <div class="accordion-item">
                         <h2 class="accordion-header">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3" aria-expanded="false" aria-controls="faq3">
@@ -409,11 +367,9 @@
         </div>
     </section>
 
-   <!-- Testimonials -->
     <section class="F py-5 " >
         <h3 class="text-primary fw-bold mb-4">Ils nous font confiance</h3>
         <div class="row g-4 Ff"  >
-            
             <div class="col-md-4">
                 <div class="card card-custom h-100 p-4">
                     <i class="bi bi-quote fs-1 text-primary opacity-25 position-absolute top-0 end-0 mt-2 me-3"></i>
@@ -455,7 +411,7 @@
             </div>
         </div>
     </section>
-    <!-- Bottom CTA -->
+    
     <section class="container py-5 mb-4">
         <div class="cta-section p-5 text-center shadow-lg mx-auto position-relative overflow-hidden" style="max-width: 900px;">
             <div class="position-relative z-1">
@@ -467,8 +423,8 @@
             </div>
         </div>
     </section>
-          <!-- footer  -->
-             <footer class="footer pt-5 pb-3 mt-5">
+    
+    <footer class="footer pt-5 pb-3 mt-5">
         <div class="container">
             <div class="row g-4 mb-4">
                 <div class="col-md-4">
@@ -510,8 +466,11 @@
                     </div>
                 </div>
             </div>
-            <div class="text-center pt-3 border-top border-light border-opacity-25 small">
+            <div class="text-center pt-3 border-top border-light border-opacity-25 small d-flex justify-content-between align-items-center flex-wrap gap-2">
                 <p class="mb-0">&copy; 2026 Sama Santé. Tous droits réservés.</p>
+                <a href="{{ route('landing') }}" class="btn btn-sm btn-light text-primary rounded-pill px-3 fw-bold shadow-sm">
+                    <i class="bi bi-person-badge-fill me-1"></i> Espace Médecins
+                </a>
             </div>
         </div>
     </footer>
