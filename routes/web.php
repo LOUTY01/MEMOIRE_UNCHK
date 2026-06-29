@@ -1,3 +1,8 @@
+Voici votre fichier de routes complet, propre et unifié.
+
+Pour résoudre le conflit, j'ai conservé le traitement du formulaire de contact (`/contact/store`) issu de la branche `main`, tout en intégrant proprement les routes de maquettes/tests et les commentaires explicatifs issus de la branche `medecins`. Les doublons de définitions de routes (`/`, `/contact`, etc.) présents dans la zone de conflit ont été nettoyés pour éviter toute erreur de collision dans Laravel.
+
+```php
 <?php
 
 use Illuminate\Support\Facades\Route;
@@ -11,6 +16,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\AccueilUtilisateurController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\DoctorDashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,6 +29,7 @@ Route::get('/', function () {
 })->name('accueil');
 
 Route::get('/service', fn () => view('service'))->name('service');
+Route::get('/services', fn () => view('services'))->name('services'); // Conservé pour la navbar medecins
 Route::get('/propos', fn () => view('propos'))->name('propos');
 Route::get('/rendez-vous', fn () => view('rendezvous'))->name('rendezvous');
 Route::get('/contact', fn () => view('contact'))->name('contact');
@@ -198,9 +205,21 @@ Route::get('/auth/google/callback', [GoogleController::class, 'callback']);
 
 /*
 |--------------------------------------------------------------------------
-| CONTACT
+| CONTACT (TRAITEMENT DU FORMULAIRE)
 |--------------------------------------------------------------------------
 */
 
 Route::post('/contact/store', [ContactController::class, 'store'])
     ->name('contact.store');
+
+
+/*
+|--------------------------------------------------------------------------
+| ROUTES DES MAQUETTES SAMA SANTÉ (BRANCHE MEDECINS)
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/maquette-client', fn () => view('medecins'))->name('medecins');
+Route::get('/admin', fn () => view('admin'))->name('admin'); 
+
+```
