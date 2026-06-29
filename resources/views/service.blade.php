@@ -287,8 +287,8 @@
             </p>
 
             <div class="cta-buttons">
-                <a href="#" class="btn btn-light">Prendre rendez-vous</a>
-                <a href="#" class="btn btn-outline">Nous contacter</a>
+                <a href="connexion" class="btn btn-light">Prendre rendez-vous</a>
+                <a href="contact" class="btn btn-outline">Nous contacter</a>
             </div>
         </div>
     </section>

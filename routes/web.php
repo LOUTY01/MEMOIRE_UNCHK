@@ -10,6 +10,8 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\AccueilUtilisateurController;
+use App\Http\Controllers\ContactController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -141,3 +143,6 @@ Route::get('/auth/google', [GoogleController::class, 'redirect'])
     ->name('google.login');
 
 Route::get('/auth/google/callback', [GoogleController::class, 'callback']);
+
+Route::post('/contact/store', [ContactController::class, 'store'])
+    ->name('contact.store');

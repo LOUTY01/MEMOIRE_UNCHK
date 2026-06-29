@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Soutenance;
 use Illuminate\Http\Request;
+use App\Models\Contact;
 
 class ContactController extends Controller
 {
@@ -20,20 +20,12 @@ class ContactController extends Controller
             'numero_telephone' => 'required|string|max:30',
             'profession'       => 'required|string|max:255',
             'message'          => 'required|string',
-        ], [
-            'nom_complet.required'      => 'Le nom complet est requis.',
-            'email.required'            => 'L\'email est requis.',
-            'email.email'               => 'L\'email doit être valide.',
-            'numero_telephone.required' => 'Le numéro de téléphone est requis.',
-            'profession.required'       => 'La profession est requise.',
-            'message.required'          => 'Le message est requis.',
         ]);
 
-        Soutenance::create($validated);
+        Contact::create($validated);
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Votre message a été envoyé avec succès !',
-        ]);
+        return redirect()
+            ->back()
+            ->with('success', 'Votre message a été envoyé avec succès.');
     }
 }

@@ -182,7 +182,7 @@ Sama Santé
 
 <ul class="navbar-nav mx-auto">
 <li class="nav-item"><a class="nav-link" href="{{ route('accueil.utilisateur') }}">Accueil</a></li>
-<li class="nav-item"><a class="nav-link" href="{{ route('services') }}">Services</a></li>
+<li class="nav-item"><a class="nav-link" href="{{ route('service') }}">Services</a></li>
 <li class="nav-item"><a class="nav-link" href="{{ route('propos') }}">À propos</a></li>
 <li class="nav-item"><a class="nav-link" href="{{ route('rendezvous') }}">Rendez-vous</a></li>
 <li class="nav-item"><a class="nav-link" href="{{ route('contact') }}">Contact</a></li>
