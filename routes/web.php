@@ -24,7 +24,9 @@ Route::get('/', function () {
 
 Route::get('/service', fn () => view('service'))->name('service');
 Route::get('/propos', fn () => view('propos'))->name('propos');
-Route::get('/rendez-vous', fn () => view('rendezvous'))->name('rendezvous');
+Route::get('/rendez-vous', function () {
+    return view('rendezvous');
+})->middleware('auth')->name('rendezvous');
 Route::get('/contact', fn () => view('contact'))->name('contact');
 
 
