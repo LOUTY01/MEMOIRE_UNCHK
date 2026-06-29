@@ -26,7 +26,11 @@
 
     <nav>
 
-        <a href="{{ route('accueil') }}">Accueil</a>
+        @auth
+    <a href="{{ route('accueil.utilisateur') }}">Accueil</a>
+@else
+    <a href="{{ route('accueil') }}">Accueil</a>
+@endauth
 
         <a class="active" href="{{ route('service') }}">Services</a>
 
@@ -40,23 +44,41 @@
 
     <div class="menu-droite">
 
-        <div class="zone-recherche">
+    <div class="zone-recherche">
 
-            <input type="text" placeholder="Rechercher un rendez-vous..........">
+        <input type="text" placeholder="Rechercher un rendez-vous..........">
 
-            <i class="fa-solid fa-magnifying-glass"></i>
-
-        </div>
-
-        <i class="fa-solid fa-bell"></i>
-
-        <a href="https://idap10.infinityfreeapp.com/">
-        <!-- <img src="https://i.pravatar.cc/50" alt="profil" > -->
-         <img src="{{ asset('images/homme.png') }}" >
-
-    </a>
+        <i class="fa-solid fa-magnifying-glass"></i>
 
     </div>
+
+    <i class="fa-solid fa-bell"></i>
+
+    <!-- PROFIL UTILISATEUR -->
+    @auth
+        <div style="display:flex; align-items:center; gap:10px;">
+
+            <!-- NOM UTILISATEUR -->
+            <span style="font-weight:bold; color:#1688e8;">
+                {{ Auth::user()->nom }}
+            </span>
+
+            <!-- IMAGE PROFIL -->
+            <a href="#">
+                <img src="{{ Auth::user()->photo
+                    ? asset('storage/'.Auth::user()->photo)
+                    : asset('images/homme.png') }}">
+            </a>
+
+        </div>
+    @else
+        <!-- SI PAS CONNECTÉ -->
+        <a href="{{ route('login') }}">
+            <img src="{{ asset('images/p1.png') }}">
+        </a>
+    @endauth
+
+</div>
 
 </header>
 

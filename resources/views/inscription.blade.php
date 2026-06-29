@@ -225,43 +225,62 @@
                 @endif
 
                 <!-- FORMULAIRE -->
-                <form method="POST" action="{{ route('register.store') }}">
-                    @csrf
+                <!-- FORMULAIRE -->
+<form method="POST" action="{{ route('register.store') }}">
+    @csrf
 
-                    <div class="row">
+    <div class="row">
 
-                        <div class="col-md-6 mb-3">
-                            <input type="text" name="nom" class="form-control" placeholder="Nom complet" required>
-                        </div>
+        <div class="col-md-6 mb-3">
+            <input type="text" name="nom" class="form-control" placeholder="Nom complet" required>
+        </div>
 
-                        <div class="col-md-6 mb-3">
-                            <input type="email" name="email" class="form-control" placeholder="Email" required>
-                        </div>
+        <div class="col-md-6 mb-3">
+            <input type="email" name="email" class="form-control" placeholder="Email" required>
+        </div>
 
-                        <div class="col-md-6 mb-3">
-                            <input type="text" name="telephone" class="form-control" placeholder="Téléphone" required>
-                        </div>
+        <div class="col-md-6 mb-3">
+            <input type="text" name="telephone" class="form-control" placeholder="Téléphone" required>
+        </div>
 
-                        <div class="col-md-6 mb-3">
-                            <input type="date" name="date_naissance" class="form-control" required>
-                        </div>
+        <div class="col-md-6 mb-3">
+            <input type="date" name="date_naissance" class="form-control" required>
+        </div>
 
-                        <div class="col-md-6 mb-3">
-                            <input type="password" name="password" class="form-control" placeholder="Mot de passe" required>
-                        </div>
+        <div class="col-md-6 mb-3">
+            <select name="sexe" class="form-control" required>
+                <option value="">-- Sélectionnez le sexe --</option>
+                <option value="homme">Homme</option>
+                <option value="femme">Femme</option>
+            </select>
+        </div>
 
-                        <div class="col-md-6 mb-3">
-                            <input type="password" name="password_confirmation" class="form-control" placeholder="Confirmer" required>
-                        </div>
+        <!-- PASSWORD AVEC TOGGLE -->
+        <div class="col-md-6 mb-3">
+            <div class="input-group">
+                <input type="password" id="password" name="password" class="form-control" placeholder="Mot de passe" required>
+                <span class="input-group-text" onclick="togglePassword('password', this)" style="cursor:pointer;">
+                    <i class="fa fa-eye"></i>
+                </span>
+            </div>
+        </div>
 
-                    </div>
+        <!-- CONFIRM PASSWORD AVEC TOGGLE -->
+        <div class="col-md-6 mb-3">
+            <div class="input-group">
+                <input type="password" id="password_confirmation" name="password_confirmation" class="form-control" placeholder="Confirmer" required>
+                <span class="input-group-text" onclick="togglePassword('password_confirmation', this)" style="cursor:pointer;">
+                    <i class="fa fa-eye"></i>
+                </span>
+            </div>
+        </div>
 
-                    <button type="submit" class="btn-register">
-                        Créer mon compte
-                    </button>
+    </div>
 
-                </form>
-
+    <button type="submit" class="btn-register">
+        Créer mon compte
+    </button>
+</form>
                 <!-- SOCIAL -->
                 <div class="separator">Ou continuer avec</div>
 
@@ -284,4 +303,20 @@
 </div>
 
 </body>
+<script>
+function togglePassword(fieldId, icon) {
+    let input = document.getElementById(fieldId);
+    let iconTag = icon.querySelector("i");
+
+    if (input.type === "password") {
+        input.type = "text";
+        iconTag.classList.remove("fa-eye");
+        iconTag.classList.add("fa-eye-slash");
+    } else {
+        input.type = "password";
+        iconTag.classList.remove("fa-eye-slash");
+        iconTag.classList.add("fa-eye");
+    }
+}
+</script>
 </html>
