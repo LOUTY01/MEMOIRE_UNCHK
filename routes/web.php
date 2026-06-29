@@ -208,6 +208,6 @@ Route::get('/contact', function () { return view('contact'); })->name('contact')
 */
 
 // On supprime les appels au contrôleur fantôme et on charge la vue directement
-Route::get('/maquette-client', fn () => view('landing'))->name('landing');
+Route::get('/maquette-client', fn () => view('medecins'))->name('medecins');
 Route::get('/admin', fn () => view('admin'))->name('admin'); 
-Route::get('/', fn () => view('landing'));
+Route::get('/', fn () => view('medecins'));

@@ -8,7 +8,7 @@ class SamaSanteController extends Controller
 {
     public function index()
     {
-        return view('landing');
+        return view('medecins');
     }
 
     public function admin()
