@@ -138,8 +138,9 @@
             <div>
 
                 <h4>Admin Principal</h4>
+        
 
-                <p>admin@samasante.com</p>
+                <p>admin@samasante.com </p>
 
             </div>
 
@@ -491,7 +492,7 @@
 
                     <div class="doctor-card">
 
-                        <img src="https://i.pravatar.cc/100?img=31">
+                        <img src="{{ asset('images/cardio.png') }}">
 
                         <div class="doctor-info">
 
@@ -517,7 +518,7 @@
 
                     <div class="doctor-card">
 
-                        <img src="https://i.pravatar.cc/100?img=33">
+                        <img src="{{ asset('images/pedia.png') }}">
 
                         <div class="doctor-info">
 
@@ -1339,6 +1340,85 @@ table td{
         height:180px;
     }
 
+}
+
+
+
+/* =========================
+   RESPONSIVE MOBILE
+========================= */
+
+@media screen and (max-width: 768px) {
+
+    .dashboard {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        height: auto;
+        border-right: none;
+        border-bottom: 1px solid #e5e7eb;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        background: white;
+        
+    }
+
+    .menu {
+        display: flex;
+        flex-direction: row;
+        overflow-x: auto;
+        gap: 10px;
+        padding: 10px;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .menu li {
+        margin-bottom: 0;
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+
+    /* CONTENU PRINCIPAL */
+    .main-content {
+        width: 100%;
+        padding: 10px;
+    }
+
+    /* CARTES DASHBOARD */
+    .cards {
+        grid-template-columns: 1fr !important;
+    }
+
+    /* CHART */
+    .chart-card {
+        height: 250px;
+    }
+}
+
+
+
+@media screen and (max-width: 1024px) {
+
+    .cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .sidebar {
+        width: 200px;
+    }
+}
+
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    overflow-x: hidden;
 }
 
 </style>
