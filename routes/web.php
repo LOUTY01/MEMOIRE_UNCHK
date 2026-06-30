@@ -27,6 +27,8 @@ Route::get('/rendez-vous', fn () => view('rendezvous'))->name('rendezvous');
 
 Route::get('/contact', fn () => view('contact'))->name('contact');
 
+Route::get('/admin', fn () => view('admin'))->name('admin');
+
 /*
 |--------------------------------------------------------------------------
 | AUTH - VUES
