@@ -8,46 +8,64 @@ use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
+    /**
+     * Connexion utilisateur
+     */
     public function login(Request $request)
     {
-        // 1. Validation
+        // Validation
         $credentials = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
+            'email'    => ['required', 'email'],
+            'password' => ['required'],
         ]);
 
         $remember = $request->boolean('remember');
 
-        // 2. Tentative connexion
+        // Tentative de connexion
         if (Auth::attempt($credentials, $remember)) {
 
             $request->session()->regenerate();
 
             $user = Auth::user();
 
-            // ❌ NON VÉRIFIÉ
+            // Vérification de l'email
             if (!$user->hasVerifiedEmail()) {
 
                 Auth::logout();
 
-                // 🔥 IMPORTANT : recréer session propre
                 $request->session()->invalidate();
                 $request->session()->regenerateToken();
 
-                // renvoyer email de vérification
                 $user->sendEmailVerificationNotification();
 
                 return back()->withErrors([
-                    'email' => "Votre compte n'est pas vérifié. Un lien de vérification a été envoyé."
-                ]);
+                    'email' => "Votre compte n'est pas encore vérifié. Un nouveau lien de vérification vous a été envoyé."
+                ])->withInput();
             }
 
-            // ✔️ OK
-            return redirect()->route('accueil.utilisateur');
+            /*
+            |--------------------------------------------------------------------------
+            | Redirection selon le rôle
+            |--------------------------------------------------------------------------
+            */
+
+            switch ($user->role) {
+
+                case 'administrateur':
+                    return redirect()->route('administrateur.dashboard');
+
+                case 'medecin':
+                    return redirect()->route('medecin.dashboard');
+
+                case 'visiteur':
+                default:
+                    return redirect()->route('accueil.utilisateur');
+            }
         }
 
+        // Identifiants incorrects
         return back()->withErrors([
-            'email' => 'Email ou mot de passe incorrect.'
+            'email' => 'Adresse e-mail ou mot de passe incorrect.'
         ])->withInput();
     }
 }

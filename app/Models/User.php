@@ -21,10 +21,11 @@ class User extends Authenticatable implements MustVerifyEmail
         'date_naissance',
         'sexe',
         'password',
+        'role',
     ];
 
     /**
-     * Champs cachés (sécurité)
+     * Champs cachés
      */
     protected $hidden = [
         'password',
@@ -38,4 +39,28 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    /**
+     * Vérifie si l'utilisateur est administrateur
+     */
+    public function isAdmin()
+    {
+        return $this->role === 'administrateur';
+    }
+
+    /**
+     * Vérifie si l'utilisateur est médecin
+     */
+    public function isMedecin()
+    {
+        return $this->role === 'medecin';
+    }
+
+    /**
+     * Vérifie si l'utilisateur est visiteur
+     */
+    public function isVisiteur()
+    {
+        return $this->role === 'visiteur';
+    }
 }
