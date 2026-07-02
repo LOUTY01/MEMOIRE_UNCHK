@@ -33,6 +33,7 @@ Route::get('/rendez-vous', function () {
 
 Route::get('/contact', fn () => view('contact'))->name('contact');
 
+Route::get('/admin', fn () => view('admin'))->name('admin');
 
 /*
 |--------------------------------------------------------------------------
@@ -45,7 +46,6 @@ Route::get('/inscription', fn () => view('inscription'))->name('register');
 
 Route::post('/register', [RegisterController::class, 'store'])->name('register.store');
 Route::post('/login', [LoginController::class, 'login'])->name('login.post');
-
 
 /*
 |--------------------------------------------------------------------------
@@ -63,7 +63,6 @@ Route::post('/logout', function (Request $request) {
     return redirect()->route('accueil');
 
 })->name('logout');
-
 
 /*
 |--------------------------------------------------------------------------
@@ -127,7 +126,6 @@ Route::post('/reset-password', function (Request $request) {
 
 })->name('password.update');
 
-
 /*
 |--------------------------------------------------------------------------
 | VERIFICATION EMAIL
@@ -175,7 +173,6 @@ Route::post('/email/verification-notification', function (Request $request) {
 
 })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
-
 /*
 |--------------------------------------------------------------------------
 | RECHERCHE DES MEDECINS
@@ -192,7 +189,6 @@ Route::middleware(['auth'])->group(function () {
 
 });
 
-
 /*
 |--------------------------------------------------------------------------
 | ESPACE VISITEUR
@@ -205,7 +201,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->name('accueil.utilisateur');
 
 });
-
 
 /*
 |--------------------------------------------------------------------------
@@ -220,7 +215,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('medecin.dashboard');
 
 });
-
 
 /*
 |--------------------------------------------------------------------------
@@ -247,7 +241,6 @@ Route::get('/auth/google', [GoogleController::class, 'redirect'])
 
 Route::get('/auth/google/callback', [GoogleController::class, 'callback']);
 
-
 /*
 |--------------------------------------------------------------------------
 | CONTACT
@@ -256,7 +249,6 @@ Route::get('/auth/google/callback', [GoogleController::class, 'callback']);
 
 Route::post('/contact/store', [ContactController::class, 'store'])
     ->name('contact.store');
-
 
 /*
 |--------------------------------------------------------------------------
@@ -267,10 +259,6 @@ Route::post('/contact/store', [ContactController::class, 'store'])
 Route::get('/maquette-client', function () {
     return view('medecins');
 })->name('medecins');
-
-Route::get('/admin', function () {
-    return view('admin');
-})->name('admin');
 
 Route::get('/landing', function () {
     return view('medecins');
