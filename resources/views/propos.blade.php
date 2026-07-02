@@ -188,7 +188,12 @@ border-radius:50%;
     </style>
 </head>
 <body>
-
+@if(session('success'))
+    <div class="alert alert-success alert-dismissible fade show text-center m-3" role="alert">
+        {{ session('success') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+@endif
     <header>
 
     <div class="logo">
@@ -201,7 +206,11 @@ border-radius:50%;
 
     <nav>
 
-        <a href="{{ route('accueil') }}">Accueil</a>
+           @auth
+    <a href="{{ route('accueil.utilisateur') }}">Accueil</a>
+@else
+    <a href="{{ route('accueil') }}">Accueil</a>
+@endauth
 
         <a class="active" href="{{ route('service') }}">Services</a>
 
@@ -213,25 +222,43 @@ border-radius:50%;
 
     </nav>
 
-    <div class="menu-droite">
+     <div class="menu-droite">
 
-        <div class="zone-recherche">
+    <div class="zone-recherche">
 
-            <input type="text" placeholder="Rechercher un rendez-vous..........">
+        <input type="text" placeholder="Rechercher un rendez-vous..........">
 
-            <i class="fa-solid fa-magnifying-glass"></i>
-
-        </div>
-
-        <i class="fa-solid fa-bell"></i>
-
-        <a href="https://idap10.infinityfreeapp.com/">
-        <!-- <img src="https://i.pravatar.cc/50" alt="profil" > -->
-         <img src="{{ asset('images/homme.png') }}" >
-
-    </a>
+        <i class="fa-solid fa-magnifying-glass"></i>
 
     </div>
+
+    <i class="fa-solid fa-bell"></i>
+
+    <!-- PROFIL UTILISATEUR -->
+    @auth
+        <div style="display:flex; align-items:center; gap:10px;">
+
+            <!-- NOM UTILISATEUR -->
+            <span style="font-weight:bold; color:#1688e8;">
+                {{ Auth::user()->nom }}
+            </span>
+
+            <!-- IMAGE PROFIL -->
+            <a href="#">
+                <img src="{{ Auth::user()->photo
+                    ? asset('storage/'.Auth::user()->photo)
+                    : asset('images/homme.png') }}">
+            </a>
+
+        </div>
+    @else
+        <!-- SI PAS CONNECTÉ -->
+        <a href="{{ route('login') }}">
+            <img src="{{ asset('images/homme.png') }}">
+        </a>
+    @endauth
+
+</div>
 
 </header>
 
@@ -419,9 +446,21 @@ border-radius:50%;
             <h2 class="fw-bold mb-3">Simplifiez vos rendez-vous médicaux dès aujourd'hui</h2>
             <p class="mb-4">Rejoignez des milliers de patients qui ont déjà choisi Sama Santé pour leur santé et celle de leurs proches.</p>
             <div class="d-flex justify-content-center gap-3">
-                <button class="btn btn-light text-primary fw-bold px-4 py-2 rounded-pill">Prendre rendez-vous</button>
-                <button class="btn btn-outline-light fw-bold px-4 py-2 rounded-pill">Contactez-nous</button>
-            </div>
+            <div class="mt-4">
+
+    <a href="{{ route('rendezvous') }}"
+       class="btn btn-light text-primary fw-bold px-4 py-2 rounded-pill">
+        Prendre rendez-vous
+    </a>
+
+    <button
+        class="btn btn-outline-light fw-bold px-4 py-2 rounded-pill"
+        data-bs-toggle="modal"
+        data-bs-target="#contactModal">
+        Contactez-nous
+    </button>
+
+</div>
         </div>
     </section>
 
@@ -474,5 +513,63 @@ border-radius:50%;
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- MODAL CONTACT -->
+<div class="modal fade" id="contactModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title">Contactez-nous</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+
+            <form action="{{ route('contact.store') }}" method="POST">
+                @csrf
+
+                <div class="modal-body">
+
+                    <div class="mb-3">
+                        <label>Nom complet</label>
+                        <input type="text" name="nom_complet" class="form-control" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label>Email</label>
+                        <input type="email" name="email" class="form-control" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label>Téléphone</label>
+                        <input type="text" name="numero_telephone" class="form-control" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label>Profession</label>
+                        <input type="text" name="profession" class="form-control" value="Visiteur">
+                    </div>
+
+                    <div class="mb-3">
+                        <label>Message</label>
+                        <textarea name="message" rows="5" class="form-control" required></textarea>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Annuler
+                    </button>
+
+                    <button type="submit" class="btn btn-primary">
+                        Envoyer
+                    </button>
+                    
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
 </body>
 </html>

@@ -4,9 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Soutenance extends Model
+class Contact extends Model
 {
-    protected $table = 'soutenance';
+    protected $table = 'contacts';
 
     protected $fillable = [
         'nom_complet',
@@ -14,10 +14,5 @@ class Soutenance extends Model
         'numero_telephone',
         'profession',
         'message',
-        'lu',
-    ];
-
-    protected $casts = [
-        'lu' => 'boolean',
     ];
 }

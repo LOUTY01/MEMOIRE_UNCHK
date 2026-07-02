@@ -8,9 +8,7 @@
 <title>Sama Santé - Accueil Utilisateur</title>
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
-<link rel="stylesheet"
-href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
 <style>
 
@@ -32,9 +30,9 @@ overflow-x:hidden;
 background:#fff;
 height:75px;
 box-shadow:0 2px 15px rgba(0,0,0,.05);
-z-index:1000;
 }
 
+/* LOGO */
 .logo{
 display:flex;
 align-items:center;
@@ -43,6 +41,7 @@ text-decoration:none;
 color:#1c8adb;
 font-size:22px;
 font-weight:700;
+white-space:nowrap;
 }
 
 .logo-img{
@@ -52,6 +51,24 @@ padding:6px;
 background:#1c8adb;
 border-radius:10px;
 object-fit:contain;
+}
+
+/* MENU CENTRÉ SUR UNE LIGNE */
+.navbar-nav{
+display:flex;
+flex-direction:row;
+gap:25px;
+align-items:center;
+}
+
+.navbar-nav .nav-link{
+color:#000;
+font-size:14px;
+white-space:nowrap;
+}
+
+.navbar-nav .nav-link:hover{
+color:#1c8adb;
 }
 
 /* SEARCH */
@@ -158,10 +175,29 @@ padding:10px;
 border-radius:10px;
 width:100%;
 margin-top:10px;
+text-decoration:none;
+display:block;
+text-align:center;
 }
 
 .btn-rdv:hover{
 background:#1471b3;
+}
+
+/* FOOTER */
+.footer {
+background-color: #0b5ed7;
+color: white;
+}
+
+.footer a {
+color: rgba(255,255,255,0.8);
+text-decoration: none;
+}
+
+.footer a:hover {
+color: white;
+text-decoration: underline;
 }
 
 </style>
@@ -173,33 +209,37 @@ background:#1471b3;
 <!-- NAVBAR -->
 <nav class="navbar navbar-expand-lg">
 
-<div class="container">
+<div class="container d-flex align-items-center">
 
-<a class="logo" href="#">
+<!-- LOGO À GAUCHE -->
+<a class="logo me-4" href="#">
 <img src="{{ asset('images/logo.png') }}" class="logo-img">
 Sama Santé
 </a>
 
-<ul class="navbar-nav mx-auto">
+<!-- MENU CENTRÉ -->
+<div class="collapse navbar-collapse justify-content-center">
+<ul class="navbar-nav">
+
 <li class="nav-item"><a class="nav-link" href="{{ route('accueil.utilisateur') }}">Accueil</a></li>
-<li class="nav-item"><a class="nav-link" href="{{ route('services') }}">Services</a></li>
+<li class="nav-item"><a class="nav-link" href="{{ route('service') }}">Services</a></li>
 <li class="nav-item"><a class="nav-link" href="{{ route('propos') }}">À propos</a></li>
 <li class="nav-item"><a class="nav-link" href="{{ route('rendezvous') }}">Rendez-vous</a></li>
 <li class="nav-item"><a class="nav-link" href="{{ route('contact') }}">Contact</a></li>
+
 </ul>
+</div>
 
-<!-- SEARCH -->
+<!-- DROITE (SEARCH + USER) -->
+<div class="d-flex align-items-center gap-3">
+
 <form method="GET" action="{{ route('medecins.search') }}" class="d-flex">
-<input type="hidden" name="page" value="accueilutilisateur">
-
-<input type="text" name="q" class="search-box me-3"
+<input type="text" name="q" class="search-box me-2"
 placeholder="Rechercher un médecin" required>
-
-<button class="btn btn-primary">Rechercher</button>
+<button class="btn btn-primary btn-sm">OK</button>
 </form>
 
-<!-- USER -->
-<div class="user-box-nav ms-3">
+<div class="user-box-nav">
 
 <span class="fw-bold">{{ Auth::user()->nom }}</span>
 
@@ -212,6 +252,8 @@ src="{{ Auth::user()->photo
 @csrf
 <button class="btn btn-sm btn-danger">Déconnexion</button>
 </form>
+
+</div>
 
 </div>
 
@@ -239,67 +281,52 @@ Réserver maintenant
 </div>
 </div>
 </section>
-
-<!-- RESULTATS -->
-@if(isset($resultats))
-
-<div class="container">
-
-<h2 class="results-title">Résultats de recherche</h2>
-
-<div class="row justify-content-center">
-
-@forelse($resultats as $medecin)
-
-<div class="col-md-4 mb-4">
-
-<div class="card card-medecin">
-
-<img src="{{ $medecin->photo
-? asset('storage/'.$medecin->photo)
-: asset('images/fatou.png') }}"
-class="medecin-img">
-
-<h5 class="mt-3">
-Dr {{ $medecin->prenom }} {{ $medecin->nom }}
-</h5>
-
-<p class="text-muted">{{ $medecin->specialite }}</p>
-
-<p>📞 {{ $medecin->telephone }}</p>
-
-<button class="btn-rdv">
-<a href="{{ route('rendezvous', ['medecin_id' => $medecin->id]) }}"
-   class="btn btn-rdv">
-    Prendre rendez-vous
-</a>
-</button>
-
-</div>
-
-</div>
-
-@empty
-
-<div class="text-center">
-<div class="alert alert-warning">
-Aucun médecin trouvé
-</div>
-</div>
-
-@endforelse
-
-</div>
-</div>
-
-@endif
-
-<!-- FOOTER -->
-<footer class="text-center p-4 bg-dark text-white mt-5">
-© 2026 Sama Santé - Tous droits réservés
-</footer>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
+<footer class="footer pt-5 pb-3 mt-5">
+        <div class="container">
+            <div class="row g-4 mb-4">
+                <div class="col-md-4">
+                    <h5 class="fw-bold mb-3"><i class="bi bi-heart-pulse-fill"></i> Sama Santé</h5>
+                    <p class="small">Sama Santé est une plateforme de gestion de santé qui met en relation professionnels de santé et patients en un clic.</p>
+                </div>
+                <div class="col-md-2">
+                    <h6 class="fw-bold mb-3">Navigation</h6>
+                    <ul class="list-unstyled small">
+                        <li class="mb-2"><a href="#">Accueil</a></li>
+                        <li class="mb-2"><a href="#">Services</a></li>
+                        <li class="mb-2"><a href="#">Rendez-vous</a></li>
+                        <li class="mb-2"><a href="#">À propos</a></li>
+                        <li class="mb-2"><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-2">
+                    <h6 class="fw-bold mb-3">Ressources</h6>
+                    <ul class="list-unstyled small">
+                        <li class="mb-2"><a href="#">Espace professionnels</a></li>
+                        <li class="mb-2"><a href="#">Politique de confidentialité</a></li>
+                        <li class="mb-2"><a href="#">Mentions légales</a></li>
+                        <li class="mb-2"><a href="#">Plan du site</a></li>
+                        <li class="mb-2"><a href="#">Politique d'annulation</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h6 class="fw-bold mb-3">Contact</h6>
+                    <ul class="list-unstyled small mb-3">
+                        <li class="mb-2"><i class="bi bi-telephone me-2"></i> +221 77 123 45 67</li>
+                        <li class="mb-2"><i class="bi bi-envelope me-2"></i> contact@samasante.sn</li>
+                        <li class="mb-2"><i class="bi bi-geo-alt me-2"></i> Dakar, Sénégal</li>
+                    </ul>
+                    <div class="d-flex gap-2">
+                        <a href="#" class="text-white fs-5"><i class="bi bi-facebook"></i></a>
+                        <a href="#" class="text-white fs-5"><i class="bi bi-twitter"></i></a>
+                        <a href="#" class="text-white fs-5"><i class="bi bi-linkedin"></i></a>
+                        <a href="#" class="text-white fs-5"><i class="bi bi-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center pt-3 border-top border-light border-opacity-25 small">
+                <p class="mb-0">&copy; 2026 Sama Santé. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
 </body>
 </html>

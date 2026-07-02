@@ -8,49 +8,64 @@ use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
+    /**
+     * Connexion utilisateur
+     */
     public function login(Request $request)
     {
-        // 1. Validation
+        // Validation
         $credentials = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ], [
-            'email.required' => 'L’adresse e-mail est obligatoire.',
-            'email.email' => 'Veuillez saisir une adresse e-mail valide.',
-            'password.required' => 'Le mot de passe est obligatoire.',
+            'email'    => ['required', 'email'],
+            'password' => ['required'],
         ]);
 
-        // 🔥 2. récupérer "se souvenir de moi"
-        $remember = $request->has('remember');
+        $remember = $request->boolean('remember');
 
-        // 3. Tentative connexion
+        // Tentative de connexion
         if (Auth::attempt($credentials, $remember)) {
 
-            // régénère session (sécurité)
             $request->session()->regenerate();
 
             $user = Auth::user();
 
-            // ❌ EMAIL NON VÉRIFIÉ
+            // Vérification de l'email
             if (!$user->hasVerifiedEmail()) {
 
                 Auth::logout();
 
-                // renvoi email vérification
+                $request->session()->invalidate();
+                $request->session()->regenerateToken();
+
                 $user->sendEmailVerificationNotification();
 
                 return back()->withErrors([
-                    'email' => "Votre compte n'est pas vérifié. Un lien a été renvoyé par email."
-                ]);
+                    'email' => "Votre compte n'est pas encore vérifié. Un nouveau lien de vérification vous a été envoyé."
+                ])->withInput();
             }
 
-            // ✔️ Connexion réussie
-            return redirect()->route('accueil.utilisateur');
+            /*
+            |--------------------------------------------------------------------------
+            | Redirection selon le rôle
+            |--------------------------------------------------------------------------
+            */
+
+            switch ($user->role) {
+
+                case 'administrateur':
+                    return redirect()->route('administrateur.dashboard');
+
+                case 'medecin':
+                    return redirect()->route('medecin.dashboard');
+
+                case 'visiteur':
+                default:
+                    return redirect()->route('accueil.utilisateur');
+            }
         }
 
-        // ❌ ERREUR LOGIN
+        // Identifiants incorrects
         return back()->withErrors([
-            'email' => 'Email ou mot de passe incorrect.'
+            'email' => 'Adresse e-mail ou mot de passe incorrect.'
         ])->withInput();
     }
 }
