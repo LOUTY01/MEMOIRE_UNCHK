@@ -484,38 +484,10 @@ font-size:18px;
 
 <div class="container d-flex align-items-center flex-nowrap">
 
-<<<<<<< HEAD
     <!-- LOGO -->
     <a class="logo d-flex align-items-center me-4" href="#">
         <img src="{{ asset('images/logo.png') }}" alt="Sama Santé" class="logo-img">
         <span>Sama Santé</span>
-=======
-<a class="logo" href="#">
-    <img src="{{ asset('images/logo.png') }}" alt="Sama Santé" class="logo-img">
-    Sama Santé
-</a>
-
-<button
-class="navbar-toggler"
-data-bs-toggle="collapse"
-data-bs-target="#menu">
-<span class="navbar-toggler-icon"></span>
-</button>
-
-<div class="collapse navbar-collapse" id="menu">
-
-<ul class="navbar-nav mx-auto">
-
-<li class="nav-item">
-<a class="nav-link" href="{{ route('accueil') }}">
-Accueil
-</a>
-</li>
-
-<li class="nav-item">
-    <a class="nav-link" href="{{ route('service') }}">
-        Services
->>>>>>> Services
     </a>
 
     <!-- TOGGLER -->
