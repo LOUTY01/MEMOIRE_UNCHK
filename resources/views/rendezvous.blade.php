@@ -4,7 +4,453 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sama Santé – Réservez votre consultation</title>
+
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+
+
+</head>
+
+<body>
+
+<header>
+
+<div class="logo">
+<i class="fas fa-heartbeat"></i>
+<h2>Sama Santé</h2>
+</div>
+
+<nav>
+@auth
+<a href="{{ route('accueil.utilisateur') }}">Accueil</a>
+@else
+<a href="{{ route('accueil') }}">Accueil</a>
+@endauth
+
+<a class="active" href="{{ route('service') }}">Services</a>
+<a href="{{ route('propos') }}">À propos</a>
+<a href="{{ route('contact') }}">Contact</a>
+</nav>
+
+<div class="menu-droite">
+<div class="zone-recherche">
+<input type="text" placeholder="Rechercher un rendez-vous...">
+</div>
+
+<i class="fa-solid fa-bell"></i>
+
+@auth
+<span>{{ Auth::user()->nom }}</span>
+<img src="{{ Auth::user()->photo ? asset('storage/'.Auth::user()->photo) : asset('images/homme.png') }}" width="35">
+@else
+<a href="{{ route('login') }}">
+<img src="{{ asset('images/homme.png') }}" width="35">
+</a>
+@endauth
+
+</div>
+
+</header>
+
+<!-- HERO -->
+<div class="hero">
+<div>
+<h1>Réservez votre consultation</h1>
+<p>Rapide, simple et sécurisé</p>
+</div>
+</div>
+
+<!-- BOOKING -->
+<section>
+<h2>Finalisez votre réservation</h2>
+
+<div class="booking-grid">
+
+<!-- LEFT -->
+<div>
+
+<div class="form-group">
+<label>Service</label>
+
+<select id="service">
+    <option value="">-- choisir un service --</option>
+
+    @foreach($services as $service)
+        <option value="{{ $service->service }}">
+            {{ $service->service }}
+        </option>
+    @endforeach
+</select>
+
+</div>
+
+<div class="form-group">
+<label>Médecins</label>
+
+<div id="medecins-list">
+    <p>Sélectionnez un service</p>
+</div>
+
+</div>
+
+<div class="form-group">
+<input type="text" placeholder="Nom complet">
+</div>
+
+<div class="form-group">
+<input type="text" placeholder="Téléphone">
+</div>
+
+</div>
+
+<!-- RIGHT -->
+<div>
+
+<div class="form-group">
+<label>Jour</label>
+<select>
+<option>Lundi</option>
+<option>Mardi</option>
+<option>Mercredi</option>
+</select>
+</div>
+
+<div>
+<div class="time-slot selected">08:00</div>
+<div class="time-slot">09:00</div>
+<div class="time-slot">10:00</div>
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- PAYMENT -->
+<section>
+<h2>Paiement</h2>
+
+<div class="payment-method selected">Wave</div>
+<div class="payment-method">Orange Money</div>
+
+<button class="btn-pay">Payer maintenant</button>
+
+</section>
+
+
+
+
+
+
+
+<!-- QUEUE TRACKER -->
+<section class="queue-section">
+  <div class="section-title">Suivez votre position en direct</div>
+  <p class="section-sub">Plus besoin d'attendre dans une salle bondée. Notre système intelligent vous informe du temps d'attente estimé.</p>
+
+  <div class="queue-inner">
+    <!-- Ticket -->
+    <div class="ticket-card">
+      <span class="badge">SAMA SANTÉ · TICKET</span>
+      <div class="ticket-qr"></div>
+      <div class="ticket-num">#SAM-2549</div>
+      <div class="ticket-meta">
+        <div>Dr. Mamadou Sy · Consultation Générale</div>
+        <div style="margin-top:6px; color: var(--blue); font-weight:600;">Aujourd'hui · 08:00</div>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div>
+      <div class="queue-stats">
+        <div class="stat-box">
+          <div class="stat-icon">👥</div>
+          <div class="stat-value">#12</div>
+          <div class="stat-label">Position actuelle</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-icon">⏱</div>
+          <div class="stat-value">18 min</div>
+          <div class="stat-label">Temps estimé</div>
+        </div>
+      </div>
+
+      <div style="background:white;border-radius:var(--radius);padding:20px;box-shadow:0 2px 8px rgba(0,0,0,.05);">
+        <div style="font-size:13px;font-weight:600;margin-bottom:10px;">Progression de la file</div>
+        <div class="progress-bar"><div class="progress-fill"></div></div>
+        <div class="progress-labels"><span>Début</span><span style="color:var(--blue);font-weight:600;">Vous êtes là</span><span>Fin</span></div>
+
+        <div class="queue-actions">
+          <button class="btn-outline">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.1 13.1a19.79 19.79 0 0 1-3-8.68A2 2 0 0 1 3.12 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.1a16 16 0 0 0 6 6l.46-.46a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21 17z"/></svg>
+            Alertes par SMS
+          </button>
+          <button class="btn-outline">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+            Partager mon ticket
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY CHOOSE -->
+<section class="why-section">
+  <div class="section-title">Pourquoi choisir Sama Santé ?</div>
+  <p class="section-sub">Une expérience patient entièrement repensée pour vous offrir les meilleurs soins médicaux du Sénégal.</p>
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon">⏰</div>
+      <h4>Gain de temps</h4>
+      <p>Réservez en ligne et évitez les longues files d'attente physiques.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">⚡</div>
+      <h4>Paiement rapide</h4>
+      <p>Payez en toute sécurité avec Wave ou Orange Money en quelques secondes.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🤖</div>
+      <h4>Suivi intelligent</h4>
+      <p>Notre système IA vous informe en temps réel de votre position dans la file.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🏥</div>
+      <h4>Nos certifiés</h4>
+      <p>Médecins et spécialistes vérifiés, notés par des milliers de patients.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials-section">
+  <div class="section-title">Ce que disent nos patients</div>
+  <p class="section-sub">Des milliers de Sénégalais nous font déjà confiance pour leur santé.</p>
+  <div class="reviews-grid">
+    <div class="review-card">
+      <div class="review-stars">★★★★★</div>
+      <p class="review-text">Je suis vraiment impressionnée. J'ai pris rendez-vous en moins de 5 minutes depuis mon téléphone. Fini l'attente inutile !</p>
+      <div class="reviewer">
+        <div class="reviewer-avatar">AF</div>
+        <div class="reviewer-info"><h5>Aïda Fall</h5><p>Dakar, Sénégal</p></div>
+      </div>
+    </div>
+    <div class="review-card">
+      <div class="review-stars">★★★★★</div>
+      <p class="review-text">C'est une révolution pour le Sénégal. Payer avec Wave et suivre ma position en direct... service vraiment professionnel et moderne.</p>
+      <div class="reviewer">
+        <div class="reviewer-avatar" style="background:linear-gradient(135deg,#A5D6A7,#2E7D32);">OB</div>
+        <div class="reviewer-info"><h5>Omar Bah</h5><p>Thiès, Sénégal</p></div>
+      </div>
+    </div>
+    <div class="review-card">
+      <div class="review-stars">★★★★★</div>
+      <p class="review-text">Top qualité. Sama Santé a facilité toute ma démarche. Les médecins sont sérieux et le suivi en temps réel est super pratique !</p>
+      <div class="reviewer">
+        <div class="reviewer-avatar" style="background:linear-gradient(135deg,#FFCC80,#F57C00);">MS</div>
+        <div class="reviewer-info"><h5>Dr. Mariama Sarr</h5><p>Saint-Louis, Sénégal</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="logo-white">Sama<span>Santé</span></div>
+      <p>La plateforme de santé numérique qui révolutionne l'accès aux soins médicaux au Sénégal et en Afrique de l'Ouest.</p>
+    </div>
+    <div class="footer-col">
+      <h5>Navigation</h5>
+      <ul>
+        <li><a href="#">Accueil</a></li>
+        <li><a href="#">Services</a></li>
+        <li><a href="#">À propos</a></li>
+        <li><a href="#">Contact</a></li>
+        <li><a href="#">Blog</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Services</h5>
+      <ul>
+        <li><a href="#">Consultation générale</a></li>
+        <li><a href="#">Pédiatrie</a></li>
+        <li><a href="#">Cardiologie</a></li>
+        <li><a href="#">Dermatologie</a></li>
+        <li><a href="#">Téléconsultation</a></li>
+      </ul>
+    </div>
+    <div class="footer-col footer-contact">
+      <h5>Contact</h5>
+      <p>📞 +221 77 000 00 00</p>
+      <p>✉️ contact@samasante.sn</p>
+      <p>📍 Dakar, Sénégal</p>
+      <div class="social-icons">
+        <div class="social-icon">
+          <svg width="14" height="14" fill="white" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+        </div>
+        <div class="social-icon">
+          <svg width="14" height="14" fill="white" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path fill="#1565C0" d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line stroke="#1565C0" x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+        </div>
+        <div class="social-icon">
+          <svg width="14" height="14" fill="white" viewBox="0 0 24 24"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg>
+        </div>
+        <div class="social-icon">
+          <svg width="14" height="14" fill="white" viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">© 2026 SamaSanté. Tous droits réservés. · Politique de confidentialité · CGU</div>
+</footer>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+    // =====================
+    // SELECTION MEDECIN
+    // =====================
+    function initDoctorSelection() {
+        document.querySelectorAll('.doctor-card').forEach(el => {
+            el.addEventListener('click', () => {
+
+                document.querySelectorAll('.doctor-card')
+                    .forEach(e => e.classList.remove('selected'));
+
+                el.classList.add('selected');
+            });
+        });
+    }
+
+    initDoctorSelection();
+
+
+    // =====================
+    // CHARGEMENT MEDECINS PAR SERVICE (IMPORTANT)
+    // =====================
+    const serviceSelect = document.getElementById("service");
+
+    if (serviceSelect) {
+        serviceSelect.addEventListener("change", function () {
+
+            let service = this.value;
+
+            const container = document.getElementById("medecins-list");
+
+            if (!service) {
+                container.innerHTML = "<p>Sélectionnez un service</p>";
+                return;
+            }
+
+            fetch("/get-medecins/" + encodeURIComponent(service))
+                .then(res => res.json())
+                .then(data => {
+
+                    let html = "";
+
+                    if (data.length === 0) {
+                        html = "<p>Aucun médecin disponible</p>";
+                    } else {
+
+                        data.forEach(m => {
+                            html += `
+                                <div class="doctor-card" data-id="${m.id}">
+                                    ${m.nom}
+                                </div>
+                            `;
+                        });
+                    }
+
+                    container.innerHTML = html;
+
+                    // réinitialiser sélection médecin
+                    initDoctorSelection();
+                })
+                .catch(err => {
+                    console.error(err);
+                    container.innerHTML = "<p>Erreur de chargement</p>";
+                });
+        });
+    }
+
+
+    // =====================
+    // SELECTION HEURE
+    // =====================
+    document.querySelectorAll('.time-slot').forEach(el => {
+        el.addEventListener('click', () => {
+
+            document.querySelectorAll('.time-slot')
+                .forEach(e => e.classList.remove('selected'));
+
+            el.classList.add('selected');
+        });
+    });
+
+
+    // =====================
+    // SELECTION PAIEMENT
+    // =====================
+    document.querySelectorAll('.payment-method').forEach(el => {
+        el.addEventListener('click', () => {
+
+            document.querySelectorAll('.payment-method')
+                .forEach(e => e.classList.remove('selected'));
+
+            el.classList.add('selected');
+        });
+    });
+
+
+    // =====================
+    // SELECTION JOUR
+    // =====================
+    document.querySelectorAll('.day-btn').forEach(el => {
+        el.addEventListener('click', () => {
+
+            document.querySelectorAll('.day-btn')
+                .forEach(e => e.classList.remove('active'));
+
+            el.classList.add('active');
+        });
+    });
+
+
+    // =====================
+    // BOUTON PAYER
+    // =====================
+    const btnPay = document.querySelector('.btn-pay');
+
+    if (btnPay) {
+        btnPay.addEventListener('click', () => {
+
+            const medecin = document.querySelector('.doctor-card.selected');
+            const heure = document.querySelector('.time-slot.selected');
+            const paiement = document.querySelector('.payment-method.selected');
+            const jour = document.querySelector('.day-btn.active');
+
+            console.log("Médecin:", medecin?.innerText);
+            console.log("Heure:", heure?.innerText);
+            console.log("Paiement:", paiement?.innerText);
+            console.log("Jour:", jour?.innerText);
+
+            alert(
+                "Paiement en cours...\n\n" +
+                "Médecin: " + (medecin?.innerText || "non sélectionné") + "\n" +
+                "Heure: " + (heure?.innerText || "non sélectionné") + "\n" +
+                "Jour: " + (jour?.innerText || "non sélectionné") + "\n\n" +
+                "Vous recevrez votre ticket bientôt."
+            );
+        });
+    }
+
+});
+</script>
+</body>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -324,428 +770,4 @@ height:35px;
 border-radius:50%;
 }
 </style>
-</head>
-<body>
-
-<header>
-
-    <div class="logo">
-
-        <i class="fas fa-heartbeat"></i>
-
-        <h2>Sama Santé</h2>
-
-    </div>
-
-    <nav>
-
-        @auth
-    <a href="{{ route('accueil.utilisateur') }}">Accueil</a>
-@else
-    <a href="{{ route('accueil') }}">Accueil</a>
-@endauth
-
-        <a class="active" href="{{ route('service') }}">Services</a>
-
-        <a href="{{ route('propos') }}">À propos</a>
-
-        <a href="{{ route('contact') }}">Contact</a>
-
-    </nav>
- <div class="menu-droite">
-
-    <div class="zone-recherche">
-
-        <input type="text" placeholder="Rechercher un rendez-vous..........">
-
-        <i class="fa-solid fa-magnifying-glass"></i>
-
-    </div>
-
-    <i class="fa-solid fa-bell"></i>
-
-    <!-- PROFIL UTILISATEUR -->
-    @auth
-        <div style="display:flex; align-items:center; gap:10px;">
-
-            <!-- NOM UTILISATEUR -->
-            <span style="font-weight:bold; color:#1688e8;">
-                {{ Auth::user()->nom }}
-            </span>
-
-            <!-- IMAGE PROFIL -->
-            <a href="#">
-                <img src="{{ Auth::user()->photo
-                    ? asset('storage/'.Auth::user()->photo)
-                    : asset('images/homme.png') }}">
-            </a>
-
-        </div>
-    @else
-        <!-- SI PAS CONNECTÉ -->
-        <a href="{{ route('login') }}">
-            <img src="{{ asset('images/homme.png') }}">
-        </a>
-    @endauth
-
-</div>
-
-</header>
-
-<!-- HERO -->
-<div class="hero">
-  <div class="hero-content">
-    <h1>Réservez votre consultation<br><em>en quelques minutes</em></h1>
-    <p>Choisissez votre service, payez en ligne via Wave ou Orange Money et suivez votre position dans la file d'attente en temps réel.</p>
-    <a href="#booking" class="btn-primary">En Savoir plus →</a>
-  </div>
-  
-  
-</div>
-
-<!-- BOOKING -->
-<section class="booking-section" id="booking">
-  <div class="section-title">Finalisez votre réservation</div>
-
-  <!-- Stepper -->
-  <div class="stepper">
-    <div class="step done">
-      <div class="step-circle">✓</div>
-      <div class="step-label">Service</div>
-    </div>
-    <div class="step-line done"></div>
-    <div class="step active">
-      <div class="step-circle">2</div>
-      <div class="step-label">Médecin</div>
-    </div>
-    <div class="step-line"></div>
-    <div class="step">
-      <div class="step-circle">3</div>
-      <div class="step-label">Paiement</div>
-    </div>
-    <div class="step-line"></div>
-    <div class="step">
-      <div class="step-circle">4</div>
-      <div class="step-label">Ticket</div>
-    </div>
-  </div>
-
-  <div class="booking-grid">
-    <!-- Left -->
-    <div>
-      <div class="form-group">
-        <label>Quel service souhaitez-vous ?</label>
-        <select>
-          <option>Consultation Générale</option>
-          <option>Pédiatrie</option>
-          <option>Cardiologie</option>
-          <option>Dermatologie</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label>Choisissez votre médecin</label>
-        <div class="doctor-card selected">
-          <div class="doctor-avatar">MD</div>
-          <div class="doctor-info">
-            <h4>Dr. Mamadou Sy</h4>
-            <p>Médecin Généraliste · 12 ans</p>
-            <span class="rating">★★★★★ 4.9</span>
-          </div>
-        </div>
-        <div class="doctor-card">
-          <div class="doctor-avatar" style="background: linear-gradient(135deg, #FFB74D, #F57C00);">AD</div>
-          <div class="doctor-info">
-            <h4>Dr. Aissatou Diallo</h4>
-            <p>Pédiatre · 8 ans</p>
-            <span class="rating">★★★★☆ 4.7</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label>Informations patient</label>
-        <input type="text" placeholder="Nom complet">
-      </div>
-      <div class="form-group">
-        <input type="text" placeholder="Numéro de téléphone">
-      </div>
-      <div class="form-group">
-        <textarea rows="3" placeholder="Motif de la consultation (optionnel)"></textarea>
-      </div>
-    </div>
-
-    <!-- Right -->
-    <div>
-      <div class="form-group">
-        <label>Sélectionnez un jour</label>
-        <div class="day-picker">
-          <button class="day-btn">L<br><small>23</small></button>
-          <button class="day-btn active">M<br><small>24</small></button>
-          <button class="day-btn">M<br><small>25</small></button>
-          <button class="day-btn">J<br><small>26</small></button>
-          <button class="day-btn">V<br><small>27</small></button>
-          <button class="day-btn">S<br><small>28</small></button>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label>Disponibilités du matin</label>
-        <div class="time-grid">
-          <div class="time-slot selected">08:00</div>
-          <div class="time-slot">09:00</div>
-          <div class="time-slot">10:30</div>
-          <div class="time-slot unavailable">11:00</div>
-        </div>
-      </div>
-
-      <div class="form-group" style="margin-top:16px;">
-        <label>Disponibilités de l'après-midi</label>
-        <div class="time-grid">
-          <div class="time-slot">14:00</div>
-          <div class="time-slot unavailable">15:00</div>
-          <div class="time-slot">16:00</div>
-          <div class="time-slot">17:00</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- PAYMENT -->
-<section class="payment-section" id="payment">
-  <div class="section-title">Méthode de paiement</div>
-  <div class="payment-grid">
-    <div>
-      <div class="payment-methods">
-        <div class="payment-method selected">
-          <div class="method-wave">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
-          </div>
-          Wave
-        </div>
-        <div class="payment-method">
-          <div class="method-orange">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><circle cx="12" cy="12" r="8"/></svg>
-          </div>
-          Orange Money
-        </div>
-      </div>
-      <p class="price-note">✓ Paiement 100% sécurisé et crypté. Certifié PCI-DSS.</p>
-    </div>
-
-    <div>
-      <div class="price-summary">
-        <div style="font-weight:700;margin-bottom:10px;font-size:14px;">Résumé</div>
-        <div class="price-row"><span>Consultation</span><span>15 000 FCFA</span></div>
-        <div class="price-row"><span>Frais de service</span><span>500 FCFA</span></div>
-        <div class="price-row total"><span>Total</span><span>15 500 FCFA</span></div>
-      </div>
-      <button class="btn-pay">Payer maintenant →</button>
-    </div>
-  </div>
-</section>
-
-<!-- QUEUE TRACKER -->
-<section class="queue-section">
-  <div class="section-title">Suivez votre position en direct</div>
-  <p class="section-sub">Plus besoin d'attendre dans une salle bondée. Notre système intelligent vous informe du temps d'attente estimé.</p>
-
-  <div class="queue-inner">
-    <!-- Ticket -->
-    <div class="ticket-card">
-      <span class="badge">SAMA SANTÉ · TICKET</span>
-      <div class="ticket-qr"></div>
-      <div class="ticket-num">#SAM-2549</div>
-      <div class="ticket-meta">
-        <div>Dr. Mamadou Sy · Consultation Générale</div>
-        <div style="margin-top:6px; color: var(--blue); font-weight:600;">Aujourd'hui · 08:00</div>
-      </div>
-    </div>
-
-    <!-- Stats -->
-    <div>
-      <div class="queue-stats">
-        <div class="stat-box">
-          <div class="stat-icon">👥</div>
-          <div class="stat-value">#12</div>
-          <div class="stat-label">Position actuelle</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-icon">⏱</div>
-          <div class="stat-value">18 min</div>
-          <div class="stat-label">Temps estimé</div>
-        </div>
-      </div>
-
-      <div style="background:white;border-radius:var(--radius);padding:20px;box-shadow:0 2px 8px rgba(0,0,0,.05);">
-        <div style="font-size:13px;font-weight:600;margin-bottom:10px;">Progression de la file</div>
-        <div class="progress-bar"><div class="progress-fill"></div></div>
-        <div class="progress-labels"><span>Début</span><span style="color:var(--blue);font-weight:600;">Vous êtes là</span><span>Fin</span></div>
-
-        <div class="queue-actions">
-          <button class="btn-outline">
-            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.1 13.1a19.79 19.79 0 0 1-3-8.68A2 2 0 0 1 3.12 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.1a16 16 0 0 0 6 6l.46-.46a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21 17z"/></svg>
-            Alertes par SMS
-          </button>
-          <button class="btn-outline">
-            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
-            Partager mon ticket
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- WHY CHOOSE -->
-<section class="why-section">
-  <div class="section-title">Pourquoi choisir Sama Santé ?</div>
-  <p class="section-sub">Une expérience patient entièrement repensée pour vous offrir les meilleurs soins médicaux du Sénégal.</p>
-  <div class="features-grid">
-    <div class="feature-card">
-      <div class="feature-icon">⏰</div>
-      <h4>Gain de temps</h4>
-      <p>Réservez en ligne et évitez les longues files d'attente physiques.</p>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon">⚡</div>
-      <h4>Paiement rapide</h4>
-      <p>Payez en toute sécurité avec Wave ou Orange Money en quelques secondes.</p>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon">🤖</div>
-      <h4>Suivi intelligent</h4>
-      <p>Notre système IA vous informe en temps réel de votre position dans la file.</p>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon">🏥</div>
-      <h4>Nos certifiés</h4>
-      <p>Médecins et spécialistes vérifiés, notés par des milliers de patients.</p>
-    </div>
-  </div>
-</section>
-
-<!-- TESTIMONIALS -->
-<section class="testimonials-section">
-  <div class="section-title">Ce que disent nos patients</div>
-  <p class="section-sub">Des milliers de Sénégalais nous font déjà confiance pour leur santé.</p>
-  <div class="reviews-grid">
-    <div class="review-card">
-      <div class="review-stars">★★★★★</div>
-      <p class="review-text">Je suis vraiment impressionnée. J'ai pris rendez-vous en moins de 5 minutes depuis mon téléphone. Fini l'attente inutile !</p>
-      <div class="reviewer">
-        <div class="reviewer-avatar">AF</div>
-        <div class="reviewer-info"><h5>Aïda Fall</h5><p>Dakar, Sénégal</p></div>
-      </div>
-    </div>
-    <div class="review-card">
-      <div class="review-stars">★★★★★</div>
-      <p class="review-text">C'est une révolution pour le Sénégal. Payer avec Wave et suivre ma position en direct... service vraiment professionnel et moderne.</p>
-      <div class="reviewer">
-        <div class="reviewer-avatar" style="background:linear-gradient(135deg,#A5D6A7,#2E7D32);">OB</div>
-        <div class="reviewer-info"><h5>Omar Bah</h5><p>Thiès, Sénégal</p></div>
-      </div>
-    </div>
-    <div class="review-card">
-      <div class="review-stars">★★★★★</div>
-      <p class="review-text">Top qualité. Sama Santé a facilité toute ma démarche. Les médecins sont sérieux et le suivi en temps réel est super pratique !</p>
-      <div class="reviewer">
-        <div class="reviewer-avatar" style="background:linear-gradient(135deg,#FFCC80,#F57C00);">MS</div>
-        <div class="reviewer-info"><h5>Dr. Mariama Sarr</h5><p>Saint-Louis, Sénégal</p></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- FOOTER -->
-<footer>
-  <div class="footer-grid">
-    <div class="footer-brand">
-      <div class="logo-white">Sama<span>Santé</span></div>
-      <p>La plateforme de santé numérique qui révolutionne l'accès aux soins médicaux au Sénégal et en Afrique de l'Ouest.</p>
-    </div>
-    <div class="footer-col">
-      <h5>Navigation</h5>
-      <ul>
-        <li><a href="#">Accueil</a></li>
-        <li><a href="#">Services</a></li>
-        <li><a href="#">À propos</a></li>
-        <li><a href="#">Contact</a></li>
-        <li><a href="#">Blog</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h5>Services</h5>
-      <ul>
-        <li><a href="#">Consultation générale</a></li>
-        <li><a href="#">Pédiatrie</a></li>
-        <li><a href="#">Cardiologie</a></li>
-        <li><a href="#">Dermatologie</a></li>
-        <li><a href="#">Téléconsultation</a></li>
-      </ul>
-    </div>
-    <div class="footer-col footer-contact">
-      <h5>Contact</h5>
-      <p>📞 +221 77 000 00 00</p>
-      <p>✉️ contact@samasante.sn</p>
-      <p>📍 Dakar, Sénégal</p>
-      <div class="social-icons">
-        <div class="social-icon">
-          <svg width="14" height="14" fill="white" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
-        </div>
-        <div class="social-icon">
-          <svg width="14" height="14" fill="white" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path fill="#1565C0" d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line stroke="#1565C0" x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
-        </div>
-        <div class="social-icon">
-          <svg width="14" height="14" fill="white" viewBox="0 0 24 24"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg>
-        </div>
-        <div class="social-icon">
-          <svg width="14" height="14" fill="white" viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="footer-bottom">© 2026 SamaSanté. Tous droits réservés. · Politique de confidentialité · CGU</div>
-</footer>
-
-<script>
-  // Doctor selection
-  document.querySelectorAll('.doctor-card').forEach(card => {
-    card.addEventListener('click', () => {
-      document.querySelectorAll('.doctor-card').forEach(c => c.classList.remove('selected'));
-      card.classList.add('selected');
-    });
-  });
-
-  // Time slots
-  document.querySelectorAll('.time-slot:not(.unavailable)').forEach(slot => {
-    slot.addEventListener('click', () => {
-      document.querySelectorAll('.time-slot').forEach(s => s.classList.remove('selected'));
-      slot.classList.add('selected');
-    });
-  });
-
-  // Day buttons
-  document.querySelectorAll('.day-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.day-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-    });
-  });
-
-  // Payment methods
-  document.querySelectorAll('.payment-method').forEach(method => {
-    method.addEventListener('click', () => {
-      document.querySelectorAll('.payment-method').forEach(m => m.classList.remove('selected'));
-      method.classList.add('selected');
-    });
-  });
-
-  // Pay button
-  document.querySelector('.btn-pay').addEventListener('click', () => {
-    alert('Paiement en cours de traitement...\nVous recevrez votre ticket par SMS.');
-  });
-</script>
-</body>
 </html>

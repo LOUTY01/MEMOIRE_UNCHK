@@ -12,7 +12,7 @@ class User extends Authenticatable implements MustVerifyEmail
     use HasFactory, Notifiable;
 
     /**
-     * Champs autorisés en insertion
+     * Champs autorisés
      */
     protected $fillable = [
         'nom',
@@ -22,6 +22,9 @@ class User extends Authenticatable implements MustVerifyEmail
         'sexe',
         'password',
         'role',
+
+        // ✅ IMPORTANT POUR TON PROJET RDV
+        'service',
     ];
 
     /**
@@ -41,26 +44,35 @@ class User extends Authenticatable implements MustVerifyEmail
     ];
 
     /**
-     * Vérifie si l'utilisateur est administrateur
+     * =========================
+     * ROLES
+     * =========================
      */
+
     public function isAdmin()
     {
         return $this->role === 'administrateur';
     }
 
-    /**
-     * Vérifie si l'utilisateur est médecin
-     */
     public function isMedecin()
     {
         return $this->role === 'medecin';
     }
 
-    /**
-     * Vérifie si l'utilisateur est visiteur
-     */
     public function isVisiteur()
     {
         return $this->role === 'visiteur';
+    }
+
+    /**
+     * =========================
+     * RELATION (OPTIONNEL MAIS PRO)
+     * =========================
+     */
+
+    // si un médecin a plusieurs rendez-vous
+    public function rendezVous()
+    {
+        return $this->hasMany(RendezVous::class, 'medecin_id');
     }
 }
