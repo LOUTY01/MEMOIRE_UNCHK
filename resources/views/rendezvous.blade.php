@@ -62,86 +62,98 @@
 </div>
 
 <!-- BOOKING -->
-<section>
-<h2>Finalisez votre réservation</h2>
+<!-- Remplacer vos <section> de réservation par un unique <form> -->
+<!-- Remplacer rendezvous.paiement par rendezvous.store -->
+<form action="{{ route('rendezvous.store') }}" method="POST" id="booking-form">
+    @csrf <!-- Obligatoire dans Laravel pour la sécurité des formulaires -->
 
-<div class="booking-grid">
+    <!-- BOOKING -->
+    <section>
+        <h2>Finalisez votre réservation</h2>
 
-<!-- LEFT -->
-<div>
+        <div class="booking-grid">
+            <!-- LEFT -->
+            <div>
+                <div class="form-group">
+                    <label>Service</label>
+                    <!-- Ajout du name="service" -->
+                    <select id="service" name="service">
+                        <option value="">-- choisir un service --</option>
+                        @foreach($services as $service)
+                            <option value="{{ $service->service }}">{{ $service->service }}</option>
+                        @endforeach
+                    </select>
+                </div>
 
-<div class="form-group">
-<label>Service</label>
+                <div class="form-group">
+                    <label>Médecins</label>
+                    <div id="medecins-list">
+                        <p>Sélectionnez un service</p>
+                    </div>
+                    <input type="hidden" name="medecin_id" id="medecin_id">
+                </div>
 
-<select id="service">
-    <option value="">-- choisir un service --</option>
+                <div class="form-group">
+                    <!-- Ajout du name="nom_complet" -->
+                    <input type="text" name="nom_complet" placeholder="Nom complet" required>
+                </div>
 
-    @foreach($services as $service)
-        <option value="{{ $service->service }}">
-            {{ $service->service }}
-        </option>
-    @endforeach
-</select>
+                <div class="form-group">
+                    <!-- Ajout du name="telephone" -->
+                    <input type="text" name="telephone" placeholder="Téléphone" required>
+                </div>
+            </div>
 
-</div>
+            <!-- RIGHT -->
+            <div>
+                <div class="form-group">
+                    <label>Jour</label>
+                    <!-- Ajout du name="jour" -->
+                    <select name="jour">
+                        <option value="Lundi">Lundi</option>
+                        <option value="Mardi">Mardi</option>
+                        <option value="Mercredi">Mercredi</option>
+                    </select>
+                </div>
 
-<div class="form-group">
-<label>Médecins</label>
+                <div>
+                    <!-- Ajout d'un input caché pour stocker l'heure sélectionnée par le JS -->
+                    <input type="hidden" name="heure" id="heure_selectionnee" value="08:00">
+                    
+                    <div class="time-slot selected" data-time="08:00">08:00</div>
+                    <div class="time-slot" data-time="09:00">09:00</div>
+                    <div class="time-slot" data-time="10:00">10:00</div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-<div id="medecins-list">
-    <p>Sélectionnez un service</p>
-</div>
+    <!-- VALIDATION & PAIEMENT -->
+    <section>
+        <h2>Validation du rendez-vous</h2>
 
-</div>
+        <input type="hidden" name="operateur" id="operateur" value="Wave">
 
-<div class="form-group">
-<input type="text" placeholder="Nom complet">
-</div>
+        <div class="payment-info">
+            <p>Choisissez votre méthode de paiement :</p>
 
-<div class="form-group">
-<input type="text" placeholder="Téléphone">
-</div>
+            <div class="payment-method selected" data-operateur="Wave">
+                <img src="{{ asset('images/wave.png') }}" width="40">
+                <span>Wave</span>
+            </div>
 
-</div>
+            <div class="payment-method" data-operateur="Orange Money">
+                <img src="{{ asset('images/orange-money.png') }}" width="40">
+                <span>Orange Money</span>
+            </div>
+        </div>
 
-<!-- RIGHT -->
-<div>
-
-<div class="form-group">
-<label>Jour</label>
-<select>
-<option>Lundi</option>
-<option>Mardi</option>
-<option>Mercredi</option>
-</select>
-</div>
-
-<div>
-<div class="time-slot selected">08:00</div>
-<div class="time-slot">09:00</div>
-<div class="time-slot">10:00</div>
-</div>
-
-</div>
-
-</div>
-
-</section>
-
-<!-- PAYMENT -->
-<section>
-<h2>Paiement</h2>
-
-<div class="payment-method selected">Wave</div>
-<div class="payment-method">Orange Money</div>
-
-<button class="btn-pay">Payer maintenant</button>
-
-</section>
-
-
-
-
+        <!-- Le bouton type="submit" va naturellement soumettre le <form> -->
+        <button type="submit" class="btn-pay">
+            Continuer vers le paiement
+        </button>
+    </section>
+</form>
 
 
 
@@ -157,8 +169,8 @@
       <div class="ticket-qr"></div>
       <div class="ticket-num">#SAM-2549</div>
       <div class="ticket-meta">
-        <div>Dr. Mamadou Sy · Consultation Générale</div>
-        <div style="margin-top:6px; color: var(--blue); font-weight:600;">Aujourd'hui · 08:00</div>
+        <div id="ticket-medecin-service">Sélectionnez un médecin et un service</div>
+        <div id="ticket-date-heure" style="margin-top:6px; color: var(--blue); font-weight:600;">Aujourd'hui · 08:00</div>
       </div>
     </div>
 
@@ -182,20 +194,26 @@
         <div class="progress-bar"><div class="progress-fill"></div></div>
         <div class="progress-labels"><span>Début</span><span style="color:var(--blue);font-weight:600;">Vous êtes là</span><span>Fin</span></div>
 
+        <!-- Section des actions modifiée -->
         <div class="queue-actions">
-          <button class="btn-outline">
+          <!-- AJOUT DU BOUTON VOIR MON TICKET -->
+          <a href="{{ route('mes.tickets') }}" class="btn-outline text-decoration-none text-dark" style="display: flex;">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5.586a1 1 0 0 1 .707.293l5.414 5.414a1 1 0 0 1 .293.707V19a2 2 0 0 1-2 2z"/>
+            </svg>
+            Voir mon ticket
+          </a>
+
+          <button class="btn-outline" type="button">
             <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.1 13.1a19.79 19.79 0 0 1-3-8.68A2 2 0 0 1 3.12 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.1a16 16 0 0 0 6 6l.46-.46a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21 17z"/></svg>
-            Alertes par SMS
-          </button>
-          <button class="btn-outline">
-            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
-            Partager mon ticket
+            Alertes SMS
           </button>
         </div>
       </div>
     </div>
   </div>
 </section>
+
 
 <!-- WHY CHOOSE -->
 <section class="why-section">
@@ -308,148 +326,293 @@
   <div class="footer-bottom">© 2026 SamaSanté. Tous droits réservés. · Politique de confidentialité · CGU</div>
 </footer>
 
+Voici le code JavaScript complet et corrigé.
+
+Deux corrections majeures y ont été intégrées pour que votre formulaire fonctionne parfaitement :
+
+1. **La sélection du médecin** met désormais à jour la valeur de l'input caché `medecin_id`.
+2. **La validation du jour** a été adaptée car votre HTML utilise une balise `<select>` classique pour les jours, et non des boutons `.day-btn`.
+
+```javascript
 <script>
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", function () {
+
+    // =====================
+    // VARIABLES
+    // =====================
+    const serviceSelect = document.getElementById("service");
+    const medecinsContainer = document.getElementById("medecins-list");
+    const btnPay = document.querySelector(".btn-pay");
+    const inputMedecinId = document.getElementById("medecin_id");
+    const inputHeure = document.getElementById("heure_selectionnee");
 
     // =====================
     // SELECTION MEDECIN
     // =====================
     function initDoctorSelection() {
-        document.querySelectorAll('.doctor-card').forEach(el => {
-            el.addEventListener('click', () => {
+        document.querySelectorAll(".doctor-card").forEach(card => {
+            card.addEventListener("click", function () {
+                document.querySelectorAll(".doctor-card").forEach(c => {
+                    c.classList.remove("selected");
+                });
 
-                document.querySelectorAll('.doctor-card')
-                    .forEach(e => e.classList.remove('selected'));
+                this.classList.add("selected");
 
-                el.classList.add('selected');
+                // Met à jour la valeur de l'input caché avec l'ID du médecin
+                if (inputMedecinId) {
+                    inputMedecinId.value = this.dataset.id;
+                }
+
+                console.log("Médecin sélectionné :", this.dataset.id);
             });
         });
     }
 
     initDoctorSelection();
 
-
     // =====================
-    // CHARGEMENT MEDECINS PAR SERVICE (IMPORTANT)
+    // CHARGEMENT DES MEDECINS (AJAX)
     // =====================
-    const serviceSelect = document.getElementById("service");
-
     if (serviceSelect) {
         serviceSelect.addEventListener("change", function () {
-
-            let service = this.value;
-
-            const container = document.getElementById("medecins-list");
+            const service = this.value;
 
             if (!service) {
-                container.innerHTML = "<p>Sélectionnez un service</p>";
+                medecinsContainer.innerHTML = "<p>Sélectionnez un service.</p>";
+                if (inputMedecinId) inputMedecinId.value = ""; 
                 return;
             }
 
             fetch("/get-medecins/" + encodeURIComponent(service))
-                .then(res => res.json())
+                .then(response => response.json())
                 .then(data => {
-
                     let html = "";
 
                     if (data.length === 0) {
-                        html = "<p>Aucun médecin disponible</p>";
+                        html = "<p>Aucun médecin disponible pour ce service.</p>";
+                        if (inputMedecinId) inputMedecinId.value = "";
                     } else {
-
                         data.forEach(m => {
                             html += `
-                                <div class="doctor-card" data-id="${m.id}">
-                                    ${m.nom}
+                                <div class="doctor-card" data-id="${m.id}" data-nom="${m.nom}" style="padding:10px; border:1px solid #ccc; margin-top:5px; cursor:pointer;">
+                                    👨‍⚕️ Dr ${m.nom}
                                 </div>
                             `;
                         });
                     }
 
-                    container.innerHTML = html;
-
-                    // réinitialiser sélection médecin
-                    initDoctorSelection();
+                    medecinsContainer.innerHTML = html;
+                    initDoctorSelection(); // Réassocie le clic aux nouveaux médecins
                 })
-                .catch(err => {
-                    console.error(err);
-                    container.innerHTML = "<p>Erreur de chargement</p>";
+                .catch(error => {
+                    console.error(error);
+                    medecinsContainer.innerHTML = "<p>Erreur lors du chargement des médecins.</p>";
                 });
         });
     }
 
-
     // =====================
-    // SELECTION HEURE
+    // SELECTION HEURE (CORRIGÉ)
     // =====================
-    document.querySelectorAll('.time-slot').forEach(el => {
-        el.addEventListener('click', () => {
+    document.querySelectorAll(".time-slot").forEach(slot => {
+        slot.addEventListener("click", function () {
+            document.querySelectorAll(".time-slot").forEach(s => {
+                s.classList.remove("selected");
+            });
 
-            document.querySelectorAll('.time-slot')
-                .forEach(e => e.classList.remove('selected'));
+            this.classList.add("selected");
 
-            el.classList.add('selected');
+            // CORRECTION CRITIQUE : On stocke l'heure dans l'input caché pour Laravel
+            if (inputHeure) {
+                inputHeure.value = this.dataset.time;
+            }
+            console.log("Heure sélectionnée :", this.dataset.time);
         });
     });
 
-
     // =====================
-    // SELECTION PAIEMENT
+    // SELECTION OPERATEUR
     // =====================
-    document.querySelectorAll('.payment-method').forEach(el => {
-        el.addEventListener('click', () => {
+    document.querySelectorAll(".payment-method").forEach(method => {
+        method.addEventListener("click", function () {
+            document.querySelectorAll(".payment-method").forEach(m => {
+                m.classList.remove("selected");
+            });
 
-            document.querySelectorAll('.payment-method')
-                .forEach(e => e.classList.remove('selected'));
+            this.classList.add("selected");
 
-            el.classList.add('selected');
+            const inputOperateur = document.getElementById("operateur");
+            if (inputOperateur && this.dataset.operateur) {
+                inputOperateur.value = this.dataset.operateur;
+            }
         });
     });
 
-
     // =====================
-    // SELECTION JOUR
+    // SOUBAISSEMENT ET VERIFICATION DU FORMULAIRE
     // =====================
-    document.querySelectorAll('.day-btn').forEach(el => {
-        el.addEventListener('click', () => {
-
-            document.querySelectorAll('.day-btn')
-                .forEach(e => e.classList.remove('active'));
-
-            el.classList.add('active');
-        });
-    });
-
-
-    // =====================
-    // BOUTON PAYER
-    // =====================
-    const btnPay = document.querySelector('.btn-pay');
-
     if (btnPay) {
-        btnPay.addEventListener('click', () => {
+        btnPay.addEventListener("click", function (e) {
+            // Empêche la soumission immédiate pour faire les vérifications JS
+            e.preventDefault(); 
 
-            const medecin = document.querySelector('.doctor-card.selected');
-            const heure = document.querySelector('.time-slot.selected');
-            const paiement = document.querySelector('.payment-method.selected');
-            const jour = document.querySelector('.day-btn.active');
+            const medecinSelectionne = document.querySelector(".doctor-card.selected");
+            const heureSelectionnee = document.querySelector(".time-slot.selected");
+            const jourSelect = document.querySelector("select[name='jour']");
+            const serviceSelectElement = document.getElementById("service");
 
-            console.log("Médecin:", medecin?.innerText);
-            console.log("Heure:", heure?.innerText);
-            console.log("Paiement:", paiement?.innerText);
-            console.log("Jour:", jour?.innerText);
+            if (!serviceSelectElement || !serviceSelectElement.value) {
+                alert("Veuillez choisir un service.");
+                return;
+            }
 
-            alert(
-                "Paiement en cours...\n\n" +
-                "Médecin: " + (medecin?.innerText || "non sélectionné") + "\n" +
-                "Heure: " + (heure?.innerText || "non sélectionné") + "\n" +
-                "Jour: " + (jour?.innerText || "non sélectionné") + "\n\n" +
-                "Vous recevrez votre ticket bientôt."
-            );
+            if (!medecinSelectionne || !inputMedecinId.value) {
+                alert("Veuillez sélectionner un médecin en cliquant sur son nom.");
+                return;
+            }
+
+            if (!jourSelect || !jourSelect.value) {
+                alert("Veuillez sélectionner un jour.");
+                return;
+            }
+
+            if (!heureSelectionnee) {
+                alert("Veuillez sélectionner une heure.");
+                return;
+            }
+
+            // Si tout est valide, on soumet le formulaire proprement
+            const form = document.getElementById("booking-form");
+            if (form) {
+                console.log("Formulaire valide ! Envoi en cours...");
+                form.submit();
+            }
+        });
+    }
+});
+
+
+<!-- Intègre ceci dans ta balise <script> existante -->
+
+document.addEventListener("DOMContentLoaded", function () {
+    // Éléments du formulaire existants
+    const serviceSelect = document.getElementById("service");
+    const jourSelect = document.querySelector("select[name='jour']");
+    const medecinsContainer = document.getElementById("medecins-list");
+    const inputMedecinId = document.getElementById("medecin_id");
+    const inputHeure = document.getElementById("heure_selectionnee");
+
+    // Nouveaux éléments du Ticket visuel
+    const ticketMedecinService = document.getElementById("ticket-medecin-service");
+    const ticketDateHeure = document.getElementById("ticket-date-heure");
+
+    // Fonction pour mettre à jour les textes du ticket de la file d'attente
+    function mettreAJourTicket() {
+        const service = serviceSelect ? serviceSelect.value : "";
+        const jour = jourSelect ? jourSelect.value : "Aujourd'hui";
+        const heure = inputHeure ? inputHeure.value : "08:00";
+        
+        // Trouver la carte du médecin sélectionnée actuellement
+        const medecinCard = document.querySelector(".doctor-card.selected");
+        const nomMedecin = medecinCard ? "Dr. " + medecinCard.dataset.nom : "Aucun médecin sélectionné";
+
+        // 1. Mise à jour de la ligne : Médecin · Service
+        if(service) {
+            ticketMedecinService.textContent = `${nomMedecin} · ${service}`;
+        } else {
+            ticketMedecinService.textContent = `${nomMedecin}`;
+        }
+
+        // 2. Mise à jour de la ligne : Jour · Heure
+        ticketDateHeure.textContent = `${jour} · ${heure}`;
+    }
+
+    // Gestion du clic sur un médecin (Ajout de mettreAJourTicket dans ta fonction existante)
+    function initDoctorSelection() {
+        document.querySelectorAll(".doctor-card").forEach(card => {
+            card.addEventListener("click", function () {
+                document.querySelectorAll(".doctor-card").forEach(c => c.classList.remove("selected"));
+                this.classList.add("selected");
+
+                if (inputMedecinId) {
+                    inputMedecinId.value = this.dataset.id;
+                }
+                
+                // Mettre à jour le ticket d'attente au clic du médecin
+                mettreAJourTicket();
+            });
         });
     }
 
+    initDoctorSelection();
+
+    // Au changement de service
+    if (serviceSelect) {
+        serviceSelect.addEventListener("change", function () {
+            const service = this.value;
+            mettreAJourTicket(); // Met à jour le service sur le ticket immédiatement
+
+            if (!service) {
+                medecinsContainer.innerHTML = "<p>Sélectionnez un service.</p>";
+                if (inputMedecinId) inputMedecinId.value = ""; 
+                return;
+            }
+
+            fetch("/get-medecins/" + encodeURIComponent(service))
+                .then(response => response.json())
+                .then(data => {
+                    let html = "";
+                    if (data.length === 0) {
+                        html = "<p>Aucun médecin disponible pour ce service.</p>";
+                        if (inputMedecinId) inputMedecinId.value = "";
+                    } else {
+                        // IMPORTANT: Assure-toi que ton contrôleur retourne bien 'id' et 'nom'
+                        data.forEach(m => {
+                            html += `
+                                <div class="doctor-card" data-id="${m.id}" data-nom="${m.nom}" style="padding:10px; border:1px solid #ccc; margin-top:5px; cursor:pointer;">
+                                    👨‍⚕️ Dr ${m.nom}
+                                </div>
+                            `;
+                        });
+                    }
+                    medecinsContainer.innerHTML = html;
+                    initDoctorSelection(); 
+                    mettreAJourTicket();
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        });
+    }
+
+    // Au clic sur les horaires (Heures)
+    document.querySelectorAll(".time-slot").forEach(slot => {
+        slot.addEventListener("click", function () {
+            document.querySelectorAll(".time-slot").forEach(s => s.classList.remove("selected"));
+            this.classList.add("selected");
+
+            if (inputHeure) {
+                inputHeure.value = this.dataset.time;
+            }
+            
+            // Mettre à jour le ticket d'attente au clic de l'heure
+            mettreAJourTicket();
+        });
+    });
+
+    // Au changement du jour de la semaine
+    if (jourSelect) {
+        jourSelect.addEventListener("change", function() {
+            mettreAJourTicket();
+        });
+    }
+
+    // Initialisation au chargement de la page
+    mettreAJourTicket();
 });
 </script>
+
+```
 </body>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }

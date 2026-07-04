@@ -1,71 +1,42 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Models;
 
-use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\User;
-use App\Models\RendezVous;
-use Illuminate\Support\Facades\Auth;
 
-class RendezVousController extends Controller
+class RendezVous extends Model
 {
-    /*
-    |--------------------------------------------------------------------------
-    | PAGE RENDEZ-VOUS
-    |--------------------------------------------------------------------------
-    */
-    public function create()
+    // Correction ici : liaison avec votre vraie table 'rendez_vous'
+    protected $table = 'rendez_vous';
+
+    protected $fillable = [
+        'user_id',
+        'medecin_id',
+        'service',
+        'date',
+        'heure',
+        'motif',
+        'status',
+        'methode_paiement',
+        'montant',
+        'reference_paiement',
+    ];
+
+    /**
+     * Relation avec le Patient (liaison via user_id)
+     */
+    public function user(): BelongsTo
     {
-        // 👉 services uniques depuis les médecins
-        $services = User::where('role', 'medecin')
-            ->whereNotNull('service')
-            ->select('service')
-            ->distinct()
-            ->get();
-
-        // 👉 médecins affichage initial
-        $medecins = User::where('role', 'medecin')->get();
-
-        return view('rendezvous', compact('services', 'medecins'));
+        return $this->belongsTo(User::class, 'user_id');
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | ENREGISTRER RENDEZ-VOUS
-    |--------------------------------------------------------------------------
-    */
-    public function store(Request $request)
+    /**
+     * Relation avec le Médecin (liaison via medecin_id)
+     */
+    public function medecin(): BelongsTo
     {
-        $request->validate([
-            'medecin_id' => 'required|exists:users,id',
-            'service' => 'required|string',
-            'date' => 'required|date',
-            'heure' => 'required',
-            'motif' => 'nullable|string'
-        ]);
-
-        $rdv = RendezVous::create([
-            'user_id' => Auth::id(),
-            'medecin_id' => $request->medecin_id,
-            'service' => $request->service,
-            'date' => $request->date,
-            'heure' => $request->heure,
-            'motif' => $request->motif,
-            'status' => 'en_attente'
-        ]);
-
-        return redirect()->route('paiement.page', $rdv->id);
-    }
-
-    /*
-    |--------------------------------------------------------------------------
-    | PAGE PAIEMENT
-    |--------------------------------------------------------------------------
-    */
-    public function paiement($id)
-    {
-        $rdv = RendezVous::with(['medecin', 'user'])->findOrFail($id);
-
-        return view('paiement', compact('rdv'));
+        return $this->belongsTo(User::class, 'medecin_id');
     }
 }
