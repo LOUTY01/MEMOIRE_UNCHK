@@ -5,17 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\User;
+use App\Models\Paiement;
 
 class RendezVous extends Model
 {
-    /**
-     * Nom de la table
-     */
     protected $table = 'rendez_vous';
 
-    /**
-     * Champs autorisés pour l'insertion
-     */
     protected $fillable = [
         'user_id',
         'medecin_id',
@@ -29,28 +24,63 @@ class RendezVous extends Model
         'reference_paiement',
     ];
 
-    /**
-     * Relation avec le patient
-     */
     public function patient(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    /**
-     * Alias de la relation patient
-     * (utile si tu utilises déjà $rdv->user dans d'autres pages)
-     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    /**
-     * Relation avec le médecin
-     */
     public function medecin(): BelongsTo
     {
         return $this->belongsTo(User::class, 'medecin_id');
+    }
+
+    public function paiement()
+    {
+        return $this->hasOne(Paiement::class, 'rendez_vous_id');
+    }
+
+    /**
+     * 🔥 Synchronisation automatique RDV → Paiement
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::updated(function ($rdv) {
+
+            if ($rdv->wasChanged('status')) {
+
+                $paiement = $rdv->paiement;
+
+                if ($paiement) {
+
+                    // ✅ mapping sécurisé (IMPORTANT)
+                    $statutPaiement = match ($rdv->status) {
+
+                        'payé' => 'paye',
+
+                        'en_attente' => 'en_attente',
+
+                        'annulé' => 'echoue',
+
+                        'terminé' => 'paye',
+
+                        default => 'en_attente',
+                    };
+
+                    $paiement->update([
+                        'statut' => $statutPaiement,
+                        'date_paiement' => $statutPaiement === 'paye'
+                            ? now()
+                            : null,
+                    ]);
+                }
+            }
+        });
     }
 }

@@ -33,8 +33,8 @@ return new class extends Migration
             $table->enum('status', [
                 'en_attente',
                 'payé',
-                'annulé',
-                'terminé'
+                'echoue',
+                
             ])->default('en_attente');
 
             // paiement méthode

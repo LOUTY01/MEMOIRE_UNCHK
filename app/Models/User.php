@@ -4,12 +4,15 @@ namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Auth\MustVerifyEmail as MustVerifyEmailTrait;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Medecin;
+use App\Models\RendezVous;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, MustVerifyEmailTrait;
 
     /**
      * Champs autorisés
@@ -22,8 +25,6 @@ class User extends Authenticatable implements MustVerifyEmail
         'sexe',
         'password',
         'role',
-
-        // ✅ IMPORTANT POUR TON PROJET RDV
         'service',
     ];
 
@@ -48,7 +49,6 @@ class User extends Authenticatable implements MustVerifyEmail
      * ROLES
      * =========================
      */
-
     public function isAdmin()
     {
         return $this->role === 'administrateur';
@@ -66,13 +66,21 @@ class User extends Authenticatable implements MustVerifyEmail
 
     /**
      * =========================
-     * RELATION (OPTIONNEL MAIS PRO)
+     * RENDEZ-VOUS
      * =========================
      */
-
-    // si un médecin a plusieurs rendez-vous
     public function rendezVous()
     {
         return $this->hasMany(RendezVous::class, 'medecin_id');
+    }
+
+    /**
+     * =========================
+     * RELATION MEDECIN (IMPORTANT)
+     * =========================
+     */
+    public function medecin()
+    {
+        return $this->hasOne(Medecin::class, 'user_id');
     }
 }
