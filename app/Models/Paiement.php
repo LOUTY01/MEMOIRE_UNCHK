@@ -3,8 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Models\User;
-use App\Models\RendezVous;
 
 class Paiement extends Model
 {
@@ -20,8 +18,13 @@ class Paiement extends Model
         'date_paiement'
     ];
 
+    // Conversion automatique du champ date en instance Carbon
+    protected $casts = [
+        'date_paiement' => 'datetime',
+    ];
+
     /**
-     * Relation utilisateur (patient)
+     * Relation vers l'utilisateur (patient)
      */
     public function user()
     {
@@ -29,7 +32,7 @@ class Paiement extends Model
     }
 
     /**
-     * Relation rendez-vous
+     * Relation vers le rendez-vous
      */
     public function rendezVous()
     {
@@ -37,34 +40,20 @@ class Paiement extends Model
     }
 
     /**
-     * Scope : paiements payés
+     * Scopes pour filtrer facilement les paiements
      */
     public function scopePayes($query)
     {
         return $query->where('statut', 'payé');
     }
 
-    /**
-     * Scope : paiements en attente
-     */
     public function scopeEnAttente($query)
     {
         return $query->where('statut', 'en_attente');
     }
 
-    /**
-     * Scope : paiements échoués
-     */
     public function scopeEchoues($query)
     {
         return $query->where('statut', 'echoue');
-    }
-
-    /**
-     * Accès direct au rendez-vous (correct)
-     */
-    public function rendez()
-    {
-        return $this->belongsTo(RendezVous::class, 'rendez_vous_id');
     }
 }

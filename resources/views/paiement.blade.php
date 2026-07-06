@@ -88,31 +88,90 @@
 
     <main class="container py-5">
         <div class="row justify-content-center">
-            <div class="col-md-6">
-                <div class="card card-custom p-4">
-                    <h3 class="text-primary fw-bold mb-4 text-center">Paiement Consultation</h3>
-                    
-                    <div class="bg-light p-3 rounded mb-4">
-                        <p class="mb-1"><strong>Patient :</strong> {{ $rendezVous->user->nom }}</p>
-                        <p class="mb-1"><strong>Médecin :</strong> {{ $rendezVous->medecin->nom }}</p>
-                        <p class="mb-1"><strong>Date :</strong> {{ $rendezVous->date }} à {{ $rendezVous->heure }}</p>
+            <div class="col-md-8">
+                
+                @isset($rendezVous)
+                    <!-- SECTION PAIEMENT -->
+                    <div class="card card-custom p-4">
+                        <h3 class="text-primary fw-bold mb-4 text-center">Paiement Consultation</h3>
+                        <div class="bg-light p-3 rounded mb-4">
+                            <p class="mb-1"><strong>Patient :</strong> {{ $rendezVous->user->nom ?? 'N/A' }}</p>
+                            <p class="mb-1"><strong>Médecin :</strong> {{ $rendezVous->medecin->nom ?? 'N/A' }}</p>
+                            <p class="mb-1"><strong>Date :</strong> {{ $rendezVous->date }} à {{ $rendezVous->heure }}</p>
+                        </div>
+                        @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul class="mb-0">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
+@if(session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+@endif
+                        <form action="{{ route('paiement.store') }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="rendezvous_id" value="{{ $rendezVous->id }}">
+                            <input type="hidden" name="operateur" id="operateur" required>
+
+                            <h6 class="mb-3">Choisissez votre moyen de paiement :</h6>
+                            <div class="row g-3 mb-4">
+                                <div class="col-6">
+                                    <div class="method" data-operateur="Wave">Wave</div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="method" data-operateur="Orange Money">Orange Money</div>
+                                </div>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary w-100 py-2">
+                                Confirmer et Payer {{ number_format($rendezVous->montant ?? 15500, 0, ',', ' ') }} FCFA
+                            </button>
+                        </form>
                     </div>
-
-                    <h4 class="text-center text-success fw-bold mb-4">15 500 FCFA</h4>
-
-                    <form method="POST" action="{{ route('paiement.store') }}">
-                        @csrf
-                        <input type="hidden" name="rendezvous_id" value="{{ $rendezVous->id }}">
-                        <input type="hidden" name="operateur" id="operateur" value="Wave">
-
-                        <div class="d-flex gap-3 mb-4">
-                            <div class="method selected flex-fill" data-operateur="Wave">Wave</div>
-                            <div class="method flex-fill" data-operateur="Orange Money">Orange Money</div>
+                @else
+                    <!-- SECTION DASHBOARD ADMIN -->
+                    <div class="card card-custom p-4">
+                        <h3 class="text-primary fw-bold mb-4">Tableau de bord Paiements</h3>
+                        <div class="row text-center">
+                            <div class="col-md-4"><strong>Médecins :</strong> {{ $doctorCount ?? 0 }}</div>
+                            <div class="col-md-4"><strong>Patients :</strong> {{ $patientCount ?? 0 }}</div>
+                            <div class="col-md-4"><strong>Total :</strong> {{ number_format($totalRevenusPayes ?? 0, 0, ',', ' ') }} FCFA</div>
                         </div>
 
-                        <button type="submit" class="btn btn-primary w-100 rounded-pill py-2 fw-bold">Confirmer et payer</button>
-                    </form>
-                </div>
+                        <h4 class="mt-4 mb-3">Rendez-vous récents</h4>
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Patient</th>
+                                    <th>Médecin</th>
+                                    <th>Statut</th>
+                                    <th>Montant</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($recentAppointments ?? [] as $rv)
+                                <tr>
+                                    <td>{{ $rv->user->nom ?? 'Inconnu' }}</td>
+                                    <td>{{ $rv->medecin->nom ?? 'Inconnu' }}</td>
+                                    <td>
+                                        <span class="badge {{ $rv->status == 'payé' ? 'bg-success' : 'bg-warning' }}">
+                                            {{ $rv->status }}
+                                        </span>
+                                    </td>
+                                    <td>{{ number_format($rv->montant, 0, ',', ' ') }} FCFA</td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                @endisset
+
             </div>
         </div>
     </main>

@@ -31,46 +31,35 @@ class RendezVousController extends Controller
      * ENREGISTRER RDV
      */
     public function store(Request $request)
-    {
-        $request->validate([
-            'service' => 'required',
-            'medecin_id' => 'required',
-            'date' => 'required|date',
-            'heure' => 'required',
-            'telephone' => 'required',
-            'nom_complet' => 'required',
-            'operateur' => 'required',
+{
+    $request->validate([
+        'service' => 'required',
+        'medecin_id' => 'required',
+        'date' => 'required|date',
+        'heure' => 'required',
+        'telephone' => 'required',
+        'nom_complet' => 'required',
+    ]);
+
+    return DB::transaction(function () use ($request) {
+
+        $rendezvous = RendezVous::create([
+            'user_id'          => Auth::id(),
+            'service'          => $request->service,
+            'medecin_id'       => $request->medecin_id,
+            'date'             => $request->date,
+            'heure'            => $request->heure,
+            'status'           => 'en_attente',
+            'statut_paiement'  => 'en_attente',
+            'telephone'        => $request->telephone,
+            'nom_complet'      => $request->nom_complet,
+            'montant'          => 15500, // montant de la consultation
         ]);
 
-        return DB::transaction(function () use ($request) {
-
-            // 🔥 IMPORTANT : lien utilisateur connecté
-            $rendezvous = RendezVous::create([
-                'user_id' => Auth::id(), // ✔ FIX PRINCIPAL
-                'service' => $request->service,
-                'medecin_id' => $request->medecin_id,
-                'date' => $request->date,
-                'heure' => $request->heure,
-                'status' => 'en_attente',
-                'statut_paiement' => 'en_attente',
-                'telephone' => $request->telephone,
-                'nom_complet' => $request->nom_complet,
-            ]);
-
-            Paiement::create([
-                'user_id' => Auth::id(),
-                'rendez_vous_id' => $rendezvous->id,
-                'operateur' => $request->operateur,
-                'montant' => 0,
-                'statut' => 'en_attente',
-                'reference' => 'SAMA-' . rand(10000, 99999),
-            ]);
-
-            return redirect()->route('paiement.page', $rendezvous->id)
-                ->with('success', 'Rendez-vous créé avec succès ✔');
-        });
-    }
-
+       return redirect()->route('paiement.create', $rendezvous->id)
+    ->with('success', 'Rendez-vous créé avec succès ✔');
+    });
+}
     /**
      * 🔥 MES TICKETS (IMPORTANT POUR TON PROBLÈME)
      */

@@ -28,7 +28,7 @@
 <a href="{{ route('accueil') }}">Accueil</a>
 @endauth
 
-<a class="active" href="{{ route('service') }}">Services</a>
+<a class="active" href="{{ route('service') }}">Rendez Vous</a>
 <a href="{{ route('propos') }}">À propos</a>
 <a href="{{ route('contact') }}">Contact</a>
 </nav>
@@ -64,60 +64,46 @@
 <!-- BOOKING -->
 <!-- Remplacer vos <section> de réservation par un unique <form> -->
 <!-- Remplacer rendezvous.paiement par rendezvous.store -->
-<form action="{{ route('rendezvous.store') }}" method="POST" id="booking-form">
-    @csrf <!-- Obligatoire dans Laravel pour la sécurité des formulaires -->
+<form action="{{ route('rendezvous.store') }}" method="POST">
+    @csrf
 
-    <!-- BOOKING -->
     <section>
         <h2>Finalisez votre réservation</h2>
-
         <div class="booking-grid">
-            <!-- LEFT -->
             <div>
                 <div class="form-group">
-    <label>Spécialité</label>
-
-    <select id="service" name="service">
-        <option value="">-- choisir une spécialité --</option>
-
-        @foreach($specialites as $specialite)
-            <option value="{{ $specialite }}">
-                {{ $specialite }}
-            </option>
-        @endforeach
-    </select>
-</div>
-
-                <div class="form-group">
-                    <label>Médecins</label>
-                    <div id="medecins-list">
-                        <p>Sélectionnez un service</p>
-                    </div>
-                    <input type="hidden" name="medecin_id" id="medecin_id">
+                    <label>Spécialité</label>
+                    <select id="service" name="service" required>
+                        <option value="">-- choisir une spécialité --</option>
+                        @foreach($specialites as $specialite)
+                            <option value="{{ $specialite }}">{{ $specialite }}</option>
+                        @endforeach
+                    </select>
                 </div>
 
                 <div class="form-group">
-                    <!-- Ajout du name="nom_complet" -->
+                    <label>Médecins</label>
+                    <div id="medecins-list"><p>Sélectionnez un service</p></div>
+                    <input type="hidden" name="medecin_id" id="medecin_id" required>
+                </div>
+
+                <div class="form-group">
                     <input type="text" name="nom_complet" placeholder="Nom complet" required>
                 </div>
 
                 <div class="form-group">
-                    <!-- Ajout du name="telephone" -->
                     <input type="text" name="telephone" placeholder="Téléphone" required>
                 </div>
             </div>
 
-            <!-- RIGHT -->
             <div>
                 <div class="form-group">
-    <label>Date du rendez-vous</label>
-    <input type="date" name="date" required>
-</div>
+                    <label>Date du rendez-vous</label>
+                    <input type="date" name="date" required>
+                </div>
 
                 <div>
-                    <!-- Ajout d'un input caché pour stocker l'heure sélectionnée par le JS -->
                     <input type="hidden" name="heure" id="heure_selectionnee" value="08:00">
-                    
                     <div class="time-slot selected" data-time="08:00">08:00</div>
                     <div class="time-slot" data-time="09:00">09:00</div>
                     <div class="time-slot" data-time="10:00">10:00</div>
@@ -126,33 +112,23 @@
         </div>
     </section>
 
-    <!-- VALIDATION & PAIEMENT -->
     <section>
         <h2>Validation du rendez-vous</h2>
-
         <input type="hidden" name="operateur" id="operateur" value="Wave">
 
         <div class="payment-info">
             <p>Choisissez votre méthode de paiement :</p>
-
             <div class="payment-method selected" data-operateur="Wave">
-                <img src="{{ asset('images/wave.png') }}" width="40">
-                <span>Wave</span>
+                <img src="{{ asset('images/wave.png') }}" width="40"> <span>Wave</span>
             </div>
-
             <div class="payment-method" data-operateur="Orange Money">
-                <img src="{{ asset('images/orange-money.png') }}" width="40">
-                <span>Orange Money</span>
+                <img src="{{ asset('images/orange-money.png') }}" width="40"> <span>Orange Money</span>
             </div>
         </div>
 
-        <!-- Le bouton type="submit" va naturellement soumettre le <form> -->
-        <button type="submit" class="btn-pay">
-            Continuer vers le paiement
-        </button>
+        <button type="submit" class="btn-pay">Continuer vers le paiement</button>
     </section>
 </form>
-
 
 
 <!-- QUEUE TRACKER -->
@@ -512,6 +488,23 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
 });
+
+document.querySelectorAll('.time-slot').forEach(item => {
+        item.addEventListener('click', () => {
+            document.querySelectorAll('.time-slot').forEach(i => i.classList.remove('selected'));
+            item.classList.add('selected');
+            document.getElementById('heure_selectionnee').value = item.dataset.time;
+        });
+    });
+
+    document.querySelectorAll('.payment-method').forEach(item => {
+        item.addEventListener('click', () => {
+            document.querySelectorAll('.payment-method').forEach(i => i.classList.remove('selected'));
+            item.classList.add('selected');
+            document.getElementById('operateur').value = item.dataset.operateur;
+        });
+    });
+</script>
 </script>
 </body>
 <style>

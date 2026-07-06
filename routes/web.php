@@ -26,6 +26,7 @@ use App\Http\Controllers\PaiementController;
 use App\Http\Controllers\GoogleController;
 
 
+
 /*
 |--------------------------------------------------------------------------
 | PAGES PUBLIQUES
@@ -109,13 +110,29 @@ Route::middleware(['auth', 'verified'])->group(function () {
 |--------------------------------------------------------------------------
 */
 
+/*
+|--------------------------------------------------------------------------
+| PAIEMENT
+|--------------------------------------------------------------------------
+*/
+
 Route::middleware(['auth', 'verified'])->group(function () {
 
+    // Affiche le dashboard (pour les admins)
+    Route::get('/paiement', [PaiementController::class, 'index'])
+        ->name('paiement.index');
+
+    // Affiche la page de paiement pour un RDV spécifique
     Route::get('/paiement/{id}', [PaiementController::class, 'create'])
         ->name('paiement.create');
 
+    // Traite le formulaire de paiement
     Route::post('/paiement', [PaiementController::class, 'store'])
         ->name('paiement.store');
+
+    // Liste des tickets de l'utilisateur (déplacé ici pour cohérence)
+    Route::get('/mes-tickets', [PaiementController::class, 'ticket'])
+        ->name('mes.tickets');
 });
 
 /*
@@ -240,3 +257,4 @@ Route::post('/contact', function (Request $request) {
 
     return back()->with('success', 'Message envoyé avec succès ✔');
 })->name('contact.store');
+
