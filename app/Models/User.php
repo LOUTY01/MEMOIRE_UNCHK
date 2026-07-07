@@ -4,18 +4,17 @@ namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Auth\MustVerifyEmail as MustVerifyEmailTrait;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use App\Models\Medecin;
 use App\Models\RendezVous;
+use App\Models\Medecin;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasFactory, Notifiable, MustVerifyEmailTrait;
+    use HasFactory, Notifiable;
 
     /**
-     * Champs autorisés
+     * Champs modifiables
      */
     protected $fillable = [
         'nom',
@@ -66,17 +65,17 @@ class User extends Authenticatable implements MustVerifyEmail
 
     /**
      * =========================
-     * RENDEZ-VOUS
+     * RENDEZ-VOUS (IMPORTANT FIX)
      * =========================
      */
     public function rendezVous()
     {
-        return $this->hasMany(RendezVous::class, 'medecin_id');
+        return $this->hasMany(RendezVous::class, 'user_id');
     }
 
     /**
      * =========================
-     * RELATION MEDECIN (IMPORTANT)
+     * RELATION MEDECIN
      * =========================
      */
     public function medecin()

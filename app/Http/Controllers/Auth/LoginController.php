@@ -13,7 +13,6 @@ class LoginController extends Controller
      */
     public function login(Request $request)
     {
-        // Validation
         $credentials = $request->validate([
             'email'    => ['required', 'email'],
             'password' => ['required'],
@@ -21,51 +20,38 @@ class LoginController extends Controller
 
         $remember = $request->boolean('remember');
 
-        // Tentative de connexion
         if (Auth::attempt($credentials, $remember)) {
 
             $request->session()->regenerate();
 
             $user = Auth::user();
 
-            // Vérification de l'email
+            // EMAIL NON VÉRIFIÉ
             if (!$user->hasVerifiedEmail()) {
+
+                // 🔥 RENVOYER EMAIL DE VERIFICATION
+                $user->sendEmailVerificationNotification();
 
                 Auth::logout();
 
                 $request->session()->invalidate();
                 $request->session()->regenerateToken();
 
-                $user->sendEmailVerificationNotification();
-
                 return back()->withErrors([
-                    'email' => "Votre compte n'est pas encore vérifié. Un nouveau lien de vérification vous a été envoyé."
-                ])->withInput();
+                    'email' => "Votre compte n'est pas encore vérifié. Un nouveau lien a été envoyé par email."
+                ]);
             }
 
-            /*
-            |--------------------------------------------------------------------------
-            | Redirection selon le rôle
-            |--------------------------------------------------------------------------
-            */
-
-            switch ($user->role) {
-
-                case 'administrateur':
-                    return redirect()->route('administrateur.dashboard');
-
-                case 'medecin':
-                    return redirect()->route('medecin.dashboard');
-
-                case 'visiteur':
-                default:
-                    return redirect()->route('accueil.utilisateur');
-            }
+            // REDIRECTION SELON ROLE
+            return match ($user->role) {
+                'administrateur' => redirect()->route('dashboard'),
+                'medecin'        => redirect()->route('medecin.dashboard'),
+                default           => redirect()->route('accueil.utilisateur'),
+            };
         }
 
-        // Identifiants incorrects
         return back()->withErrors([
             'email' => 'Adresse e-mail ou mot de passe incorrect.'
-        ])->withInput();
+        ]);
     }
 }

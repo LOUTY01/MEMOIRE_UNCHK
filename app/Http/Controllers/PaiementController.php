@@ -54,23 +54,21 @@ class PaiementController extends Controller
     }
 
     /**
-     * TRAITEMENT PAIEMENT
+     * TRAITEMENT PAIEMENT (Initialisation)
      */
     public function store(Request $request)
     {
-        
-        // 1. Validation stricte
         $request->validate([
             'rendezvous_id' => 'required|exists:rendez_vous,id',
             'operateur' => 'required|string|in:Wave,Orange Money'
         ]);
 
         try {
-            // 2. Enregistrement sécurisé du paiement en base
             DB::beginTransaction();
 
             $rendezVous = RendezVous::findOrFail($request->rendezvous_id);
 
+            // Enregistrement du paiement
             Paiement::create([
                 'user_id'        => Auth::id(),
                 'rendez_vous_id' => $rendezVous->id,
@@ -82,22 +80,38 @@ class PaiementController extends Controller
 
             DB::commit();
 
-            // 3. Logique de redirection externe
+            // Redirection vers le fournisseur (Note : Dans un vrai projet, 
+            // vous devriez passer l'ID dans l'URL de retour pour le callback)
             if ($request->operateur === 'Wave') {
                 return redirect()->away('https://pay.wave.com/m/M_sn_IU0GOdqlFUVY/c/sn/');
             }
 
-            if ($request->operateur === 'Orange Money') {
-                return redirect()->away('https://orange-money.com/votre-lien-marchand');
-            }
+            return redirect()->away('https://orange-money.com/votre-lien-marchand');
 
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error("Erreur paiement : " . $e->getMessage());
             return back()->with('error', 'Une erreur est survenue lors de la préparation du paiement.');
         }
+    }
 
-        return back()->with('error', 'Opérateur de paiement invalide.');
+    /**
+     * SUCCESS PAIEMENT (Mise à jour de la table rendez_vous)
+     * Cette méthode doit être appelée après le retour du paiement
+     */
+    public function success(Request $request, $id)
+    {
+        $rendezVous = RendezVous::findOrFail($id);
+
+        $rendezVous->update([
+            'status'             => 'payé',
+            'statut_paiement'    => 'payé',
+            'methode_paiement'   => $request->operateur ?? 'Inconnu',
+            'reference_paiement' => 'REF-' . strtoupper(bin2hex(random_bytes(4))),
+        ]);
+
+        return redirect()->route('mes.tickets')
+            ->with('success', 'Votre paiement a été confirmé avec succès !');
     }
 
     /**
